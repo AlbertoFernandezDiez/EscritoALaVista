@@ -9,4 +9,20 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  
+  <servlet>
+
+      <servlet-name>timeservlet</servlet-name>
+
+      <servlet-class>com.edu4java.servlets.FirstServlet</servlet-class>
+
+   </servlet>
+
+   <servlet-mapping>
+
+      <servlet-name>timeservlet</servlet-name>
+
+      <url-pattern>/what-time-is-it</url-pattern>
+
+   </servlet-mapping>
 </web-app>
