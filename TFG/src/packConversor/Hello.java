@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import packBD.GestorBD;
 import packClases.Capitulo;
 import packClases.ListaCapitulos;
+import packClases.Obra;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chapter;
@@ -24,6 +25,7 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.TabStop.Alignment;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfDestination;
 import com.itextpdf.text.pdf.PdfOutline;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -59,34 +61,83 @@ public class Hello extends HttpServlet {
 					throws ServletException, IOException {
 		response.setContentType("application/pdf");
 		try {
-			ListaCapitulos lista = GestorBD.getGestorBD().getCapitulos(2);
-			Capitulo aux = null;
-			Iterator<Capitulo> it = lista.getIterator();
+			
 			Document document = new Document();
 			PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
 			document.open();
 			PdfOutline root = writer.getRootOutline();
 			PdfOutline marcador = null;
-		
 			
+			/**
+			 * Aquí generamos la portada
+			 */
+			Obra obra = GestorBD.getGestorBD().getObra(3);
+			document.addTitle(obra.getTitulo());
+			
+			document.add(this.addPortada(obra, document));
+			//this.addPortada(obra, document);
+			//document.add(this.addAutor(obra));
+			
+			
+			document.newPage();
+			/*
+			 * En esta sección se comienza a 
+			 * insertar los capítulos con
+			 * sus correspondientes maracadores
+			 */
+			String[] parrafos;
+			ListaCapitulos lista = GestorBD.getGestorBD().getCapitulos(3);
+			Capitulo aux = null;
+			Iterator<Capitulo> it = lista.getIterator();
+		/*	Document document = new Document();
+			PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
+			document.open();
+			PdfOutline root = writer.getRootOutline();
+			PdfOutline marcador = null;*/
+
+
 			while (it.hasNext()){
 				aux = it.next();
-			
+				parrafos = aux.getTexto();
 				//Creamos el marcador para el siguiente
 				//titulo (el del capitulo)
 				marcador = new PdfOutline(root, new PdfDestination(PdfDestination.FITH), aux.getNombre());
-			
-				document.add(this.addTitulo(aux.getNombre()));
-				
+
+				document.add(this.addTituloC(aux.getNombre()));
+
 				document.add(Chunk.NEWLINE);
-				
-				document.add(this.addTexto(aux.getTexto()));
+
+				for (int i = 0; i < parrafos.length;i++)
+				{
+					document.add(this.addTexto(parrafos[i]));
+					document.add(Chunk.NEWLINE);
+
+				}
 				document.newPage();
 			}
 			document.close();
 		} catch (DocumentException de) {
 			throw new IOException(de.getMessage());
 		}
+	}
+
+	private Element addAutor(Obra obra) {
+		Paragraph preface = new Paragraph();
+		Font font = new Font(
+				FontFamily.HELVETICA, 25, Font.BOLD, BaseColor.BLUE);
+		return null;
+	}
+
+	private Paragraph addPortada(Obra obra, Document document) {
+		Paragraph preface = new Paragraph();  
+		Font font = new Font(
+				FontFamily.HELVETICA,14 , Font.BOLD, BaseColor.BLACK);
+		Chunk id = new Chunk(obra.getTitulo(), font);
+		preface.add(id);
+	//	preface.setAlignment(Element.ALIGN_CENTER);
+		preface.setAlignment(Element.ALIGN_BOTTOM);
+		
+		return preface;
 	}
 
 	private Paragraph addTexto(String texto) {
@@ -99,15 +150,16 @@ public class Hello extends HttpServlet {
 		return preface;
 	}
 
-	private Paragraph addTitulo(String titulo) {
+	private Paragraph addTituloC(String titulo) {
 		Paragraph preface = new Paragraph();
 		Font font = new Font(
 				FontFamily.HELVETICA, 25, Font.BOLD, BaseColor.BLUE);
 		Chunk id = new Chunk(titulo, font);
 		preface.add(id);
 		preface.setAlignment(Element.ALIGN_CENTER);
+		
 		return preface;
 	}
-	
+
 
 }

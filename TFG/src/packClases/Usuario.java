@@ -1,15 +1,28 @@
 package packClases;
 
+import java.sql.Date;
+
 public class Usuario {
 
 	private int id;
 	private String pais;
-	private String nacimiento;
+	private Date nacimiento;
 	private String nombre;
 	private String about;
 	private ListaObras listaObras;
 	private ListaComentarios listaComentarios;
 
+	public Usuario(int pId, String pPais, Date pNacimiento, String pNombre, String pAbout)
+	{
+		this.id = pId;
+		this.pais = pPais;
+		this.nacimiento = pNacimiento;
+		this.nombre = pNombre;
+		this.about = pAbout;
+		this.listaComentarios = new ListaComentarios();
+		this.listaObras = new ListaObras();
+	}
+	
 	public int getId() {
 		return this.id;
 	}
@@ -18,7 +31,7 @@ public class Usuario {
 		return this.pais;
 	}
 
-	public String getNacimiento() {
+	public Date getNacimiento() {
 		return this.nacimiento;
 	}
 

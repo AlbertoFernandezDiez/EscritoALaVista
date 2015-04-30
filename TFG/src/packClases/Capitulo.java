@@ -6,25 +6,25 @@ public class Capitulo {
 
 	private int id;
 	private String nombre;
-	private String texto;
+	private String[] texto;
 	private String comentarios_autor;
 	private Date fecha_comentario;
 	private ListaComentarios listaComentarios;
 	
 	
-	public Capitulo(int id, String nombre, String texto,String comentarios_autor, Date fecha_comentario) {
-		this.id = id;
-		this.nombre = nombre;
-		this.texto = texto;
-		this.comentarios_autor = comentarios_autor;
-		this.fecha_comentario = fecha_comentario;
+	public Capitulo(int pId, String pNombre, String pTexto,String pComentarios_autor, Date pFecha_comentario) {
+		this.id = pId;		
+		this.nombre = pNombre;
+		this.texto =  pTexto.split("\n");
+		this.comentarios_autor = pComentarios_autor;
+		this.fecha_comentario = pFecha_comentario;
 	}
 
 	public String getNombre() {
 		return this.nombre;
 	}
 
-	public String getTexto() {
+	public String[] getTexto() {
 		return this.texto;
 	}
 
