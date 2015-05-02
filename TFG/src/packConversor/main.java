@@ -105,6 +105,7 @@ public class main {
 		ContentEvent event = new ContentEvent();
 		contentWriter.setPageEvent(event);
 		content.open();
+		
 		ArrayList<Chapter> chapterList = new ArrayList<Chapter>();
 		for (int i = 1; i <= 10; i++) {
 			Chunk chapTitle = new Chunk("Chapter" + i,new Font(
@@ -133,7 +134,14 @@ public class main {
 		writer.setPageEvent(indexEvent);
 		
 		document.open();
-		
+		writer.setPageEmpty(true);
+		document.newPage();
+		Chunk secTitle = new Chunk("Chapter" ,new Font(
+				FontFamily.HELVETICA,25 , Font.BOLD, BaseColor.RED));
+		PdfContentByte canvas = writer.getDirectContent();
+		ColumnText ct= new ColumnText(canvas);
+		ct.showTextAligned(canvas, Element.ALIGN_CENTER, /*new Phrase("Estoy aqui")*/new Phrase(secTitle), document.getPageSize().getRight()/2, document.getPageSize().getTop()/2, 0);
+		ct.showTextAligned(canvas, Element.ALIGN_CENTER, /*new Phrase("Estoy aqui")*/new Phrase("hool"), document.getPageSize().getRight()/2, document.getPageSize().getTop()/2 - secTitle.getFont().getSize() , 0);
 		Chapter indexChapter = new Chapter("Index", -1);
 		indexChapter.setNumberDepth(-1); // not show number style
 		PdfPTable table = new PdfPTable(2);
@@ -157,6 +165,15 @@ public class main {
 			document.add(c);
 			indexEvent.body = true;
 		}
+		writer.setPageEmpty(true);
+		document.newPage();
+	//	Chunk secTitle = new Chunk("Chapter" ,new Font(
+	//			FontFamily.HELVETICA,25 , Font.BOLD, BaseColor.RED));
+	//	PdfContentByte canvas = writer.getDirectContent();
+	//	ColumnText ct= new ColumnText(canvas);
+	//	ct.showTextAligned(canvas, Element.ALIGN_CENTER, /*new Phrase("Estoy aqui")*/new Phrase(secTitle), document.getPageSize().getRight()/2, document.getPageSize().getTop()/2, 0);
+	//	ct.showTextAligned(canvas, Element.ALIGN_CENTER, /*new Phrase("Estoy aqui")*/new Phrase("hool"), document.getPageSize().getRight()/2, document.getPageSize().getTop()/2 - secTitle.getFont().getSize() , 0);
+
 		document.close();
 		os.close();
 	}

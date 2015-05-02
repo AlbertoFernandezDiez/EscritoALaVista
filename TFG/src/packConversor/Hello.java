@@ -22,6 +22,8 @@ import packClases.Obra;
 
 
 
+
+
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chapter;
 import com.itextpdf.text.Chunk;
@@ -39,6 +41,7 @@ import com.itextpdf.text.TabStop.Alignment;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.GrayColor;
+import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfDestination;
 import com.itextpdf.text.pdf.PdfName;
 import com.itextpdf.text.pdf.PdfOutline;
@@ -47,6 +50,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfPageEvent;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.draw.LineSeparator;
 
 /**
  * Servlet implementation class Hello
@@ -54,7 +58,9 @@ import com.itextpdf.text.pdf.PdfWriter;
 @WebServlet("/Hello")
 public class Hello extends HttpServlet {
 	
-
+private float pageWidth,pageHeight;
+private PdfContentByte canvas;
+	
 	protected void doGet(
 			HttpServletRequest request, HttpServletResponse response)
 					throws ServletException, IOException {
@@ -62,56 +68,33 @@ public class Hello extends HttpServlet {
 		try {
 
 			Document document = new Document(PageSize.A4, 50, 50, 50, 50);
+			pageHeight = document.getPageSize().getTop();
+			pageWidth = document.getPageSize().getRight();
 			PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
 		//	PdfWriter writer = PdfWriter.getInstance(document, new ByteArrayOutputStream());
 			Rectangle art = new Rectangle(50, 50, 545, 792);
 			writer.setBoxSize("art", art);
 			writer.setPageEvent(new HeaderFooter());	
-		//	ContentEvent event = new ContentEvent();
+			ContentEvent event = new ContentEvent();
 		
-		//	writer.setPageEvent( event);
+			writer.setPageEvent( event);
 			
 			
 
 			document.open();
 			
-
+			canvas = writer.getDirectContent();
 			/**
 			 * Aquí generamos la portada
 			 */
 			Obra obra = GestorBD.getGestorBD().getObra(3);
 			document.addTitle(obra.getTitulo());
 
+			
+		
 
 			PdfPTable table = null;
-			table = new PdfPTable(3); 
-			/* table.addCell("a");
-	        table.addCell("a");
-	        table.addCell("a");
-	        PdfPCell celda = new PdfPCell (new Phrase("Historial de Observaciones"));*/
-		/*	PdfPCell cell;
-			cell = new PdfPCell(new Phrase("Cell with colspan 3"));
-			cell.setColspan(3);
-			table.addCell(cell);
-			cell = new PdfPCell(new Phrase("Cell with rowspan 2"));
-			cell.setRowspan(2);
-			table.addCell(cell);
-			table.addCell("row 1; cell 1");
-			table.addCell("row 1; cell 2");
-			table.addCell("row 2; cell 1");
-			table.addCell("row 2; cell 2");
-			// celda.setRowspan(2);
-			//    celda.setColspan(2);
-
-			//table.addCell(celda);
-			table.addCell(cell);
-			document.add(table);
-			//document.add(this.addPortada(obra, document));
-			//this.addPortada(obra, document);
-			//document.add(this.addAutor(obra));
-
-
-			document.newPage();
+			
 			/*
 			 * En esta sección se comienza a 
 			 * insertar los capítulos con
@@ -122,7 +105,8 @@ public class Hello extends HttpServlet {
 			Capitulo aux = null;
 			Iterator<Capitulo> it = lista.getIterator();
 			ArrayList<Chapter> chapterList = new ArrayList<Chapter>();
-
+			Rectangle rect = writer.getBoxSize("art");
+			 LineSeparator UNDERLINE = new LineSeparator(1, 100, BaseColor.BLUE, Element.ALIGN_CENTER, -2);
 			Chapter chapter;
 			int nCapitulo = 1;
 			while (it.hasNext()){
@@ -132,30 +116,30 @@ public class Hello extends HttpServlet {
 				//titulo (el del capitulo)
 				chapter = new Chapter(new Paragraph(this.addTituloC(aux)), nCapitulo++);
 				document.add(chapter);
-				
 				chapterList.add(chapter);
-				
+				document.add(UNDERLINE);
 				document.add(Chunk.NEWLINE);
 
 				for (int i = 0; i < parrafos.length;i++)
 				{
 					document.add(this.addTexto(parrafos[i]));
 					document.add(Chunk.NEWLINE);
-
+						
 				}
+				
 				document.newPage();
 			}
-			document.close();
+		document.close();
 		
 		
-	/*	Document d = new Document(PageSize.A4, 50, 50, 50, 50);
+		Document d = new Document(PageSize.A4, 50, 50, 50, 50);
 		// add index page.
-		/*String path = "IndexPdf.pdf";
+		String path = "IndexPdf.pdf";
 		FileOutputStream os = new FileOutputStream(path);
-		PdfWriter w = PdfWriter.getInstance(d, response.getOutputStream());
+		//PdfWriter w = PdfWriter.getInstance(d, response.getOutputStream());
+		PdfWriter w = PdfWriter.getInstance(d, os);
 		IndexEvent indexEvent = new IndexEvent();
 		writer.setPageEvent(indexEvent);
-		
 		d.open();
 		
 		Chapter indexChapter = new Chapter("Index", -1);
@@ -174,15 +158,16 @@ public class Hello extends HttpServlet {
 			tables.addCell(left);
 			tables.addCell(right);
 		}
-		indexChapter.add(table);
+		//indexChapter.add(table);
 		d.add(indexChapter);
+		d.add(tables);
 		// add content chapter
 		for(Chapter c : chapterList) {
 			d.add(c);
 			indexEvent.body = true;
 		}
 		d.close();
-		*/
+		
 		} catch (DocumentException de) {
 			throw new IOException(de.getMessage());
 		}
@@ -195,7 +180,7 @@ public class Hello extends HttpServlet {
 		return null;
 	}
 
-	private Paragraph addPortada(Obra obra, Document document) {
+	/*private Paragraph addPortada(Obra obra, Document document) {
 		Paragraph preface = new Paragraph();  
 		Font font = new Font(
 				FontFamily.COURIER,35 , Font.BOLD, BaseColor.BLACK);
@@ -205,6 +190,19 @@ public class Hello extends HttpServlet {
 		preface.setAlignment(Element.ALIGN_CENTER);
 
 		return preface;
+	}*/
+	
+	private void addPortada(Obra obra, PdfContentByte canvas )
+	{
+		float y = pageHeight/2;
+		float x = pageWidth/2;
+		Chunk secTitle = new Chunk("Chapter" ,new Font(
+				FontFamily.HELVETICA,25 , Font.BOLD, BaseColor.RED));
+		
+		ColumnText ct= new ColumnText(canvas);
+		ct.showTextAligned(canvas, Element.ALIGN_CENTER, /*new Phrase("Estoy aqui")*/new Phrase(secTitle), x, y, 0);
+		ct.showTextAligned(canvas, Element.ALIGN_CENTER, /*new Phrase("Estoy aqui")*/new Phrase(secTitle), x, y + secTitle.getFont().getSize() , 0);
+
 	}
 
 	private Paragraph addTexto(String texto) {
@@ -218,8 +216,7 @@ public class Hello extends HttpServlet {
 	}
 
 	private Chunk addTituloC(Capitulo cap) {
-		Font font = new Font(
-				FontFamily.HELVETICA, 25, Font.BOLD, BaseColor.BLUE);
+		Font font = new Font(FontFamily.HELVETICA, 25, Font.BOLD, BaseColor.BLUE);
 		Chunk id = new Chunk(cap.getNombre(), font);
 		
 		return id;
