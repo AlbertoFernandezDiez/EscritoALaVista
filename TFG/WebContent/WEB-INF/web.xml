@@ -17,7 +17,7 @@
     <description>Location to store uploaded file</description>
     <param-name>file-upload</param-name>
     <param-value>
-       C:\Users\Alberto\Desktop\
+       G:\Ficheros\
      </param-value>
   </context-param>
   <servlet-mapping>

@@ -65,6 +65,10 @@ public class EpubCreator extends HttpServlet {
 		// TODO Auto-generated method stub
 		filePath = getServletContext().getInitParameter("file-upload"); 
 		folder = new File(filePath,"/output/temp");
+		if (!folder.exists())
+		{
+			folder.mkdirs();
+		}
 
 	}
 
@@ -76,49 +80,18 @@ public class EpubCreator extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		Obra obra = GestorBD.getGestorBD().getObra(3);
-		System.out.println(obra.getTitulo());
 		ListaCapitulos lista = GestorBD.getGestorBD().getCapitulos(3);
-		//Creamos un nuevo objeto 
-		//libro
-	/*	Book book = new Book();
-		Capitulo cap = null;
-		//Le añadimos los 
-		//metadatos
-		book.getMetadata().addDescription(obra.getResumen());
-		book.getMetadata().addTitle(obra.getTitulo());
-		book.getMetadata().addPublisher("Mi pagina web");
 		
-		/**
-		 * Recorreomos la lista
-		 * de capitulos y generamos
-		 * un fichero html por cada
-		 * uno de ellos
-		 */
-		/*String page;
-		Iterator<Capitulo> it = lista.getIterator();
-		int i = 1;
-		while (it.hasNext()){
-			cap = it.next();
-			
-			page = this.createHTML(cap, i);
-			//book.addSection(cap.getNombre(),new Resource(page));
-			book.addResource(new Resource(page));
-		}
-			 
-		EpubWriter epubWriter = new EpubWriter();
-		
-		epubWriter.write(book, new FileOutputStream(new File(folder, obra.getTitulo()+".epub")));
-		*/ 
-		try {
+	/*	try {
 
             // create new EPUB document
             Publication epub = new Publication();
 
             // set up title and author
-            epub.addDCMetadata("title", "My Second EPUB");
+     //       epub.addDCMetadata("title", obra.getTitulo());
             epub.addDCMetadata("creator", System.getProperty("user.name"));
-            epub.addDCMetadata("language", "en");
-
+            epub.addDCMetadata("language", "es");
+            
             // prepare table of contents
             NCXResource toc = epub.getTOC();
             TOCEntry rootTOCEntry = toc.getRootTOCEntry();
@@ -142,87 +115,150 @@ public class EpubCreator extends HttpServlet {
             pRule.set("text-indent", "1em");
             pRule.set("text-align", "justify");
 
-            // create first chapter resource
-            OPSResource chapter1 = epub.createOPSResource("OPS/chapter1.html");
-            epub.addToSpine(chapter1);
+      
+            Iterator<Capitulo> it = lista.getIterator();
+            OPSResource chapter;
+            OPSDocument chapterDOC;
+            TOCEntry chapterTOCEntry;
+            Element body;
+            Element header;
+            Capitulo cap;
+            String[] paragraphs;
+            Element paragraph;
+            for(int i = 1; it.hasNext(); i++){
+                cap = it.next();
+                
+            	chapter = epub.createOPSResource("OPS/chapter" + i + ".html");
+            	
+            	chapterDOC = chapter.getDocument();
 
-            // get chapter document
-            OPSDocument chapter1Doc = chapter1.getDocument();
+                // link our stylesheet
+            	chapterDOC.addStyleResource(style);
 
-            // link our stylesheet
-            chapter1Doc.addStyleResource(style);
+            	
+                // add chapter to the table of contents
+                chapterTOCEntry = toc.createTOCEntry(cap.getNombre(),
+                		chapterDOC.getRootXRef());
+                rootTOCEntry.add(chapterTOCEntry);
 
-            // add chapter to the table of contents
-            TOCEntry chapter1TOCEntry = toc.createTOCEntry("Chapter 1",
-                            chapter1Doc.getRootXRef());
-            rootTOCEntry.add(chapter1TOCEntry);
+                // chapter XHTML body element
+                body = chapterDOC.getBody();
 
-            // chapter XHTML body element
-            Element body1 = chapter1Doc.getBody();
+                // add a header
+                header = chapterDOC.createElement("h1");
+                //header.add(cap.getNombre());
+                header.add("on");
+                body.add(header);
 
-            // add a header
-            Element header1 = chapter1Doc.createElement("h1");
-            header1.add("One");
-            body1.add(header1);
-
-            // add a paragraph
-            Element paragraph1 = chapter1Doc.createElement("p");
-            StringBuffer sb1 = new StringBuffer();
-            for (int i = 1; i <= 6; i++)
-                    sb1.append("This is sentence " + i
-                                    + " of the first chapter's first paragraph. ");
-            paragraph1.add(sb1.toString());
-            body1.add(paragraph1);
-
-            // create second chapter resource
-            OPSResource chapter2 = epub.createOPSResource("OPS/chapter2.html");
-            epub.addToSpine(chapter2);
-
-            // get chapter document
-            OPSDocument chapter2Doc = chapter2.getDocument();
-
-            // link our stylesheet
-            chapter2Doc.addStyleResource(style);
-
-            // add chapter to the table of contents
-            TOCEntry chapter2TOCEntry = toc.createTOCEntry("Chapter 2",
-                            chapter2Doc.getRootXRef());
-            rootTOCEntry.add(chapter2TOCEntry);
-
-            // chapter XHTML body element
-            Element body2 = chapter2Doc.getBody();
-
-            // add a header
-            Element header2 = chapter1Doc.createElement("h1");
-            header2.add("Two");
-            body2.add(header2);
-
-            // add a paragraph
-            Element paragraph2 = chapter2Doc.createElement("p");
-            StringBuffer sb2 = new StringBuffer();
-            for (int i = 1; i <= 6; i++)
-                    sb2.append("This is sentence " + i
-                                    + " of the second chapter's first paragraph. ");
-            paragraph2.add(sb2.toString());
-            body2.add(paragraph2);
-
-            // and another one
-            Element paragraph3 = chapter2Doc.createElement("p");
-            StringBuffer sb3 = new StringBuffer();
-            for (int i = 1; i <= 6; i++)
-                    sb3.append("This is sentence " + i
-                                    + " of the second chapter's second paragraph. ");
-            paragraph3.add(sb3.toString());
-            body2.add(paragraph3);
-
+                
+                paragraphs = cap.getTexto();
+                
+                // add a paragraph
+//                paragraph = chapterDOC.createElement("p");
+                for (int j = 0; j < paragraphs.length; j++)
+                {
+                	paragraph = chapterDOC.createElement("p");
+                	paragraph.add(paragraphs[j]);
+                	body.add(paragraph);
+                }
+            
+            }
+            
             // save EPUB to an OCF container
             OCFContainerWriter writer = new OCFContainerWriter(
-                            new FileOutputStream(new File(folder,"hello.epub")));
+                            new FileOutputStream(new File(folder,obra.getTitulo()+".epub")));
             epub.serialize(writer);
 
     } catch (Exception e) {
             e.printStackTrace();
-    }
+    }*/
+		try{
+		// create new EPUB document
+        Publication epub = new Publication();
+
+        // set up title and author
+        epub.addDCMetadata("title", "My Second EPUB");
+        epub.addDCMetadata("creator", System.getProperty("user.name"));
+        epub.addDCMetadata("language", "en");
+
+        // prepare table of contents
+        NCXResource toc = epub.getTOC();
+        TOCEntry rootTOCEntry = toc.getRootTOCEntry();
+
+        // create a stylesheet
+        StyleResource style = epub.createStyleResource("OPS/styles.css");
+        Stylesheet stylesheet = style.getStylesheet();
+
+        // style h1 element
+        Selector h1Selector = stylesheet.getSimpleSelector("h1", null);
+        Rule h1Rule = stylesheet.getRuleForSelector(h1Selector);
+        h1Rule.set("color", "gray");
+        h1Rule.set("border-bottom", "2px solid gray");
+        h1Rule.set("text-align", "right");
+        h1Rule.set("margin", "2em 8px 1em 0px");
+
+        // style p element
+        Selector pSelector = stylesheet.getSimpleSelector("p", null);
+        Rule pRule = stylesheet.getRuleForSelector(pSelector);
+        pRule.set("margin", "0px");
+        pRule.set("text-indent", "1em");
+        pRule.set("text-align", "justify");
+
+        Iterator<Capitulo> it = lista.getIterator();
+        Capitulo cap;
+        
+        OPSResource chapter1;
+        OPSDocument chapter1Doc;
+        TOCEntry chapter1TOCEntry;
+        Element body1;
+        Element header1;
+        Element paragraph1;
+        for (int j = 1; it.hasNext(); j++ ){
+        // create first chapter resource
+        cap = it.next();
+        	
+         chapter1 = epub.createOPSResource("OPS/chapter"+j+".html");
+        epub.addToSpine(chapter1);
+
+        // get chapter document
+         chapter1Doc = chapter1.getDocument();
+
+        // link our stylesheet
+        chapter1Doc.addStyleResource(style);
+
+        // add chapter to the table of contents
+        //chapter1TOCEntry = toc.createTOCEntry("Chapter " + j,
+        chapter1TOCEntry = toc.createTOCEntry(cap.getNombre(),
+                        chapter1Doc.getRootXRef());
+        rootTOCEntry.add(chapter1TOCEntry);
+
+        // chapter XHTML body element
+         body1 = chapter1Doc.getBody();
+
+        // add a header
+        header1 = chapter1Doc.createElement("h1");
+        header1.add(cap.getNombre());
+        body1.add(header1);
+
+        String[] par = cap.getTexto();
+        for (int z=0; z < par.length; z++){
+        // add a paragraph
+        paragraph1 = chapter1Doc.createElement("p");
+        StringBuffer sb1 = new StringBuffer();
+       // for (int i = 1; i <= 6; i++)
+        paragraph1.add(par[z]);
+        body1.add(paragraph1);
+        }
+        }
+
+        // save EPUB to an OCF container
+        OCFContainerWriter writer = new OCFContainerWriter(
+                        new FileOutputStream(new File(folder,obra.getTitulo() + ".epub")));
+        epub.serialize(writer);
+
+} catch (Exception e) {
+        e.printStackTrace();
+}
 	}
 
 	private String createHTML(Capitulo cap, int n) throws IOException 
