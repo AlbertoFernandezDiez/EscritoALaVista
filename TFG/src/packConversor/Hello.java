@@ -1,10 +1,13 @@
 package packConversor;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -24,6 +27,15 @@ import packClases.Obra;
 
 
 
+
+
+
+
+
+
+
+
+
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chapter;
 import com.itextpdf.text.Chunk;
@@ -38,10 +50,12 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.TabStop.Alignment;
+import com.itextpdf.text.pdf.BadPdfFormatException;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.GrayColor;
 import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfCopy;
 import com.itextpdf.text.pdf.PdfDestination;
 import com.itextpdf.text.pdf.PdfName;
 import com.itextpdf.text.pdf.PdfOutline;
@@ -49,7 +63,11 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfPageEvent;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
+import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.RandomAccessFileOrArray;
+import com.itextpdf.text.pdf.SimpleBookmark;
+import com.itextpdf.text.pdf.codec.Base64.OutputStream;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 
 /**
@@ -57,44 +75,61 @@ import com.itextpdf.text.pdf.draw.LineSeparator;
  */
 @WebServlet("/Hello")
 public class Hello extends HttpServlet {
+
+	private float pageWidth,pageHeight;
+	private PdfContentByte canvas;
+	private String filePath;
+	private File folder;
 	
-private float pageWidth,pageHeight;
-private PdfContentByte canvas;
-	
+	public void init( ){
+		// Get the file location where it would be stored.
+		filePath =getServletContext().getInitParameter("file-upload"); 
+		folder = new File(filePath,"/output/temp");
+
+	}
+
 	protected void doGet(
 			HttpServletRequest request, HttpServletResponse response)
 					throws ServletException, IOException {
 		response.setContentType("application/pdf");
+		FileOutputStream pdf2 = null;
+		FileOutputStream pdf1 = null;
+		Obra obra = GestorBD.getGestorBD().getObra(3);
+		File file1,file2;
 		try {
-
+			if (!folder.exists())
+				folder.mkdirs();
 			Document document = new Document(PageSize.A4, 50, 50, 50, 50);
 			pageHeight = document.getPageSize().getTop();
 			pageWidth = document.getPageSize().getRight();
-			PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
-		//	PdfWriter writer = PdfWriter.getInstance(document, new ByteArrayOutputStream());
+			file2 = new File(folder,obra.getTitulo() + "2.pdf");
+			//pdf2 = new FileOutputStream(new File(folder, obra.getTitulo() + "2.pdf"));
+			pdf2 = new FileOutputStream(file2);
+			//	PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
+			PdfWriter writer = PdfWriter.getInstance(document, pdf2);
 			Rectangle art = new Rectangle(50, 50, 545, 792);
 			writer.setBoxSize("art", art);
 			writer.setPageEvent(new HeaderFooter());	
 			ContentEvent event = new ContentEvent();
-		
+
 			writer.setPageEvent( event);
-			
-			
+
+
 
 			document.open();
-			
+
 			canvas = writer.getDirectContent();
 			/**
 			 * Aquí generamos la portada
 			 */
-			Obra obra = GestorBD.getGestorBD().getObra(3);
+			//obra = GestorBD.getGestorBD().getObra(3);
 			document.addTitle(obra.getTitulo());
 
-			
-		
+
+
 
 			PdfPTable table = null;
-			
+
 			/*
 			 * En esta sección se comienza a 
 			 * insertar los capítulos con
@@ -106,7 +141,7 @@ private PdfContentByte canvas;
 			Iterator<Capitulo> it = lista.getIterator();
 			ArrayList<Chapter> chapterList = new ArrayList<Chapter>();
 			Rectangle rect = writer.getBoxSize("art");
-			 LineSeparator UNDERLINE = new LineSeparator(1, 100, BaseColor.BLUE, Element.ALIGN_CENTER, -2);
+			LineSeparator UNDERLINE = new LineSeparator(1, 100, BaseColor.BLUE, Element.ALIGN_CENTER, -2);
 			Chapter chapter;
 			int nCapitulo = 1;
 			while (it.hasNext()){
@@ -124,81 +159,136 @@ private PdfContentByte canvas;
 				{
 					document.add(this.addTexto(parrafos[i]));
 					document.add(Chunk.NEWLINE);
-						
+
 				}
-				
+
 				document.newPage();
 			}
-		document.close();
-		
-		
-		Document d = new Document(PageSize.A4, 50, 50, 50, 50);
-		// add index page.
-		String path = "IndexPdf.pdf";
-		FileOutputStream os = new FileOutputStream(path);
-		//PdfWriter w = PdfWriter.getInstance(d, response.getOutputStream());
-		PdfWriter w = PdfWriter.getInstance(d, os);
-		IndexEvent indexEvent = new IndexEvent();
-		writer.setPageEvent(indexEvent);
-		d.open();
-		
-		Chapter indexChapter = new Chapter("Index", -1);
-		indexChapter.setNumberDepth(-1); // not show number style
-		PdfPTable tables = new PdfPTable(2);
-		for(Map.Entry<String, Integer> index: event.index.entrySet()) {
-			PdfPCell left = new PdfPCell(new Phrase(index.getKey()));
-			left.setBorder(Rectangle.NO_BORDER);
-			
-			Chunk pageno = new Chunk(index.getValue()+"");
-			pageno.setLocalGoto(index.getKey());
-			PdfPCell right = new PdfPCell(new Phrase(pageno));
-			right.setHorizontalAlignment(Element.ALIGN_RIGHT);
-			right.setBorder(Rectangle.NO_BORDER);
-			
-			tables.addCell(left);
-			tables.addCell(right);
-		}
-		//indexChapter.add(table);
-		d.add(indexChapter);
-		d.add(tables);
-		// add content chapter
-		for(Chapter c : chapterList) {
+			document.close();
+			pdf2.close();
+
+			Document d = new Document(PageSize.A4, 50, 50, 50, 50);
+			// add index page.
+			file1 = new File(folder, obra.getTitulo()+"1.pdf");
+			//FileOutputStream os = new FileOutputStream(path);
+			//pdf1 = new FileOutputStream(new File(folder, obra.getTitulo() + "1.pdf"));
+			pdf1 = new FileOutputStream(file1);
+			//PdfWriter w = PdfWriter.getInstance(d, response.getOutputStream());
+			PdfWriter w = PdfWriter.getInstance(d, pdf1);
+			IndexEvent indexEvent = new IndexEvent();
+			writer.setPageEvent(indexEvent);
+			d.open();
+
+
+			Chunk secTitle = new Chunk("Chapter" ,new Font(
+					FontFamily.HELVETICA,25 , Font.BOLD, BaseColor.RED));
+			PdfContentByte canvas = w.getDirectContent();
+			ColumnText ct= new ColumnText(w.getDirectContent());
+			ct.showTextAligned(canvas, Element.ALIGN_CENTER, /*new Phrase("Estoy aqui")*/new Phrase(secTitle), document.getPageSize().getRight()/2, document.getPageSize().getTop()/2, 0);
+			ct.showTextAligned(canvas, Element.ALIGN_CENTER, /*new Phrase("Estoy aqui")*/new Phrase("hool"), document.getPageSize().getRight()/2, document.getPageSize().getTop()/2 - secTitle.getFont().getSize() , 0);
+
+
+			Chapter indexChapter = new Chapter("Index", -1);
+			indexChapter.setNumberDepth(-1); // not show number style
+			PdfPTable tables = new PdfPTable(2);
+			for(Map.Entry<String, Integer> index: event.index.entrySet()) {
+				PdfPCell left = new PdfPCell(new Phrase(index.getKey()));
+				left.setBorder(Rectangle.NO_BORDER);
+
+				Chunk pageno = new Chunk(index.getValue()+"");
+				//	pageno.setLocalGoto(index.getKey());
+				PdfPCell right = new PdfPCell(new Phrase(pageno));
+				right.setHorizontalAlignment(Element.ALIGN_RIGHT);
+				right.setBorder(Rectangle.NO_BORDER);
+
+				tables.addCell(left);
+				tables.addCell(right);
+			}
+			//indexChapter.add(table);
+			d.add(indexChapter);
+			d.add(tables);
+			// add content chapter
+			/*for(Chapter c : chapterList) {
 			d.add(c);
 			indexEvent.body = true;
-		}
-		d.close();
-		
+		}*/
+			d.close();
+			pdf1.close();
+			
+
 		} catch (DocumentException de) {
 			throw new IOException(de.getMessage());
 		}
+		try {
+			joinPDF(file1,file2,obra,response);
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+
 	}
 
-	private Element addAutor(Obra obra) {
-		Paragraph preface = new Paragraph();
-		Font font = new Font(
-				FontFamily.HELVETICA, 25, Font.BOLD, BaseColor.BLUE);
-		return null;
+
+
+
+	private void joinPDF(File pdf1, File pdf2, Obra obra, HttpServletResponse response) throws IOException, DocumentException {
+		// TODO Auto-generated method stub
+		PdfReader reader = new PdfReader(new RandomAccessFileOrArray(pdf1.getAbsolutePath()), null);
+		String src[] = {pdf1.getAbsolutePath(),pdf2.getAbsolutePath()};
+		Document document = new Document(PageSize.A4, 50, 50, 50, 50);
+
+		document.addAuthor("dafñadf");
+		document.addCreationDate();
+		document.addTitle(obra.getTitulo());
+		PdfCopy copy = new PdfCopy(document, response.getOutputStream());
+		document.open();
+		int page_offset = 0;
+		int n;
+		// Create a list for the bookmarks
+		ArrayList<HashMap<String, Object>> bookmarks = new ArrayList<HashMap<String, Object>>();
+		java.util.List<HashMap<String,Object>> tmp;
+		for (int i  = 0; i < src.length; i++) {
+			reader = new PdfReader(src[i]);
+			// merge the bookmarks
+			tmp = SimpleBookmark.getBookmark(reader);
+			if (tmp != null)
+			{
+				SimpleBookmark.shiftPageNumbers(tmp, page_offset, null);
+				bookmarks.addAll(tmp);
+			}
+			// add the pages
+			n = reader.getNumberOfPages();
+			page_offset += n;
+			for (int page = 0; page < n; ) {
+				copy.addPage(copy.getImportedPage(reader, ++page));
+			}
+			copy.freeReader(reader);
+			reader.close();
+		}
+		// Add the merged bookmarks
+		copy.setOutlines(bookmarks);
+		// step 5
+		document.close();
+
+		pdf1.delete();
+		pdf2.delete();
 	}
 
-	/*private Paragraph addPortada(Obra obra, Document document) {
-		Paragraph preface = new Paragraph();  
-		Font font = new Font(
-				FontFamily.COURIER,35 , Font.BOLD, BaseColor.BLACK);
-		Chunk id = new Chunk(obra.getTitulo(), font);
-		preface.add(id);
-		//	preface.setAlignment(Element.ALIGN_CENTER);
-		preface.setAlignment(Element.ALIGN_CENTER);
 
-		return preface;
-	}*/
-	
+
+
+
+
+
+
 	private void addPortada(Obra obra, PdfContentByte canvas )
 	{
 		float y = pageHeight/2;
 		float x = pageWidth/2;
 		Chunk secTitle = new Chunk("Chapter" ,new Font(
 				FontFamily.HELVETICA,25 , Font.BOLD, BaseColor.RED));
-		
+
 		ColumnText ct= new ColumnText(canvas);
 		ct.showTextAligned(canvas, Element.ALIGN_CENTER, /*new Phrase("Estoy aqui")*/new Phrase(secTitle), x, y, 0);
 		ct.showTextAligned(canvas, Element.ALIGN_CENTER, /*new Phrase("Estoy aqui")*/new Phrase(secTitle), x, y + secTitle.getFont().getSize() , 0);
@@ -218,11 +308,11 @@ private PdfContentByte canvas;
 	private Chunk addTituloC(Capitulo cap) {
 		Font font = new Font(FontFamily.HELVETICA, 25, Font.BOLD, BaseColor.BLUE);
 		Chunk id = new Chunk(cap.getNombre(), font);
-		
+
 		return id;
 	}
 
-		/*class HeaderFooter extends PdfPageEventHelper {
+	/*class HeaderFooter extends PdfPageEventHelper {
 		Phrase[] header = new Phrase[2];
 		int pagenumber;
 		public void onOpenDocument(PdfWriter writer, Document document) {
@@ -271,26 +361,26 @@ private PdfContentByte canvas;
 	private static class ContentEvent extends PdfPageEventHelper {
 		private int page;
 		Map<String, Integer> index = new LinkedHashMap<String, Integer>();
-		
+
 		@Override
 		public void onStartPage(PdfWriter writer, Document document) {
 			page++;
 		}
-		
+
 		@Override
 		public void onChapter(PdfWriter writer, Document document,
 				float paragraphPosition, Paragraph title) {
-			
+
 			index.put(title.getContent(), page);
 		}
-		
+
 		@Override
 		public void onSection(PdfWriter writer, Document document,
 				float paragraphPosition, int depth, Paragraph title) {
 			onChapter(writer, document, paragraphPosition, title);
 		}
 	}
-	
+
 	/**
 	 * EventListner for Index
 	 */
@@ -306,7 +396,7 @@ private PdfContentByte canvas;
 						new Phrase(page+""), (document.right() + document.left())/2 , document.bottom() - 18, 0);
 			}
 		}
-		
+
 	}
-	
+
 }

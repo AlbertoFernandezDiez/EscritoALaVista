@@ -13,6 +13,13 @@
     <servlet-name>timeservlet</servlet-name>
     <servlet-class>com.edu4java.servlets.FirstServlet</servlet-class>
   </servlet>
+  <context-param> 
+    <description>Location to store uploaded file</description> 
+    <param-name>file-upload</param-name> 
+    <param-value>
+       C:\Users\Alberto\Desktop\
+     </param-value> 
+</context-param>
   <servlet-mapping>
     <servlet-name>timeservlet</servlet-name>
     <url-pattern>/what-time-is-it</url-pattern>
