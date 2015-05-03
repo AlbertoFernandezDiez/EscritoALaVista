@@ -103,9 +103,7 @@ public class Hello extends HttpServlet {
 			pageHeight = document.getPageSize().getTop();
 			pageWidth = document.getPageSize().getRight();
 			file2 = new File(folder,obra.getTitulo() + "2.pdf");
-			//pdf2 = new FileOutputStream(new File(folder, obra.getTitulo() + "2.pdf"));
 			pdf2 = new FileOutputStream(file2);
-			//	PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
 			PdfWriter writer = PdfWriter.getInstance(document, pdf2);
 			Rectangle art = new Rectangle(50, 50, 545, 792);
 			writer.setBoxSize("art", art);
@@ -165,6 +163,7 @@ public class Hello extends HttpServlet {
 				document.newPage();
 			}
 			document.close();
+			writer.close();
 			pdf2.close();
 
 			Document d = new Document(PageSize.A4, 50, 50, 50, 50);
@@ -176,7 +175,7 @@ public class Hello extends HttpServlet {
 			//PdfWriter w = PdfWriter.getInstance(d, response.getOutputStream());
 			PdfWriter w = PdfWriter.getInstance(d, pdf1);
 			IndexEvent indexEvent = new IndexEvent();
-			writer.setPageEvent(indexEvent);
+			w.setPageEvent(indexEvent);
 			d.open();
 
 
@@ -212,9 +211,11 @@ public class Hello extends HttpServlet {
 			d.add(c);
 			indexEvent.body = true;
 		}*/
-			d.close();
-			pdf1.close();
 			
+			d.close();
+			w.close();
+			pdf1.close();
+
 
 		} catch (DocumentException de) {
 			throw new IOException(de.getMessage());
@@ -270,7 +271,7 @@ public class Hello extends HttpServlet {
 		copy.setOutlines(bookmarks);
 		// step 5
 		document.close();
-
+copy.close();
 		pdf1.delete();
 		pdf2.delete();
 	}
