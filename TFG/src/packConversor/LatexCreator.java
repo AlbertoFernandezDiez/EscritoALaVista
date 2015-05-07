@@ -65,20 +65,7 @@ public class LatexCreator extends HttpServlet {
 		try {
 			JLRConverter converter = new JLRConverter(workingDirectory);
 
-Iterator<Capitulo> it = lista.getIterator();
-Capitulo aux;
-ArrayList<ArrayList<String>> book = new ArrayList<>();
-ArrayList<String> capit;
-while (it.hasNext())
-{
-	capit = new ArrayList<String>();
-	aux = it.next();
-	capit.add(aux.getNombre());
-	for(int i = 0; i < aux.getTexto().length; i++)
-		capit.add(aux.getTexto()[i]);
-	
-	book.add(capit);
-}
+			ArrayList<ArrayList<String>> book = loadChapters(lista);
 			   converter.replace("title", obra.getTitulo());
             converter.replace("author", "yo");
 
@@ -103,6 +90,23 @@ while (it.hasNext())
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
+	}
+	private ArrayList<ArrayList<String>> loadChapters(ListaCapitulos lista) {
+		Iterator<Capitulo> it = lista.getIterator();
+		Capitulo aux;
+		ArrayList<ArrayList<String>> book = new ArrayList<>();
+		ArrayList<String> capit;
+		while (it.hasNext())
+		{
+			capit = new ArrayList<String>();
+			aux = it.next();
+			capit.add(aux.getNombre());
+			for(int i = 0; i < aux.getTexto().length; i++)
+				capit.add(aux.getTexto()[i]);
+			
+			book.add(capit);
+		}
+		return book;
 	}
 
 }
