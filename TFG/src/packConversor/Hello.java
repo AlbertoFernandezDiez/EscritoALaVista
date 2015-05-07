@@ -80,7 +80,11 @@ public class Hello extends HttpServlet {
 	private PdfContentByte canvas;
 	private String filePath;
 	private File folder;
-	
+	private static Font titulo = new Font(FontFamily.HELVETICA, 35, Font.BOLD, BaseColor.BLUE);
+	private static Font capitulo = new Font(FontFamily.HELVETICA, 25, Font.BOLD, BaseColor.BLUE);
+	private static Font parrafo = new Font(FontFamily.HELVETICA,14 , Font.BOLD, BaseColor.BLACK);
+	private static Font autor;
+
 	public void init( ){
 		// Get the file location where it would be stored.
 		filePath =getServletContext().getInitParameter("file-upload"); 
@@ -159,8 +163,10 @@ public class Hello extends HttpServlet {
 					document.add(Chunk.NEWLINE);
 
 				}
-
-				document.newPage();
+				if ((writer.getPageNumber() % 2) == 1)
+				{					
+					document.newPage();
+				}
 			}
 			document.close();
 			writer.close();
@@ -179,19 +185,18 @@ public class Hello extends HttpServlet {
 			d.open();
 
 
-			Chunk secTitle = new Chunk("Chapter" ,new Font(
-					FontFamily.HELVETICA,25 , Font.BOLD, BaseColor.RED));
+			Chunk secTitle = new Chunk(obra.getTitulo() ,new Font(FontFamily.HELVETICA, 35, Font.BOLD, BaseColor.BLUE));
 			PdfContentByte canvas = w.getDirectContent();
 			ColumnText ct= new ColumnText(w.getDirectContent());
 			ct.showTextAligned(canvas, Element.ALIGN_CENTER, /*new Phrase("Estoy aqui")*/new Phrase(secTitle), document.getPageSize().getRight()/2, document.getPageSize().getTop()/2, 0);
 			ct.showTextAligned(canvas, Element.ALIGN_CENTER, /*new Phrase("Estoy aqui")*/new Phrase("hool"), document.getPageSize().getRight()/2, document.getPageSize().getTop()/2 - secTitle.getFont().getSize() , 0);
 
 
-			Chapter indexChapter = new Chapter("Index", -1);
+			Chapter indexChapter = new Chapter(new Paragraph(new Chunk("Índice", capitulo)),-1);    //, ) new Chapter(new Chunk("Index",capitulo), -1);
 			indexChapter.setNumberDepth(-1); // not show number style
 			PdfPTable tables = new PdfPTable(2);
 			for(Map.Entry<String, Integer> index: event.index.entrySet()) {
-				PdfPCell left = new PdfPCell(new Phrase(index.getKey()));
+				PdfPCell left = new PdfPCell(new Phrase(new Chunk(index.getKey(),parrafo)));
 				left.setBorder(Rectangle.NO_BORDER);
 
 				Chunk pageno = new Chunk(index.getValue()+"");
@@ -205,13 +210,14 @@ public class Hello extends HttpServlet {
 			}
 			//indexChapter.add(table);
 			d.add(indexChapter);
+			d.add(Chunk.NEWLINE);
 			d.add(tables);
 			// add content chapter
 			/*for(Chapter c : chapterList) {
 			d.add(c);
 			indexEvent.body = true;
 		}*/
-			
+
 			d.close();
 			w.close();
 			pdf1.close();
@@ -226,7 +232,7 @@ public class Hello extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 
 	}
 
@@ -271,9 +277,9 @@ public class Hello extends HttpServlet {
 		copy.setOutlines(bookmarks);
 		// step 5
 		document.close();
-copy.close();
-		pdf1.delete();
-		pdf2.delete();
+		copy.close();
+	//	pdf1.delete();
+	//	pdf2.delete();
 	}
 
 
@@ -298,9 +304,8 @@ copy.close();
 
 	private Paragraph addTexto(String texto) {
 		Paragraph preface = new Paragraph();  
-		Font font = new Font(
-				FontFamily.HELVETICA,14 , Font.BOLD, BaseColor.BLACK);
-		Chunk id = new Chunk(texto, font);	
+	
+		Chunk id = new Chunk(texto, parrafo);	
 		preface.add(id);
 		preface.setAlignment(Element.ALIGN_JUSTIFIED);
 		return preface;
@@ -308,57 +313,12 @@ copy.close();
 
 	private Chunk addTituloC(Capitulo cap) {
 		Font font = new Font(FontFamily.HELVETICA, 25, Font.BOLD, BaseColor.BLUE);
-		Chunk id = new Chunk(cap.getNombre(), font);
+		Chunk id = new Chunk(cap.getNombre(), capitulo);
 
 		return id;
 	}
 
-	/*class HeaderFooter extends PdfPageEventHelper {
-		Phrase[] header = new Phrase[2];
-		int pagenumber;
-		public void onOpenDocument(PdfWriter writer, Document document) {
-			header[0] = new Phrase("Movie history");
-		}
-		public void onChapter(PdfWriter writer, Document document,
-				float paragraphPosition, Paragraph title) {
-			header[1] = new Phrase(title.getContent());
-			pagenumber = 1;
-		}
-		public void onStartPage(PdfWriter writer, Document document) {
-			pagenumber++;
-		}
-		public void onEndPage(PdfWriter writer, Document document) {
-			Rectangle rect = writer.getBoxSize("art");
-			switch(writer.getPageNumber() % 2) {
-			case 0:
-				ColumnText.showTextAligned(writer.getDirectContent(),
-						Element.ALIGN_RIGHT, header[0],
-						rect.getRight(), rect.getTop(), 0);
-				break;
-			case 1:		
-				ColumnText.showTextAligned(writer.getDirectContent(),
-						Element.ALIGN_LEFT, header[1],
-						rect.getLeft(), rect.getTop(), 0);
-				break;
-			}
-			ColumnText.showTextAligned(writer.getDirectContent(),
-					Element.ALIGN_CENTER, new Phrase(
-							String.format("page %d", pagenumber)),
-							(rect.getLeft() + rect.getRight()) / 2,
-							rect.getBottom() - 18, 0);
-		}
-	}*/
-
-	/*class Watermark extends PdfPageEventHelper {
-		Font FONT =
-		new Font(FontFamily.HELVETICA, 52, Font.BOLD, new GrayColor(0.75f));
-		public void onEndPage(PdfWriter writer, Document document) {
-		ColumnText.showTextAligned(writer.getDirectContentUnder(),
-		Element.ALIGN_CENTER, new Phrase("FOOBAR FILM FESTIVAL", FONT),
-		297.5f, 421, writer.getPageNumber() % 2 == 1 ? 45 : -45);
-		}
-		}
-	 */
+	
 	private static class ContentEvent extends PdfPageEventHelper {
 		private int page;
 		Map<String, Integer> index = new LinkedHashMap<String, Integer>();
