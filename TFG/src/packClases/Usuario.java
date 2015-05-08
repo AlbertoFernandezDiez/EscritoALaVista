@@ -8,7 +8,7 @@ public class Usuario {
 	private String pais;
 	private Date nacimiento;
 	private String nombre;
-	private String about;
+	private String[] about;
 	private ListaObras listaObras;
 	private ListaComentarios listaComentarios;
 
@@ -18,7 +18,7 @@ public class Usuario {
 		this.pais = pPais;
 		this.nacimiento = pNacimiento;
 		this.nombre = pNombre;
-		this.about = pAbout;
+		this.about = pAbout.split("\n");
 		this.listaComentarios = new ListaComentarios();
 		this.listaObras = new ListaObras();
 	}
@@ -39,7 +39,7 @@ public class Usuario {
 		return this.nombre;
 	}
 
-	public String getAbout() {
+	public String[] getAbout() {
 		return this.about;
 	}
 

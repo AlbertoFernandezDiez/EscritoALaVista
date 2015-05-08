@@ -36,6 +36,8 @@ import packClases.Obra;
 
 
 
+import packClases.Usuario;
+
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chapter;
 import com.itextpdf.text.Chunk;
@@ -82,9 +84,18 @@ public class Hello extends HttpServlet {
 	private File folder;
 	private static Font titulo = new Font(FontFamily.HELVETICA, 35, Font.BOLD, BaseColor.BLUE);
 	private static Font capitulo = new Font(FontFamily.HELVETICA, 25, Font.BOLD, BaseColor.BLUE);
-	private static Font parrafo = new Font(FontFamily.HELVETICA,14 , Font.BOLD, BaseColor.BLACK);
+	private static Font parrafo = new Font(FontFamily.HELVETICA,17 , Font.BOLD, BaseColor.BLACK);
 	private static Font autor;
-
+	
+	private static Rectangle[] pageSize ={new Rectangle(600,800),
+		new Rectangle(758,1024)};
+	
+	private static Rectangle[] artBoxSize = {new Rectangle(50, 50, 550, 750),
+		new Rectangle(50, 50, 708, 974)};
+	
+	private static int type = 0;
+	
+	
 	public void init( ){
 		// Get the file location where it would be stored.
 		filePath =getServletContext().getInitParameter("file-upload"); 
@@ -99,18 +110,22 @@ public class Hello extends HttpServlet {
 		FileOutputStream pdf2 = null;
 		FileOutputStream pdf1 = null;
 		Obra obra = GestorBD.getGestorBD().getObra(3);
+		Usuario autor = GestorBD.getGestorBD().getAutor(3);
 		File file1,file2;
 		try {
 			if (!folder.exists())
 				folder.mkdirs();
-			Document document = new Document(PageSize.A4, 50, 50, 50, 50);
+			//Document document = new Document(PageSize.A4, 50, 50, 50, 50);
+		//	Document document = new Document(new Rectangle(600,800), 50, 50, 50, 50);
+			Document document = new Document(pageSize[type], 50, 50, 50, 50);
 			pageHeight = document.getPageSize().getTop();
 			pageWidth = document.getPageSize().getRight();
 			file2 = new File(folder,obra.getTitulo() + "2.pdf");
 			pdf2 = new FileOutputStream(file2);
 			PdfWriter writer = PdfWriter.getInstance(document, pdf2);
-			Rectangle art = new Rectangle(50, 50, 545, 792);
-			writer.setBoxSize("art", art);
+		//	Rectangle art = new Rectangle(50, 50, 545, 792);
+			Rectangle art = new Rectangle(50, 50, 550, 750);
+			writer.setBoxSize("art", artBoxSize[type]);
 			writer.setPageEvent(new HeaderFooter());	
 			ContentEvent event = new ContentEvent();
 
@@ -151,7 +166,7 @@ public class Hello extends HttpServlet {
 				parrafos = aux.getTexto();
 				//Creamos el marcador para el siguiente
 				//titulo (el del capitulo)
-				chapter = new Chapter(new Paragraph(this.addTituloC(aux)), nCapitulo++);
+				chapter = new Chapter(new Paragraph(this.addTituloC(aux.getNombre())), nCapitulo++);
 				document.add(chapter);
 				chapterList.add(chapter);
 				document.add(UNDERLINE);
@@ -168,11 +183,33 @@ public class Hello extends HttpServlet {
 					document.newPage();
 				}
 			}
+			
+			/**
+			 * Añadimos la información sobre el autor al final
+			 * del documento.
+			 */
+			chapter = new Chapter(new Paragraph(this.addTituloC("Sobre el autor: " + autor.getNombre())), nCapitulo++);
+			document.add(chapter);
+			chapterList.add(chapter);
+			document.add(UNDERLINE);
+			document.add(Chunk.NEWLINE);
+			
+			parrafos = autor.getAbout();
+			for (int i = 0; i < parrafos.length;i++)
+			{
+				document.add(this.addTexto(parrafos[i]));
+				document.add(Chunk.NEWLINE);
+
+			}
+			
+			
 			document.close();
 			writer.close();
 			pdf2.close();
 
-			Document d = new Document(PageSize.A4, 50, 50, 50, 50);
+			//Document d = new Document(PageSize.A4, 50, 50, 50, 50);
+		//	Document d = new Document(new Rectangle(600,800), 50, 50, 50, 50);
+			Document d = new Document(pageSize[type], 50, 50, 50, 50);
 			// add index page.
 			file1 = new File(folder, obra.getTitulo()+"1.pdf");
 			//FileOutputStream os = new FileOutputStream(path);
@@ -189,7 +226,7 @@ public class Hello extends HttpServlet {
 			PdfContentByte canvas = w.getDirectContent();
 			ColumnText ct= new ColumnText(w.getDirectContent());
 			ct.showTextAligned(canvas, Element.ALIGN_CENTER, /*new Phrase("Estoy aqui")*/new Phrase(secTitle), document.getPageSize().getRight()/2, document.getPageSize().getTop()/2, 0);
-			ct.showTextAligned(canvas, Element.ALIGN_CENTER, /*new Phrase("Estoy aqui")*/new Phrase("hool"), document.getPageSize().getRight()/2, document.getPageSize().getTop()/2 - secTitle.getFont().getSize() , 0);
+			ct.showTextAligned(canvas, Element.ALIGN_CENTER, /*new Phrase("Estoy aqui")*/new Phrase(autor.getNombre()), document.getPageSize().getRight()/2, document.getPageSize().getTop()/2 - secTitle.getFont().getSize() , 0);
 
 
 			Chapter indexChapter = new Chapter(new Paragraph(new Chunk("Índice", capitulo)),-1);    //, ) new Chapter(new Chunk("Index",capitulo), -1);
@@ -280,6 +317,7 @@ public class Hello extends HttpServlet {
 		copy.close();
 	//	pdf1.delete();
 	//	pdf2.delete();
+		System.out.println(PageSize.A4.getTop() + "\t" + PageSize.A4.getWidth());
 	}
 
 
@@ -311,10 +349,8 @@ public class Hello extends HttpServlet {
 		return preface;
 	}
 
-	private Chunk addTituloC(Capitulo cap) {
-		Font font = new Font(FontFamily.HELVETICA, 25, Font.BOLD, BaseColor.BLUE);
-		Chunk id = new Chunk(cap.getNombre(), capitulo);
-
+	private Chunk addTituloC(String string) {
+		Chunk id = new Chunk(string, capitulo);
 		return id;
 	}
 

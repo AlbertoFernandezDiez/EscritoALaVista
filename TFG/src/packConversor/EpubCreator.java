@@ -43,6 +43,7 @@ import packBD.GestorBD;
 import packClases.Capitulo;
 import packClases.ListaCapitulos;
 import packClases.Obra;
+import packClases.Usuario;
 
 /**
  * Servlet implementation class EpubCreator
@@ -81,7 +82,7 @@ public class EpubCreator extends HttpServlet {
 		// TODO Auto-generated method stub
 		Obra obra = GestorBD.getGestorBD().getObra(3);
 		ListaCapitulos lista = GestorBD.getGestorBD().getCapitulos(3);
-		
+		Usuario autor = GestorBD.getGestorBD().getAutor(3);
 	/*	try {
 
             // create new EPUB document
@@ -250,6 +251,40 @@ public class EpubCreator extends HttpServlet {
         body1.add(paragraph1);
         }
         }
+        
+        chapter1 = epub.createOPSResource("OPS/sobreautor.html");
+        epub.addToSpine(chapter1);
+
+        // get chapter document
+         chapter1Doc = chapter1.getDocument();
+
+        // link our stylesheet
+        chapter1Doc.addStyleResource(style);
+
+        // add chapter to the table of contents
+        //chapter1TOCEntry = toc.createTOCEntry("Chapter " + j,
+        chapter1TOCEntry = toc.createTOCEntry("Sobre el autor: " + autor.getNombre(),
+                        chapter1Doc.getRootXRef());
+        rootTOCEntry.add(chapter1TOCEntry);
+
+        // chapter XHTML body element
+         body1 = chapter1Doc.getBody();
+
+        // add a header
+        header1 = chapter1Doc.createElement("h1");
+        header1.add("Sobre el autor: " + autor.getNombre());
+        body1.add(header1);
+
+        String[] par = autor.getAbout();
+        for (int z=0; z < par.length; z++){
+        // add a paragraph
+        paragraph1 = chapter1Doc.createElement("p");
+        StringBuffer sb1 = new StringBuffer();
+       // for (int i = 1; i <= 6; i++)
+        paragraph1.add(par[z]);
+        body1.add(paragraph1);
+        }
+        
 
         // save EPUB to an OCF container
         OCFContainerWriter writer = new OCFContainerWriter(

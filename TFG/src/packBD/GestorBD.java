@@ -11,6 +11,7 @@ import com.mysql.jdbc.PreparedStatement;
 import packClases.Capitulo;
 import packClases.ListaCapitulos;
 import packClases.Obra;
+import packClases.Usuario;
 
 public class GestorBD {
 	private static GestorBD myGestorBD = null;
@@ -105,6 +106,29 @@ public class GestorBD {
 			e.printStackTrace();
 		}
 		return obra;
+	}
+
+	public Usuario getAutor(int pAutor) {
+		Usuario autor = null;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select autor.* from autor,obra "
+					+ "where obra.autor = autor.id and obra.id = ?");
+			st.setInt(1, pAutor);
+			ResultSet rs = st.executeQuery();
+			
+			if(rs.next())
+			{		
+				autor = new Usuario(rs.getInt("id"), rs.getString("pais"), rs.getDate("nacimiento"), rs.getString("nombre"), rs.getString("about"));
+				//autor = rs.getString("nombre");
+			}
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return autor;
 	}
 
 

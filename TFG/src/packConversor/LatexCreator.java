@@ -15,6 +15,7 @@ import packBD.GestorBD;
 import packClases.Capitulo;
 import packClases.ListaCapitulos;
 import packClases.Obra;
+import packClases.Usuario;
 import de.nixosoft.jlr.JLRConverter;
 import de.nixosoft.jlr.JLRGenerator;
 import de.nixosoft.jlr.JLROpener;
@@ -54,6 +55,7 @@ public class LatexCreator extends HttpServlet {
 
 		Obra obra = GestorBD.getGestorBD().getObra(3);
 		ListaCapitulos lista = GestorBD.getGestorBD().getCapitulos(3);
+		Usuario autor = GestorBD.getGestorBD().getAutor(3);
 		File invoice1 = new File(workingDirectory + File.separator + "invoice1.tex");
 		
 		File template = new File(folder + File.separator+ "invoiceTemplate.tex");
@@ -65,7 +67,7 @@ public class LatexCreator extends HttpServlet {
 		try {
 			JLRConverter converter = new JLRConverter(workingDirectory);
 
-			ArrayList<ArrayList<String>> book = loadChapters(lista);
+			ArrayList<ArrayList<String>> book = loadChapters(lista,autor);
 			   converter.replace("title", obra.getTitulo());
             converter.replace("author", "yo");
 
@@ -91,7 +93,7 @@ public class LatexCreator extends HttpServlet {
 			System.err.println(ex.getMessage());
 		}
 	}
-	private ArrayList<ArrayList<String>> loadChapters(ListaCapitulos lista) {
+	private ArrayList<ArrayList<String>> loadChapters(ListaCapitulos lista, Usuario autor) {
 		Iterator<Capitulo> it = lista.getIterator();
 		Capitulo aux;
 		ArrayList<ArrayList<String>> book = new ArrayList<>();
@@ -106,6 +108,12 @@ public class LatexCreator extends HttpServlet {
 			
 			book.add(capit);
 		}
+		capit = new ArrayList<String>();
+		capit.add("Sobre el autor: " + autor.getNombre());
+		for(int i = 0; i < autor.getAbout().length; i++)
+			capit.add(autor.getAbout()[i]);
+		
+		book.add(capit);
 		return book;
 	}
 
