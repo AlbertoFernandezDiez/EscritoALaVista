@@ -264,7 +264,7 @@ public class Hello extends HttpServlet {
 			throw new IOException(de.getMessage());
 		}
 		try {
-			joinPDF(file1,file2,obra,response);
+			joinPDF(file1,file2,obra,autor,response);
 		} catch (DocumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -276,17 +276,20 @@ public class Hello extends HttpServlet {
 
 
 
-	private void joinPDF(File pdf1, File pdf2, Obra obra, HttpServletResponse response) throws IOException, DocumentException {
+	private void joinPDF(File pdf1, File pdf2, Obra obra,Usuario autor, HttpServletResponse response) throws IOException, DocumentException {
 		// TODO Auto-generated method stub
-		PdfReader reader = new PdfReader(new RandomAccessFileOrArray(pdf1.getAbsolutePath()), null);
+		PdfReader reader ;//= new PdfReader(new RandomAccessFileOrArray(pdf1.getAbsolutePath()), null);
 		String src[] = {pdf1.getAbsolutePath(),pdf2.getAbsolutePath()};
 		Document document = new Document(PageSize.A4, 50, 50, 50, 50);
 
-		document.addAuthor("dafñadf");
-		document.addCreationDate();
-		document.addTitle(obra.getTitulo());
+	
 		PdfCopy copy = new PdfCopy(document, response.getOutputStream());
 		document.open();
+		
+		document.addTitle(obra.getTitulo());
+		document.addSubject(obra.getResumen());
+		document.addAuthor(autor.getNombre());
+		
 		int page_offset = 0;
 		int n;
 		// Create a list for the bookmarks
@@ -307,6 +310,7 @@ public class Hello extends HttpServlet {
 			for (int page = 0; page < n; ) {
 				copy.addPage(copy.getImportedPage(reader, ++page));
 			}
+		//	reader.close();
 			copy.freeReader(reader);
 			reader.close();
 		}
@@ -315,9 +319,10 @@ public class Hello extends HttpServlet {
 		// step 5
 		document.close();
 		copy.close();
-	//	pdf1.delete();
-	//	pdf2.delete();
-		System.out.println(PageSize.A4.getTop() + "\t" + PageSize.A4.getWidth());
+		pdf1.delete();
+		pdf2.delete();
+		
+	
 	}
 
 
