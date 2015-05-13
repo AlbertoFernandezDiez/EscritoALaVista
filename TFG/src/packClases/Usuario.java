@@ -11,8 +11,9 @@ public class Usuario {
 	private String[] about;
 	private ListaObras listaObras;
 	private ListaComentarios listaComentarios;
+	private String imagen;
 
-	public Usuario(int pId, String pPais, Date pNacimiento, String pNombre, String pAbout)
+	public Usuario(int pId, String pPais, Date pNacimiento, String pNombre, String pAbout, String pImagen)
 	{
 		this.id = pId;
 		this.pais = pPais;
@@ -21,6 +22,7 @@ public class Usuario {
 		this.about = pAbout.split("\n");
 		this.listaComentarios = new ListaComentarios();
 		this.listaObras = new ListaObras();
+		this.imagen = pImagen;
 	}
 	
 	public int getId() {
@@ -45,6 +47,11 @@ public class Usuario {
 
 	public ListaComentarios getListaComentarios() {
 		return this.listaComentarios;
+	}
+
+	public String getImagen() {
+		// TODO Auto-generated method stub
+		return this.imagen;
 	}
 
 }

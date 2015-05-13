@@ -10,14 +10,16 @@ public class Capitulo {
 	private String comentarios_autor;
 	private Date fecha_comentario;
 	private ListaComentarios listaComentarios;
+	private String imagen;
 	
 	
-	public Capitulo(int pId, String pNombre, String pTexto,String pComentarios_autor, Date pFecha_comentario) {
+	public Capitulo(int pId, String pNombre, String pTexto,String pComentarios_autor, Date pFecha_comentario, String pImagen) {
 		this.id = pId;		
 		this.nombre = pNombre;
 		this.texto =  pTexto.split("\n");
 		this.comentarios_autor = pComentarios_autor;
 		this.fecha_comentario = pFecha_comentario;
+		this.imagen = pImagen;
 	}
 
 	public String getNombre() {
@@ -42,6 +44,11 @@ public class Capitulo {
 	
 	public String getComentariosAutor(){
 		return comentarios_autor;
+	}
+
+	public String getImagen() {
+		// TODO Auto-generated method stub
+		return this.imagen;
 	}
 
 }

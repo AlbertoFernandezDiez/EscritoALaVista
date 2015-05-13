@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -38,6 +39,7 @@ import packClases.Obra;
 
 import packClases.Usuario;
 
+import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chapter;
 import com.itextpdf.text.Chunk;
@@ -45,6 +47,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.FontFactory;
@@ -85,17 +88,21 @@ public class Hello extends HttpServlet {
 	private static Font titulo = new Font(FontFamily.HELVETICA, 35, Font.BOLD, BaseColor.BLUE);
 	private static Font capitulo = new Font(FontFamily.HELVETICA, 25, Font.BOLD, BaseColor.BLUE);
 	private static Font parrafo = new Font(FontFamily.HELVETICA,17 , Font.BOLD, BaseColor.BLACK);
-	private static Font autor;
-	
+	private Image img;
+	private File image;
+
 	private static Rectangle[] pageSize ={new Rectangle(600,800),
 		new Rectangle(758,1024)};
 	
+	private static Rectangle[] titlepage = {new Rectangle(400,600),
+		new Rectangle(558,824)};
+
 	private static Rectangle[] artBoxSize = {new Rectangle(50, 50, 550, 750),
 		new Rectangle(50, 50, 708, 974)};
-	
+
 	private static int type = 0;
-	
-	
+
+
 	public void init( ){
 		// Get the file location where it would be stored.
 		filePath =getServletContext().getInitParameter("file-upload"); 
@@ -112,19 +119,18 @@ public class Hello extends HttpServlet {
 		Obra obra = GestorBD.getGestorBD().getObra(3);
 		Usuario autor = GestorBD.getGestorBD().getAutor(3);
 		File file1,file2;
+		
 		try {
 			if (!folder.exists())
 				folder.mkdirs();
-			//Document document = new Document(PageSize.A4, 50, 50, 50, 50);
-		//	Document document = new Document(new Rectangle(600,800), 50, 50, 50, 50);
+		
 			Document document = new Document(pageSize[type], 50, 50, 50, 50);
 			pageHeight = document.getPageSize().getTop();
 			pageWidth = document.getPageSize().getRight();
 			file2 = new File(folder,obra.getTitulo() + "2.pdf");
 			pdf2 = new FileOutputStream(file2);
 			PdfWriter writer = PdfWriter.getInstance(document, pdf2);
-		//	Rectangle art = new Rectangle(50, 50, 545, 792);
-			Rectangle art = new Rectangle(50, 50, 550, 750);
+			new Rectangle(50, 50, 550, 750);
 			writer.setBoxSize("art", artBoxSize[type]);
 			writer.setPageEvent(new HeaderFooter());	
 			ContentEvent event = new ContentEvent();
@@ -145,8 +151,6 @@ public class Hello extends HttpServlet {
 
 
 
-			PdfPTable table = null;
-
 			/*
 			 * En esta sección se comienza a 
 			 * insertar los capítulos con
@@ -157,7 +161,7 @@ public class Hello extends HttpServlet {
 			Capitulo aux = null;
 			Iterator<Capitulo> it = lista.getIterator();
 			ArrayList<Chapter> chapterList = new ArrayList<Chapter>();
-			Rectangle rect = writer.getBoxSize("art");
+			writer.getBoxSize("art");
 			LineSeparator UNDERLINE = new LineSeparator(1, 100, BaseColor.BLUE, Element.ALIGN_CENTER, -2);
 			Chapter chapter;
 			int nCapitulo = 1;
@@ -171,6 +175,9 @@ public class Hello extends HttpServlet {
 				chapterList.add(chapter);
 				document.add(UNDERLINE);
 				document.add(Chunk.NEWLINE);
+				
+				if (aux.getImagen() != null)
+				anadirImagen(document, aux.getImagen());
 
 				for (int i = 0; i < parrafos.length;i++)
 				{
@@ -183,7 +190,7 @@ public class Hello extends HttpServlet {
 					document.newPage();
 				}
 			}
-			
+
 			/**
 			 * Añadimos la información sobre el autor al final
 			 * del documento.
@@ -192,7 +199,12 @@ public class Hello extends HttpServlet {
 			document.add(chapter);
 			chapterList.add(chapter);
 			document.add(UNDERLINE);
-			document.add(Chunk.NEWLINE);
+
+			System.out.println(autor.getImagen());
+			System.out.println(filePath);
+			if (autor.getImagen() != null) 
+			anadirImagen(document, autor.getImagen());
+			
 			
 			parrafos = autor.getAbout();
 			for (int i = 0; i < parrafos.length;i++)
@@ -201,35 +213,51 @@ public class Hello extends HttpServlet {
 				document.add(Chunk.NEWLINE);
 
 			}
-			
-			
+
+			/**
+			 * Cerramos el documento con los
+			 * capitulos e información sobre el 
+			 * autor e iniciamos la creación de 
+			 * la portada y el indice
+			 */
 			document.close();
 			writer.close();
 			pdf2.close();
 
-			//Document d = new Document(PageSize.A4, 50, 50, 50, 50);
-		//	Document d = new Document(new Rectangle(600,800), 50, 50, 50, 50);
+
+
+
 			Document d = new Document(pageSize[type], 50, 50, 50, 50);
 			// add index page.
 			file1 = new File(folder, obra.getTitulo()+"1.pdf");
-			//FileOutputStream os = new FileOutputStream(path);
-			//pdf1 = new FileOutputStream(new File(folder, obra.getTitulo() + "1.pdf"));
 			pdf1 = new FileOutputStream(file1);
-			//PdfWriter w = PdfWriter.getInstance(d, response.getOutputStream());
+
 			PdfWriter w = PdfWriter.getInstance(d, pdf1);
 			IndexEvent indexEvent = new IndexEvent();
 			w.setPageEvent(indexEvent);
 			d.open();
-
-
+			
+			if (obra.getPortada() != null)
+			image = new File(filePath,obra.getPortada());
+			
 			Chunk secTitle = new Chunk(obra.getTitulo() ,new Font(FontFamily.HELVETICA, 35, Font.BOLD, BaseColor.BLUE));
 			PdfContentByte canvas = w.getDirectContent();
 			ColumnText ct= new ColumnText(w.getDirectContent());
-			ct.showTextAligned(canvas, Element.ALIGN_CENTER, /*new Phrase("Estoy aqui")*/new Phrase(secTitle), document.getPageSize().getRight()/2, document.getPageSize().getTop()/2, 0);
-			ct.showTextAligned(canvas, Element.ALIGN_CENTER, /*new Phrase("Estoy aqui")*/new Phrase(autor.getNombre()), document.getPageSize().getRight()/2, document.getPageSize().getTop()/2 - secTitle.getFont().getSize() , 0);
+			
+			img = Image.getInstance(image.getAbsolutePath());
+			//img.scaleToFit(pageSize[type]);
+		//	img.scaleToFit(pageSize[type].getWidth(), pageSize[type].getHeight());
+			//img.scaleAbsolute(pageSize[type]);
+		//	img.scaleAbsolute(writer.getBoxSize("art"));
+			img.scaleAbsolute(titlepage[type]);
+			img.setAbsolutePosition((pageSize[type].getWidth() - titlepage[type].getWidth())/2, (pageSize[type].getHeight() - titlepage[type].getHeight())/2);
+		//	img.setAbsolutePosition(document.getPageSize().getRight()/2, document.getPageSize().getTop()/2);
+			canvas.addImage(img);
+			ct.showTextAligned(canvas, Element.ALIGN_CENTER, new Phrase(secTitle), document.getPageSize().getRight()/2, document.getPageSize().getTop()/2, 0);
+			ct.showTextAligned(canvas, Element.ALIGN_CENTER, new Phrase(autor.getNombre()), document.getPageSize().getRight()/2, document.getPageSize().getTop()/2 - secTitle.getFont().getSize() , 0);
 
 
-			Chapter indexChapter = new Chapter(new Paragraph(new Chunk("Índice", capitulo)),-1);    //, ) new Chapter(new Chunk("Index",capitulo), -1);
+			Chapter indexChapter = new Chapter(new Paragraph(new Chunk("Índice", capitulo)),-1);
 			indexChapter.setNumberDepth(-1); // not show number style
 			PdfPTable tables = new PdfPTable(2);
 			for(Map.Entry<String, Integer> index: event.index.entrySet()) {
@@ -249,11 +277,7 @@ public class Hello extends HttpServlet {
 			d.add(indexChapter);
 			d.add(Chunk.NEWLINE);
 			d.add(tables);
-			// add content chapter
-			/*for(Chapter c : chapterList) {
-			d.add(c);
-			indexEvent.body = true;
-		}*/
+			
 
 			d.close();
 			w.close();
@@ -273,6 +297,18 @@ public class Hello extends HttpServlet {
 
 	}
 
+	private void anadirImagen(Document document, String imagen)
+			throws BadElementException, MalformedURLException, IOException,
+			DocumentException {
+		image = new File(filePath,imagen);
+		img = Image.getInstance(image.getAbsolutePath());
+		img.setAlignment(Chunk.ALIGN_CENTER);
+		img.scalePercent(25);
+		img.setSpacingAfter(50);
+		img.setSpacingBefore(25);
+		document.add(img);
+	}
+
 
 
 
@@ -282,14 +318,14 @@ public class Hello extends HttpServlet {
 		String src[] = {pdf1.getAbsolutePath(),pdf2.getAbsolutePath()};
 		Document document = new Document(PageSize.A4, 50, 50, 50, 50);
 
-	
+
 		PdfCopy copy = new PdfCopy(document, response.getOutputStream());
 		document.open();
-		
+
 		document.addTitle(obra.getTitulo());
 		document.addSubject(obra.getResumen());
 		document.addAuthor(autor.getNombre());
-		
+
 		int page_offset = 0;
 		int n;
 		// Create a list for the bookmarks
@@ -310,7 +346,7 @@ public class Hello extends HttpServlet {
 			for (int page = 0; page < n; ) {
 				copy.addPage(copy.getImportedPage(reader, ++page));
 			}
-		//	reader.close();
+			//	reader.close();
 			copy.freeReader(reader);
 			reader.close();
 		}
@@ -321,33 +357,21 @@ public class Hello extends HttpServlet {
 		copy.close();
 		pdf1.delete();
 		pdf2.delete();
-		
+
+
+	}
+
+
+
+
+
+
+
+
 	
-	}
-
-
-
-
-
-
-
-
-	private void addPortada(Obra obra, PdfContentByte canvas )
-	{
-		float y = pageHeight/2;
-		float x = pageWidth/2;
-		Chunk secTitle = new Chunk("Chapter" ,new Font(
-				FontFamily.HELVETICA,25 , Font.BOLD, BaseColor.RED));
-
-		ColumnText ct= new ColumnText(canvas);
-		ct.showTextAligned(canvas, Element.ALIGN_CENTER, /*new Phrase("Estoy aqui")*/new Phrase(secTitle), x, y, 0);
-		ct.showTextAligned(canvas, Element.ALIGN_CENTER, /*new Phrase("Estoy aqui")*/new Phrase(secTitle), x, y + secTitle.getFont().getSize() , 0);
-
-	}
-
 	private Paragraph addTexto(String texto) {
 		Paragraph preface = new Paragraph();  
-	
+
 		Chunk id = new Chunk(texto, parrafo);	
 		preface.add(id);
 		preface.setAlignment(Element.ALIGN_JUSTIFIED);
@@ -359,7 +383,7 @@ public class Hello extends HttpServlet {
 		return id;
 	}
 
-	
+
 	private static class ContentEvent extends PdfPageEventHelper {
 		private int page;
 		Map<String, Integer> index = new LinkedHashMap<String, Integer>();

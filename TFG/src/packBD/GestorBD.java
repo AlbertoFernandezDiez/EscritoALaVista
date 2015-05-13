@@ -69,7 +69,7 @@ public class GestorBD {
 			{
 				cap = new Capitulo(rs.getInt("id"), rs.getString("nombre"),
 						rs.getString("texto"), rs.getString("comentarios_autor"),
-						rs.getDate("fecha_comentario"));
+						rs.getDate("fecha_comentario"),rs.getString("imagen"));
 				/*cap += rs.getInt("id") + "<br>\n";
 				cap += rs.getString("titulo") + "<br>\n";
 				cap += rs.getString("texto") + "<br>\n";*/
@@ -99,7 +99,7 @@ public class GestorBD {
 			if(rs.next())
 			{			
 				obra = new Obra(rs.getString("titulo"), rs.getString("resumen"),
-						rs.getDate("fecha_in"), rs.getDate("fecha_mod"), rs.getInt("id"));
+						rs.getDate("fecha_in"), rs.getDate("fecha_mod"), rs.getInt("id"),rs.getString("portada"));
 			}
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -121,7 +121,7 @@ public class GestorBD {
 			
 			if(rs.next())
 			{		
-				autor = new Usuario(rs.getInt("id"), rs.getString("pais"), rs.getDate("nacimiento"), rs.getString("nombre"), rs.getString("about"));
+				autor = new Usuario(rs.getInt("id"), rs.getString("pais"), rs.getDate("nacimiento"), rs.getString("nombre"), rs.getString("about"),rs.getString("imagen"));
 				//autor = rs.getString("nombre");
 			}
 		} catch (SQLException | ClassNotFoundException e) {
