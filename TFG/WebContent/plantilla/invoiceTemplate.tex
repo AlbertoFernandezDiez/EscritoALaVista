@@ -9,6 +9,7 @@
 \usepackage{array}
 \usepackage{hhline}
 \usepackage{hyperref}
+\usepackage{graphicx}
 \hypersetup{ colorlinks=true, linkcolor=black, citecolor=black, filecolor=black, urlcolor=blue, pdftitle=$title, pdfauthor=$author, pdfsubject=, pdfkeywords=}
 % Outline numbering
 
@@ -20,7 +21,11 @@
 % Pages styles
 
 
-\title{\Huge{\textbf{$title}}}
+\title{\Huge{\textbf{$title}}
+\begin{figure}[hbtp]
+		\centering
+		\includegraphics[scale = 0.25 ]{$portada}
+	\end{figure}}
 \author{$author}
 \begin{document}
 \maketitle
@@ -33,10 +38,17 @@
 	#if($velocityCount == 1)
 	\chapter{$par}
 	#else
-	$par
-	
-	
+	#if($velocityCount == 2)
+	#if ($par != 0)
+	\begin{figure}[hbtp]
+		\centering
+		\includegraphics[scale = 0.25 ]{$par}
+	\end{figure}
+	#end
+	#else
+		$par
 	\bigskip
+	#end
 	#end
 	#end
 #end 
