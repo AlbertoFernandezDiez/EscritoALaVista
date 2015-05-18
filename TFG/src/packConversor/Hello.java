@@ -132,7 +132,7 @@ public class Hello extends HttpServlet {
 			PdfWriter writer = PdfWriter.getInstance(document, pdf2);
 			new Rectangle(50, 50, 550, 750);
 			writer.setBoxSize("art", artBoxSize[type]);
-			writer.setPageEvent(new HeaderFooter());	
+			writer.setPageEvent(new HeaderFooter(obra.getTitulo()));	
 			ContentEvent event = new ContentEvent();
 
 			writer.setPageEvent( event);

@@ -20,8 +20,14 @@ import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Text;
 public	class HeaderFooter extends PdfPageEventHelper {
 	Phrase[] header = new Phrase[2];
 	int pagenumber;
+	String titulo;
+	
+	public HeaderFooter (String pTitulo){
+		titulo = pTitulo;
+	}
+	
 	public void onOpenDocument(PdfWriter writer, Document document) {
-		header[0] = new Phrase("Movie history");
+		header[0] = new Phrase(titulo);
 	}
 	public void onChapter(PdfWriter writer, Document document,
 			float paragraphPosition, Paragraph title) {
