@@ -119,11 +119,18 @@ public class EpubCreator extends HttpServlet {
 			pRule.set("text-align", "justify");
 
 			// style bitmap class (JPEG image)
+		      Selector bitmapSelectorTitle = stylesheet.getSimpleSelector(null,
+		          "bitmaptitle");
+		      Rule bitmapRuleTitle = stylesheet.getRuleForSelector(bitmapSelectorTitle);
+		      bitmapRuleTitle.set("width", "80%");
+		      bitmapRuleTitle.set("max-width", "300px");
+		      
+		   // style bitmap class (JPEG image)
 		      Selector bitmapSelector = stylesheet.getSimpleSelector(null,
 		          "bitmap");
 		      Rule bitmapRule = stylesheet.getRuleForSelector(bitmapSelector);
 		      bitmapRule.set("width", "80%");
-		      bitmapRule.set("max-width", "53px");
+		      bitmapRule.set("max-width", "200px");
 
 		      // style container class (container for JPEG image)
 		      Selector containerSelector = stylesheet.getSimpleSelector("p",
@@ -145,7 +152,7 @@ public class EpubCreator extends HttpServlet {
 			// style portada h5
 			Selector portadah5Selector = stylesheet.getSimpleSelector("h4", null);
 			Rule portadah5Rule = stylesheet.getRuleForSelector(portadah5Selector);
-			portadah5Rule.set("margin-top", "15%");
+			portadah5Rule.set("margin-top", "5%");
 			portadah5Rule.set("text-align", "center");
 
 
@@ -165,7 +172,7 @@ public class EpubCreator extends HttpServlet {
 
 			// link our stylesheet
 			chapter1Doc.addStyleResource(style);
-			
+			File image = new File(filePath,obra.getPortada());
 			// chapter XHTML body element
 			body1 = chapter1Doc.getBody();
 
@@ -173,11 +180,13 @@ public class EpubCreator extends HttpServlet {
 			header1 = chapter1Doc.createElement("h4");
 			header1.add(obra.getTitulo());
 			body1.add(header1);
+		      addTitle(epub, chapter1Doc, body1, image);
+
 			header1 = chapter1Doc.createElement("h5");
 			header1.add(autor.getNombre());
 			body1.add(header1);
 			
-			File image = new File(filePath,obra.getPortada());
+		
 			
 		/*	DataSource dataSource = new ResourceDataSource(EpubCreator.class,
 			          image.getAbsolutePath());*/
@@ -186,7 +195,6 @@ public class EpubCreator extends HttpServlet {
 			
 			 // addImage(epub, chapter1Doc, body1, image);
 		      
-		      addImage(epub, chapter1Doc, body1, image);
 			
 			for (int j = 1; it.hasNext(); j++ ){
 				// create first chapter resource
@@ -297,6 +305,21 @@ public class EpubCreator extends HttpServlet {
 		  body1.add(container);
 		  ImageElement bitmap = chapter1Doc.createImageElement("img");
 		  bitmap.setClassName("bitmap");
+		  bitmap.setImageResource(imageResource);
+		  container.add(bitmap);
+	}
+	
+	private void addTitle(Publication epub, OPSDocument chapter1Doc,
+			Element body1, File image) {
+		DataSource dataSource =  new ImgFileDataSource(image.getAbsolutePath());
+		  BitmapImageResource imageResource = epub.createBitmapImageResource(
+		      "OPS/images/" + image.getName(), "image/jpeg", dataSource);
+
+		  Element container = chapter1Doc.createElement("p");
+		  container.setClassName("container");
+		  body1.add(container);
+		  ImageElement bitmap = chapter1Doc.createImageElement("img");
+		  bitmap.setClassName("bitmaptitle");
 		  bitmap.setImageResource(imageResource);
 		  container.add(bitmap);
 	}
