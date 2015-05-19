@@ -20,6 +20,13 @@
        G:\Ficheros\
      </param-value>
   </context-param>
+  <context-param>
+    <description>Location to store uploaded file</description>
+    <param-name>server-url</param-name>
+    <param-value>
+       http://localhost:8080/TFG/
+     </param-value>
+  </context-param>
   <servlet-mapping>
     <servlet-name>timeservlet</servlet-name>
     <url-pattern>/what-time-is-it</url-pattern>
