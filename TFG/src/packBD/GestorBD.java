@@ -10,6 +10,7 @@ import com.mysql.jdbc.PreparedStatement;
 
 import packClases.Capitulo;
 import packClases.ListaCapitulos;
+import packClases.ListaObras;
 import packClases.Obra;
 import packClases.Usuario;
 
@@ -29,30 +30,29 @@ public class GestorBD {
 		return myGestorBD;
 	}
 
-	/*	public String getCapitulos(){
-		String cap = "";
+	public ListaObras getObras()
+	{
+		ListaObras lista = new ListaObras();
+		Obra obra = null;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg?useUnicode=true&characterEncoding=utf-8", "root", "root");
-
-			Statement st = conexion.createStatement();
-			ResultSet rs = st.executeQuery("select * from capitulo" );
-			while (rs.next())	   
-			{
-				cap += rs.getInt("id") + "<br>\n";
-				cap += rs.getString("nombre") + "<br>\n";
-				cap += rs.getString("texto") + "<br>\n";
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select * from obra");
+			ResultSet rs = st.executeQuery();
+			
+			if(rs.next())
+			{			
+				obra = new Obra(rs.getString("titulo"), rs.getString("resumen"),
+						rs.getDate("fecha_in"), rs.getDate("fecha_mod"), rs.getInt("id"),rs.getString("portada"));
+				lista.addObra(obra);
 			}
-			rs.close();
-			st.close();
-			conexion.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return cap;
-	}*/
+		return lista;
+	}
 
 	public ListaCapitulos getCapitulos(int pObra){
 		ListaCapitulos lista = new ListaCapitulos();

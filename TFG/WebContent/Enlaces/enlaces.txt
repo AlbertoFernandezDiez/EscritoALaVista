@@ -1,2 +1,8 @@
 EPUB GEN
 https://code.google.com/p/epub-tools/wiki/EPUBGen
+
+COMBOBOX -AJAX
+https://www.daniweb.com/web-development/jsp/threads/185244/how-to-populate-data-in-combobox-dynamically-depends-on-othr-combobox-using-ajax-jsp
+
+JSTL
+http://stackoverflow.com/questions/2901222/populate-jsp-dropdown-with-database-info
