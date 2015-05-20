@@ -18,9 +18,8 @@
 <body>
 <input type="hidden" id="url" value=<%=getServletContext().getInitParameter("server-url") %>>
 <form action="uploadBook.jsp" method="POST" >
-<select id="selectObra" name="selectObra" size=1 onChange="uploadBook.jsp">
+<select id="selectObra" name="selectObra" size=1 onChange="loadChapters($('#selectObra').val(),$('#selectCapitulo').val())">
 <option name=default value=0> Nueva Obra </option>
-
 <%
 ListaObras lista = GestorBD.getGestorBD().getObras();
 Iterator<Obra>it = lista.getIterator();
@@ -34,11 +33,8 @@ aux = it.next();%>
 
 <select id="selectCapitulo" name="selectCapitulo" size=1>
 <option name=default value=0> Nuevo Capitulo </option>
-
-
 </select>
 <input type="submit" value="enviar" />
 </form>
-<%=getServletContext().getInitParameter("server-url") %>
 </body>
 </html>

@@ -51,4 +51,11 @@ public class Capitulo {
 		return this.imagen;
 	}
 
+	public String getTextoC() {
+		// TODO Auto-generated method stub
+		String t = new String();
+		for (int i = 0; i < texto.length; i++){t += texto[i];}
+		return t;
+	}
+
 }

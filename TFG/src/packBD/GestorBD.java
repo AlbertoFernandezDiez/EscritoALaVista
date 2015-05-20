@@ -85,6 +85,29 @@ public class GestorBD {
 		return lista;
 	}
 
+	public Capitulo getCapitulo(int pCapitulo){
+		Capitulo capitulo = null;
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+			Capitulo cap = null;
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select * from capitulo where id = ?;");
+			st.setInt(1, pCapitulo);
+			ResultSet rs = st.executeQuery();
+			
+			if(rs.next())
+			capitulo = new Capitulo(rs.getInt("id"), rs.getString("nombre"),
+					rs.getString("texto"), rs.getString("comentarios_autor"),
+					rs.getDate("fecha_comentario"),rs.getString("imagen"));
+			}
+		catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return capitulo;
+	}
+	
 	public Obra getObra(int pObra)
 	{
 		Obra obra = null;
