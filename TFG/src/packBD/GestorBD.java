@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import com.mysql.jdbc.PreparedStatement;
 
@@ -202,6 +203,63 @@ public class GestorBD {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public int getIndiceCapituloUno(int idO) {
+		int id = 0;
+
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT id FROM capitulo WHERE obra = ? ORDER BY id ASC LIMIT 1");
+			st.setInt(1, idO);
+			ResultSet rs = st.executeQuery();
+			
+			if (rs.next())
+			{
+				id = rs.getInt("id");
+			}
+			
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return id;
+	}
+
+	public ArrayList<packBeans.Capitulo> getCapituloBeans(int idO) {
+		ArrayList<packBeans.Capitulo> lista = new ArrayList<packBeans.Capitulo>();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+			packBeans.Capitulo cap = null;
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select * from capitulo where obra = ? order by id asc;");
+			//Statement st = conexion.createStatement();
+			st.setInt(1, idO);
+			ResultSet rs = st.executeQuery();//st.executeQuery("select * from capitulo where obra =" + obra + " order by id;");
+			while (rs.next())	   
+			{
+				cap = new packBeans.Capitulo();
+				cap.setId(rs.getInt("id"));
+				cap.setNombre(rs.getString("nombre"));
+				cap.setObra(rs.getInt("obra"));
+				cap.setComentarios_autor(rs.getString("comentarios_autor"));
+				cap.setText(rs.getString("texto"));
+				cap.setImagen(rs.getString("imagen"));
+				cap.setFecha_comentario(rs.getDate("fecha_comentario"));
+			
+				lista.add(cap);
+			}
+			rs.close();
+			st.close();
+			conexion.close();
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lista;
 	}
 
 }

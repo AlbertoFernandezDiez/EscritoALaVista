@@ -24,6 +24,7 @@
 	<input type="hidden" id="url"
 		value=<%=getServletContext().getInitParameter("server-url")%>>
 	<form action="uploadBookChapter" method="POST" enctype="multipart/form-data">
+			
 		<select id="selectObra" name="selectObra" size=1
 			onChange="loadChapterSel($('#selectObra').val())">
 			<option name=default value=0>Nueva Obra</option>
