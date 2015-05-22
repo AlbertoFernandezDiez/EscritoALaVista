@@ -1,6 +1,7 @@
 package packBD;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -40,8 +41,8 @@ public class GestorBD {
 					"jdbc:mysql://localhost:3306/tfg", "root", "root");
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select * from obra");
 			ResultSet rs = st.executeQuery();
-			
-			if(rs.next())
+
+			while(rs.next())
 			{			
 				obra = new Obra(rs.getString("titulo"), rs.getString("resumen"),
 						rs.getDate("fecha_in"), rs.getDate("fecha_mod"), rs.getInt("id"),rs.getString("portada"));
@@ -95,19 +96,19 @@ public class GestorBD {
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select * from capitulo where id = ?;");
 			st.setInt(1, pCapitulo);
 			ResultSet rs = st.executeQuery();
-			
+
 			if(rs.next())
-			capitulo = new Capitulo(rs.getInt("id"), rs.getString("nombre"),
-					rs.getString("texto"), rs.getString("comentarios_autor"),
-					rs.getDate("fecha_comentario"),rs.getString("imagen"));
-			}
+				capitulo = new Capitulo(rs.getInt("id"), rs.getString("nombre"),
+						rs.getString("texto"), rs.getString("comentarios_autor"),
+						rs.getDate("fecha_comentario"),rs.getString("imagen"));
+		}
 		catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return capitulo;
 	}
-	
+
 	public Obra getObra(int pObra)
 	{
 		Obra obra = null;
@@ -118,7 +119,7 @@ public class GestorBD {
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select * from obra where id = ?");
 			st.setInt(1, pObra);
 			ResultSet rs = st.executeQuery();
-			
+
 			if(rs.next())
 			{			
 				obra = new Obra(rs.getString("titulo"), rs.getString("resumen"),
@@ -141,7 +142,7 @@ public class GestorBD {
 					+ "where obra.autor = autor.id and obra.id = ?");
 			st.setInt(1, pAutor);
 			ResultSet rs = st.executeQuery();
-			
+
 			if(rs.next())
 			{		
 				autor = new Usuario(rs.getInt("id"), rs.getString("pais"), rs.getDate("nacimiento"), rs.getString("nombre"), rs.getString("about"),rs.getString("imagen"));
@@ -154,5 +155,53 @@ public class GestorBD {
 		return autor;
 	}
 
+	public int insertarObra(int pAutor, String pTitulo, String pResumen){
+		int id = 0;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("INSERT INTO `obra` (`autor`, `titulo`, `resumen`, "
+					+ "`fecha_in` , `fecha_mod`) VALUES ( ?, ?, ?, ?, ?)");
+			st.setInt(1, pAutor);
+			st.setString(2, pTitulo);
+			st.setString(3, pResumen);
+			st.setDate(4, new Date(System.currentTimeMillis()));
+			st.setDate(5, new Date(System.currentTimeMillis()));
+			st.execute();
+			
+			st = (PreparedStatement) conexion.prepareStatement("SELECT id FROM obra where autor = ? and titulo = ? and resumen = ?");
+			st.setInt(1, pAutor);
+			st.setString(2, pTitulo);
+			st.setString(3, pResumen);
+			ResultSet rs = st.executeQuery();
+			rs.first();
+			id = rs.getInt("id");
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return id;
+	}
+
+	public void insertarCapitulo(int pObra, String pTitulo, String pCapitulo, String pComentario){
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("INSERT INTO `capitulo` (`obra`, `nombre`, `texto`,"
+					+ " `comentarios_autor`, `fecha_comentario`) VALUES (?, ?, ?, ?, ?)");
+			st.setInt(1, pObra);
+			st.setString(2, pTitulo);
+			st.setString(3, pCapitulo);
+			st.setString(4, pComentario);
+			st.setDate(5, new Date(System.currentTimeMillis()));
+			st.execute();
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 }

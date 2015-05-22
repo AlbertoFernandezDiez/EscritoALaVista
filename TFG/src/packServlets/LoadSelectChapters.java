@@ -2,6 +2,7 @@ package packServlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.servlet.ServletException;
@@ -45,72 +46,83 @@ public class LoadSelectChapters extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String obraId = request.getParameter("obra");
-		String capId = request.getParameter("capitulo");
-		int id = 0;
-		int idC = 0;
-		JSONObject json = new JSONObject(); 
+		String opcionS = request.getParameter("op");
+		int opcion = 0;
+		if (opcionS != null)
+			opcion = Integer.parseInt(opcionS);
 
-		if (obraId != null)
-			id = Integer.parseInt(obraId);
+		JSONObject json = null;
 
-		if (capId != null)
-			idC = Integer.parseInt(capId);
+		switch(opcion){
+		case 1:
+			String obraId = request.getParameter("obra");
+			int id = 0;
+			if (obraId != null)
+				id = Integer.parseInt(obraId);
 
-		if(idC == 0)
-		{
-			if(id != 0){
+			json = loadSelectorCap(id);
 
-				Obra obra = GestorBD.getGestorBD().getObra(id);
+			break;
 
-				JSONObject jsonObra = new JSONObject(); 
-				jsonObra.put("titulo", obra.getTitulo());
-				jsonObra.put("resumen", obra.getResumen());
+		case 2:
+			String capId = request.getParameter("capitulo");
+			int idC = 0;
+			if (capId != null)
+				idC = Integer.parseInt(capId);
 
-
-				json.put("campos", jsonObra);
-				ListaCapitulos listCap = GestorBD.getGestorBD().getCapitulos(id);
-				Iterator<Capitulo> itC = listCap.getIterator();
-Capitulo cap = null;
-
-JSONArray array = new JSONArray();
-				while (itC.hasNext()){
-					jsonObra = new JSONObject();
-cap = itC.next();
-				jsonObra.put("idC", cap.getId());
-				jsonObra.put("nombre", cap.getNombre());
-				array.put(jsonObra);
-				}
-				
-				json.put("capitulos", array);
-			}
+			json = loadCapitulo(idC);
+			break;
+		default:
+			break;
 		}
-		
-		if(idC != 0){
 
-			Capitulo cap = GestorBD.getGestorBD().getCapitulo(idC);
 
-			JSONObject jsonCapitulo = new JSONObject(); 
-			jsonCapitulo.put("titulo", cap.getNombre());
-			jsonCapitulo.put("capitulo", cap.getTextoC());
-			jsonCapitulo.put("comentarioA", cap.getComentariosAutor());
 
-			json.put("camposC", jsonCapitulo);
-			ListaCapitulos listCap = GestorBD.getGestorBD().getCapitulos(id);
-			Iterator<Capitulo> itC = listCap.getIterator();
 
-			/*	while (itC.hasNext()){
 
-			}*/
-
-		}
 		response.setContentType("application/x-json;charset=UTF-8");
 		response.setHeader("Cache-Control", "no-store");
 		PrintWriter out = response.getWriter();
-		// Assuming your json object is **jsonObject**, perform the following, it will return your json object  
+
 		out.print(json);
 		out.flush();
 		out.close();
+	}
+
+	private JSONObject loadSelectorCap(int idC) {
+		Obra obra = GestorBD.getGestorBD().getObra(idC);
+		JSONObject jsonObra = new JSONObject(); 
+		jsonObra.put("titulo", obra.getTitulo());
+		jsonObra.put("resumen", obra.getResumen());
+
+
+		ListaCapitulos listCap = GestorBD.getGestorBD().getCapitulos(idC);
+		Iterator<Capitulo> itC = listCap.getIterator();
+		Capitulo cap = null;
+		JSONObject jsonCap = null;
+		
+		ArrayList<JSONObject> array = new ArrayList<>();
+		while (itC.hasNext()){
+			jsonCap = new JSONObject();
+			cap = itC.next();
+			jsonCap.put("idC", cap.getId());
+			jsonCap.put("nombre", cap.getNombre());
+			array.add(jsonCap);
+		}
+		jsonObra.put("capitulos", array);
+		return jsonObra;
+	}
+	
+	private JSONObject loadCapitulo(int id) {
+		Capitulo cap = GestorBD.getGestorBD().getCapitulo(id);
+
+		JSONObject jsonCapitulo = new JSONObject(); 
+		jsonCapitulo.put("titulo", cap.getNombre());
+		jsonCapitulo.put("capitulo", cap.getTextoC());
+		jsonCapitulo.put("comentarioA", cap.getComentariosAutor());
+
+
+		return jsonCapitulo;
 	}
 
 }
