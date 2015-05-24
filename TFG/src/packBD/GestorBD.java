@@ -18,10 +18,10 @@ import packClases.Usuario;
 
 public class GestorBD {
 	private static GestorBD myGestorBD = null;
-	private Connection conexion;
+	private Connection conexion = null;
 
 	private GestorBD(){
-
+		
 	}
 
 	public static GestorBD getGestorBD()
@@ -170,7 +170,7 @@ public class GestorBD {
 			st.setDate(4, new Date(System.currentTimeMillis()));
 			st.setDate(5, new Date(System.currentTimeMillis()));
 			st.execute();
-			
+
 			st = (PreparedStatement) conexion.prepareStatement("SELECT id FROM obra where autor = ? and titulo = ? and resumen = ?");
 			st.setInt(1, pAutor);
 			st.setString(2, pTitulo);
@@ -182,7 +182,7 @@ public class GestorBD {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return id;
 	}
 
@@ -215,12 +215,12 @@ public class GestorBD {
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT id FROM capitulo WHERE obra = ? ORDER BY id ASC LIMIT 1");
 			st.setInt(1, idO);
 			ResultSet rs = st.executeQuery();
-			
+
 			if (rs.next())
 			{
 				id = rs.getInt("id");
 			}
-			
+
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -249,7 +249,7 @@ public class GestorBD {
 				cap.setText(rs.getString("texto"));
 				cap.setImagen(rs.getString("imagen"));
 				cap.setFecha_comentario(rs.getDate("fecha_comentario"));
-			
+
 				lista.add(cap);
 			}
 			rs.close();
@@ -262,4 +262,64 @@ public class GestorBD {
 		return lista;
 	}
 
+	public ArrayList<packBeans.Obra> getObrasBeans(int limit, int offset){
+		ArrayList<packBeans.Obra> lista = new ArrayList<packBeans.Obra>();
+		packBeans.Obra aux = null;
+
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+				Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select * from obra order by fecha_mod asc limit ? offset ?");
+			st.setInt(1, limit);
+			st.setInt(2, offset);
+			ResultSet rs = st.executeQuery();
+			while (rs.next())	   
+			{
+				aux = new packBeans.Obra();
+				aux.setAutor(rs.getInt("autor"));
+				aux.setFecha_in(rs.getDate("fecha_in"));
+				aux.setFecha_mod(rs.getDate("fecha_mod"));
+				aux.setId(rs.getInt("id"));
+				aux.setPortada(rs.getString("portada"));
+				aux.setResumen(rs.getString("resumen"));
+				aux.setTitulo(rs.getString("titulo"));
+
+				lista.add(aux);
+			}
+			rs.close();
+			st.close();
+			conexion.close();
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lista;
+	}
+
+	public int getMaxObrasN(int show) {
+		int max = 0;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+				Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT count(*)/? FROM tfg.obra;");
+			st.setInt(1, show);
+
+			ResultSet rs = st.executeQuery();
+			if (rs.next())	   
+			{
+				max = rs.getInt(1);
+			}
+			rs.close();
+			st.close();
+			conexion.close();
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return max;
+	}
 }

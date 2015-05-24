@@ -4,15 +4,13 @@
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
+   <!--  <welcome-file>index.jsp</welcome-file>-->
+   <welcome-file>Index</welcome-file>
     <welcome-file>default.html</welcome-file>
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  <servlet>
-    <servlet-name>timeservlet</servlet-name>
-    <servlet-class>com.edu4java.servlets.FirstServlet</servlet-class>
-  </servlet>
+ 	
   <context-param>
     <description>Location to store uploaded file</description>
     <param-name>file-upload</param-name>
@@ -27,8 +25,5 @@
        http://localhost:8080/TFG/
      </param-value>
   </context-param>
-  <servlet-mapping>
-    <servlet-name>timeservlet</servlet-name>
-    <url-pattern>/what-time-is-it</url-pattern>
-  </servlet-mapping>
+  
 </web-app>
