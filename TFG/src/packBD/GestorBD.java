@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import com.mysql.jdbc.PreparedStatement;
 
+import packBeans.Autor;
 import packClases.Capitulo;
 import packClases.ListaCapitulos;
 import packClases.ListaObras;
@@ -321,5 +322,36 @@ public class GestorBD {
 			e.printStackTrace();
 		}
 		return max;
+	}
+
+	public Autor getAutorBeans(int id) {
+		packBeans.Autor autor = null;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+				Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT * FROM tfg.autor where id = ?;");
+			st.setInt(1, id);
+
+			ResultSet rs = st.executeQuery();
+			if (rs.next())	   
+			{
+				autor = new Autor();
+				autor.setId(rs.getInt("id"));
+				autor.setImagen(rs.getString("imagen"));
+				autor.setNacimiento(rs.getDate("nacimiento"));
+				autor.setNombre(rs.getString("nombre"));
+				autor.setPais(rs.getString("pais"));
+				autor.setAbout(rs.getString("about"));
+			}
+			rs.close();
+			st.close();
+			conexion.close();
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return autor;
 	}
 }
