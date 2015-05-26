@@ -84,6 +84,7 @@ public class VerHistoria extends HttpServlet {
 		 request.setAttribute("chapterList", lista);
 		 request.setAttribute("chapter", idC);
 		 request.setAttribute("tit", obra.getTitulo());
+		 request.setAttribute("id", idO);
 		
 	}
 

@@ -5,7 +5,8 @@ import java.sql.Date;
 
 public class Capitulo implements Serializable {
 	private int id, obra;
-	private String nombre,text,comentarios_autor,imagen;
+	private String nombre,comentarios_autor,imagen;
+	private String[] text;
 	private Date fecha_comentario;
 	
 	public Capitulo(){}
@@ -34,12 +35,12 @@ public class Capitulo implements Serializable {
 		this.nombre = nombre;
 	}
 
-	public String getText() {
+	public String[] getText() {
 		return text;
 	}
 
 	public void setText(String text) {
-		this.text = text;
+		this.text = text.split("\n");
 	}
 
 	public String getComentarios_autor() {

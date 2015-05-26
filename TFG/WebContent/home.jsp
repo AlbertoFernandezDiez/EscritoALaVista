@@ -20,14 +20,29 @@ border:1px solid black;
 
 <table>
 <tbody>
-<tr><th>ID</th><th>Name</th><th>Role</th></tr>
+<tr><th>Capitulo</th></tr>
 <c:forEach items="${requestScope.chapterList}" var="emp">
-<tr><td><c:out value="${emp.id}"></c:out></td>
-<td><c:out value="${emp.nombre}"></c:out></td>
-<td><c:out value="${emp.obra}"></c:out></td></tr>
+<td><a href ="VerHistoria?op=1&hi=<c:out value="${requestScope.id}"></c:out>&ca=<c:out value="${emp.id}"></c:out>" ><c:out value="${emp.nombre}"></c:out></a></td>
+<c:if test="${emp.id eq requestScope.chapter}">
+<c:set var="chap" value="${emp}" scope="request"></c:set>
+</c:if>
+</tr>
 </c:forEach>
 </tbody>
 </table>
+
+<div id="historia">
+
+<h1><c:out value="${chap.nombre}"></c:out></h1>
+<c:forEach items="${chap.text}" var="par">
+<p>
+<c:out value="${par}"></c:out>
+</p>
+</c:forEach>
+<c:if test="${chap.imagen ne null}">
+<img alt="imagen capítulo" src="<c:out value="${chap.imagen}"></c:out>">
+</c:if>
+</div>
 
 </body>
 </html>
