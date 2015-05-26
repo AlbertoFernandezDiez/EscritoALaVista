@@ -50,6 +50,7 @@
 			:</label>
 		<textarea rows="5" cols="20" id="resumen" name="resumen" spellcheck="true"></textarea>
 		<input id="fileObra" type="file" name="fileObra" size="50" />
+		<input id='rutaP' type='text' name='rutaP'/>
 		<br> <label for="titCap">Titulo Capitulo :</label> <input
 			type="text" id="titCap" name="titCap" spellcheck="true"> <br> <label
 			for="capitulo">Capitulo :</label>
@@ -57,6 +58,7 @@
 		<br> <label for="comentarios" spellcheck="true">Comentarios :</label>
 		<textarea rows="5" cols="20" id="comentarios" name="comentarios" spellcheck="true"></textarea>
 		<input id="fileCapi" type="file" name="fileCapi" size="50" />
+		<input id='rutaC' type='text' name='rutaC' />
 		
 		
 		

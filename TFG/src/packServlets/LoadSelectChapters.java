@@ -88,6 +88,7 @@ public class LoadSelectChapters extends HttpServlet {
 		JSONObject jsonObra = new JSONObject(); 
 		jsonObra.put("titulo", obra.getTitulo());
 		jsonObra.put("resumen", obra.getResumen());
+		jsonObra.put("imagen", obra.getPortada());
 
 
 		ListaCapitulos listCap = GestorBD.getGestorBD().getCapitulos(idC);
@@ -114,6 +115,7 @@ public class LoadSelectChapters extends HttpServlet {
 		jsonCapitulo.put("titulo", cap.getNombre());
 		jsonCapitulo.put("capitulo", cap.getTextoC());
 		jsonCapitulo.put("comentarioA", cap.getComentariosAutor());
+		jsonCapitulo.put("imagen", cap.getImagen());
 
 
 		return jsonCapitulo;

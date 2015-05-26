@@ -61,6 +61,8 @@ function updateChapterSelect(result){
 
 	$("#titOb").val(result.titulo);
 	$("#resumen").val(result.resumen);
+	$('#rutaP').val(result.imagen);
+	
 	
 	$chapter.html("<option name=default value=0>Nueva Obra</option>");
 
@@ -83,6 +85,7 @@ function updateChapter(result){
 	$("#comentarios").val("");	
 	$("#titCap").val(result.titulo);
 	$("#capitulo").val(result.capitulo);
-	$("#comentarios").val(result.comentarioA);	
+	$("#comentarios").val(result.comentarioA);
+	$('#rutaC').val(result.imagen);
 
 }
