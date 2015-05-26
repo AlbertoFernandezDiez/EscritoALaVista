@@ -200,8 +200,7 @@ public class Hello extends HttpServlet {
 			chapterList.add(chapter);
 			document.add(UNDERLINE);
 
-			System.out.println(autor.getImagen());
-			System.out.println(filePath);
+			
 			if (autor.getImagen() != null) 
 			anadirImagen(document, autor.getImagen());
 			
@@ -243,7 +242,7 @@ public class Hello extends HttpServlet {
 			Chunk secTitle = new Chunk(obra.getTitulo() ,new Font(FontFamily.HELVETICA, 35, Font.BOLD, BaseColor.BLUE));
 			PdfContentByte canvas = w.getDirectContent();
 			ColumnText ct= new ColumnText(w.getDirectContent());
-			
+			if (image.exists()){
 			img = Image.getInstance(image.getAbsolutePath());
 			//img.scaleToFit(pageSize[type]);
 		//	img.scaleToFit(pageSize[type].getWidth(), pageSize[type].getHeight());
@@ -253,6 +252,7 @@ public class Hello extends HttpServlet {
 			img.setAbsolutePosition((pageSize[type].getWidth() - titlepage[type].getWidth())/2, (pageSize[type].getHeight() - titlepage[type].getHeight())/2);
 		//	img.setAbsolutePosition(document.getPageSize().getRight()/2, document.getPageSize().getTop()/2);
 			canvas.addImage(img);
+			}
 			ct.showTextAligned(canvas, Element.ALIGN_CENTER, new Phrase(secTitle), document.getPageSize().getRight()/2, document.getPageSize().getTop()/2, 0);
 			ct.showTextAligned(canvas, Element.ALIGN_CENTER, new Phrase(autor.getNombre()), document.getPageSize().getRight()/2, document.getPageSize().getTop()/2 - secTitle.getFont().getSize() , 0);
 
@@ -301,12 +301,13 @@ public class Hello extends HttpServlet {
 			throws BadElementException, MalformedURLException, IOException,
 			DocumentException {
 		image = new File(filePath,imagen);
+		if (image.exists()){
 		img = Image.getInstance(image.getAbsolutePath());
 		img.setAlignment(Chunk.ALIGN_CENTER);
 		img.scalePercent(25);
 		img.setSpacingAfter(50);
 		img.setSpacingBefore(25);
-		document.add(img);
+		document.add(img);}
 	}
 
 

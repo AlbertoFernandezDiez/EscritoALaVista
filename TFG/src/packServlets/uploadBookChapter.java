@@ -98,7 +98,7 @@ public class uploadBookChapter extends HttpServlet {
 				GestorBD.getGestorBD().updateObra(idOb,tituloObra,resumen,loadFile(request,"fileObra"));
 
 				if (idCap != 0)
-					GestorBD.getGestorBD().updateChapter(idCap,tituloCap,capitulo,resumen,loadFile(request,"fileCapi"));
+					GestorBD.getGestorBD().updateChapter(idCap,tituloCap,capitulo,comentario,loadFile(request,"fileCapi"));
 				else
 					GestorBD.getGestorBD().insertarCapitulo(idOb, tituloCap, capitulo, comentario,loadFile(request,"fileCapi"));
 			}
@@ -114,7 +114,7 @@ public class uploadBookChapter extends HttpServlet {
 	private String loadFile(HttpServletRequest request, String fileID) throws IOException,
 			ServletException, FileNotFoundException {
 		Part file = request.getPart(fileID);
-		String filepath ="";
+		String filepath =null;
 		System.out.println(file.getSize());
 	
 		

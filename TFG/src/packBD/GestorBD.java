@@ -384,18 +384,18 @@ public class GestorBD {
 	}
 
 	public void updateChapter(int idCap, String tituloCap, String capitulo,
-			String resumen, String pRuta) {
+			String comentario, String pRuta) {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/tfg", "root", "root");
 
-			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("UPDATE `tfg`.`obra` SET `titulo`='?',"
-					+ " `resumen`='?', `fecha_mod`='?', `portada`='?' WHERE `id`='?';");
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("UPDATE `tfg`.`capitulo` SET `nombre`=?,"
+					+ " `texto`=?, `comentarios_autor`=?, `imagen`=? WHERE `id`=?;");
 
 			st.setString(1, tituloCap);
-			st.setString(2, resumen);
-			st.setDate(3, new Date(System.currentTimeMillis()));
+			st.setString(2, capitulo);
+st.setString(3, comentario);
 			st.setString(4, pRuta);
 			st.setInt(5, idCap);
 			
