@@ -89,3 +89,8 @@ function updateChapter(result){
 	$('#rutaC').val(result.imagen);
 
 }
+
+function borrarPortada()
+{
+	$("#rutaP").val("");
+	}

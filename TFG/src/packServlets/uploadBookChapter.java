@@ -75,79 +75,101 @@ public class uploadBookChapter extends HttpServlet {
 		String idSOb = request.getParameter("selectObra");
 		String tituloCap = request.getParameter("titCap");
 		String tituloObra = request.getParameter("titOb");
-		
+		String rutaP = request.getParameter("rutaP");
+		String rutaC = request.getParameter("rutaC");
 
-			if (tituloCap != null && tituloObra != null 
+
+		if (tituloCap != null && tituloObra != null 
 				&& idSCap != null && idSOb != null
 				&& capitulo != null && resumen != null){
 			int idCap = Integer.parseInt(idSCap);
 			int idOb = Integer.parseInt(idSOb);
 
 			if (idOb == 0)
-			{
+			{ 
+				int id;
 				//Obra nueva
-				int id = GestorBD.getGestorBD().insertarObra(1, tituloObra, resumen,loadFile(request,"fileObra"));
-				if (idCap == 0)
-					GestorBD.getGestorBD().insertarCapitulo(id, tituloCap, capitulo, comentario,loadFile(request,"fileCapi"));
+				if (!rutaP.matches(""))
+					id = GestorBD.getGestorBD().insertarObra(1, tituloObra, resumen,rutaP);
+				else
+					id = GestorBD.getGestorBD().insertarObra(1, tituloObra, resumen,loadFile(request,"fileObra"));
 
+				if (idCap == 0){
+					if (!rutaC.matches(""))
+						GestorBD.getGestorBD().insertarCapitulo(id, tituloCap, capitulo, comentario,rutaC);
+					else
+						GestorBD.getGestorBD().insertarCapitulo(id, tituloCap, capitulo, comentario,loadFile(request,"fileCapi"));
+				}
 			}
 			else
 			{
 				//Update o inserccion de una obra ya existente
-
-				GestorBD.getGestorBD().updateObra(idOb,tituloObra,resumen,loadFile(request,"fileObra"));
+					
+				if (!rutaP.matches(""))
+				GestorBD.getGestorBD().updateObra(idOb,tituloObra,resumen,rutaP);
+				else
+					GestorBD.getGestorBD().updateObra(idOb,tituloObra,resumen,loadFile(request,"fileObra"));
 
 				if (idCap != 0)
-					GestorBD.getGestorBD().updateChapter(idCap,tituloCap,capitulo,comentario,loadFile(request,"fileCapi"));
-				else
-					GestorBD.getGestorBD().insertarCapitulo(idOb, tituloCap, capitulo, comentario,loadFile(request,"fileCapi"));
+				{
+					if(!rutaC.matches(""))
+					GestorBD.getGestorBD().updateChapter(idCap,tituloCap,capitulo,comentario,rutaC);
+					else
+						GestorBD.getGestorBD().updateChapter(idCap,tituloCap,capitulo,comentario,loadFile(request,"fileCapi"));
+
+				}else{
+					if(!rutaC.matches(""))
+					GestorBD.getGestorBD().insertarCapitulo(idOb, tituloCap, capitulo, comentario,rutaC);
+					else
+						GestorBD.getGestorBD().insertarCapitulo(idOb, tituloCap, capitulo, comentario,loadFile(request,"fileCapi"));
+				}
 			}
 		}
 
-		
 
-	
 
-		
+
+
+
 	}
 
 	private String loadFile(HttpServletRequest request, String fileID) throws IOException,
-			ServletException, FileNotFoundException {
+	ServletException, FileNotFoundException {
 		Part file = request.getPart(fileID);
 		String filepath =null;
 		System.out.println(file.getSize());
-	
-		
+
+
 		if (file.getSize() != 0){
 			String filename = getFileName(file);
-		java.io.InputStream is = file.getInputStream();
-		
-		filepath = "imagenes/"  + System.currentTimeMillis() + filename.substring(filename.lastIndexOf('.'));
-		OutputStream outputStream = new FileOutputStream(new File(getServletContext().getInitParameter("file-upload") +File.separator +  
-				filepath));
-		
-		int read = 0;
-		byte[] bytes = new byte[1024];
-		
-		while ((read = is.read(bytes)) != -1) {
-			outputStream.write(bytes, 0, read);
-		}
-		outputStream.close();
-		System.out.println("Done!");}
+			java.io.InputStream is = file.getInputStream();
+
+			filepath = "imagenes/"  + System.currentTimeMillis() + filename.substring(filename.lastIndexOf('.'));
+			OutputStream outputStream = new FileOutputStream(new File(getServletContext().getInitParameter("file-upload") +File.separator +  
+					filepath));
+
+			int read = 0;
+			byte[] bytes = new byte[1024];
+
+			while ((read = is.read(bytes)) != -1) {
+				outputStream.write(bytes, 0, read);
+			}
+			outputStream.close();
+			System.out.println("Done!");}
 		return filepath;
 	}
 
-		public static String getFileName(Part filePart)
+	public static String getFileName(Part filePart)
+	{
+		String header = filePart.getHeader("content-disposition");
+		for(String headerPart : header.split(";"))
 		{
-		    String header = filePart.getHeader("content-disposition");
-		    for(String headerPart : header.split(";"))
-		    {
-		        if(headerPart.trim().startsWith("filename"))
-		        {
-		            return headerPart.substring(headerPart.indexOf('=') + 1).trim()
-		                             .replace("\"", "");
-		        }
-		    }
-		    return null;
+			if(headerPart.trim().startsWith("filename"))
+			{
+				return headerPart.substring(headerPart.indexOf('=') + 1).trim()
+						.replace("\"", "");
+			}
 		}
+		return null;
 	}
+}
