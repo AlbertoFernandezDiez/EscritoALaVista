@@ -30,9 +30,9 @@
 			<option name=default value=0>Nueva Obra</option>
 			<%
 				ListaObras lista = GestorBD.getGestorBD().getObras();
-				Iterator<Obra> it = lista.getIterator();
+				Iterator<packClases.Obra> it = lista.getIterator();
 
-				Obra aux = null;
+				packClases.Obra aux = null;
 				while (it.hasNext()) {
 					aux = it.next();
 			%>
@@ -55,6 +55,9 @@
 		<textarea rows="5" cols="20" id="capitulo" name="capitulo" spellcheck="true"></textarea>
 		<br> <label for="comentarios" spellcheck="true">Comentarios :</label>
 		<textarea rows="5" cols="20" id="comentarios" name="comentarios" spellcheck="true"></textarea>
+		
+		<input id="file" type="file" name="file" size="50" />
+		
 		<br> <input type="submit" value="enviar" />
 	</form>
 	

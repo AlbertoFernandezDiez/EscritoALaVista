@@ -22,7 +22,7 @@ public class GestorBD {
 	private Connection conexion = null;
 
 	private GestorBD(){
-		
+
 	}
 
 	public static GestorBD getGestorBD()
@@ -269,7 +269,7 @@ public class GestorBD {
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-				Connection conexion = DriverManager.getConnection(
+			Connection conexion = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/tfg", "root", "root");
 
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select * from obra order by fecha_mod asc limit ? offset ?");
@@ -303,7 +303,7 @@ public class GestorBD {
 		int max = 0;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-				Connection conexion = DriverManager.getConnection(
+			Connection conexion = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/tfg", "root", "root");
 
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT count(*)/? FROM tfg.obra;");
@@ -328,7 +328,7 @@ public class GestorBD {
 		packBeans.Autor autor = null;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-				Connection conexion = DriverManager.getConnection(
+			Connection conexion = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/tfg", "root", "root");
 
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT * FROM tfg.autor where id = ?;");
@@ -353,5 +353,37 @@ public class GestorBD {
 			e.printStackTrace();
 		}
 		return autor;
+	}
+
+	public void updateObra(int idOb, String tituloObra, String resumen,String portada) {
+		// TODO Auto-generated method stub
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("UPDATE `tfg`.`obra` SET "
+					+ " `titulo`=?, `resumen`=?, `fecha_mod`=?, `portada`=? WHERE `id`='?';");
+
+			st.setString(1, tituloObra);
+			st.setString(2, resumen);
+			st.setDate(3, new Date(System.currentTimeMillis()));
+			st.setString(4, portada);
+			st.setInt(5, idOb);
+			
+			st.executeUpdate();
+
+			st.close();
+			conexion.close();
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void updateChapter(int idCap, String tituloCap, String capitulo,
+			String resumen, String string) {
+		// TODO Auto-generated method stub
+		
 	}
 }
