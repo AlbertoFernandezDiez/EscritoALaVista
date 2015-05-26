@@ -2,6 +2,7 @@ package packServlets;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -74,25 +75,7 @@ public class uploadBookChapter extends HttpServlet {
 		String idSOb = request.getParameter("selectObra");
 		String tituloCap = request.getParameter("titCap");
 		String tituloObra = request.getParameter("titOb");
-Part file = request.getPart("file");
-String filename = getFileName(file);
-java.io.InputStream is = file.getInputStream();
-System.out.println(file.getContentType());
-System.out.println(file.getName());
-System.out.println(file.getHeaderNames());
-System.out.println(request.getParameter("file"));
-String filepath = "imagenes" + File.separator + System.currentTimeMillis() + filename.substring(filename.lastIndexOf('.'));
-OutputStream outputStream = new FileOutputStream(new File(getServletContext().getInitParameter("file-upload") +File.separator +  
-		filepath));
-
-int read = 0;
-byte[] bytes = new byte[1024];
-
-while ((read = is.read(bytes)) != -1) {
-	outputStream.write(bytes, 0, read);
-}
-outputStream.close();
-System.out.println("Done!");
+		
 
 			if (tituloCap != null && tituloObra != null 
 				&& idSCap != null && idSOb != null
@@ -103,21 +86,21 @@ System.out.println("Done!");
 			if (idOb == 0)
 			{
 				//Obra nueva
-				int id = GestorBD.getGestorBD().insertarObra(1, tituloObra, resumen);
+				int id = GestorBD.getGestorBD().insertarObra(1, tituloObra, resumen,loadFile(request,"fileObra"));
 				if (idCap == 0)
-					GestorBD.getGestorBD().insertarCapitulo(id, tituloCap, capitulo, comentario);
+					GestorBD.getGestorBD().insertarCapitulo(id, tituloCap, capitulo, comentario,loadFile(request,"fileCapi"));
 
 			}
 			else
 			{
 				//Update o inserccion de una obra ya existente
 
-			/*	GestorBD.getGestorBD().updateObra(idOb,tituloObra,resumen,fileMap.get("portada"));
+				GestorBD.getGestorBD().updateObra(idOb,tituloObra,resumen,loadFile(request,"fileObra"));
 
 				if (idCap != 0)
-					GestorBD.getGestorBD().updateChapter(idCap,tituloCap,capitulo,resumen,fileMap.get("imagen"));
+					GestorBD.getGestorBD().updateChapter(idCap,tituloCap,capitulo,resumen,loadFile(request,"fileCapi"));
 				else
-					GestorBD.getGestorBD().insertarCapitulo(idOb, tituloCap, capitulo, comentario);*/
+					GestorBD.getGestorBD().insertarCapitulo(idOb, tituloCap, capitulo, comentario,loadFile(request,"fileCapi"));
 			}
 		}
 
@@ -126,6 +109,32 @@ System.out.println("Done!");
 	
 
 		
+	}
+
+	private String loadFile(HttpServletRequest request, String fileID) throws IOException,
+			ServletException, FileNotFoundException {
+		Part file = request.getPart(fileID);
+		String filepath ="";
+		System.out.println(file.getSize());
+	
+		
+		if (file.getSize() != 0){
+			String filename = getFileName(file);
+		java.io.InputStream is = file.getInputStream();
+		
+		filepath = "imagenes/"  + System.currentTimeMillis() + filename.substring(filename.lastIndexOf('.'));
+		OutputStream outputStream = new FileOutputStream(new File(getServletContext().getInitParameter("file-upload") +File.separator +  
+				filepath));
+		
+		int read = 0;
+		byte[] bytes = new byte[1024];
+		
+		while ((read = is.read(bytes)) != -1) {
+			outputStream.write(bytes, 0, read);
+		}
+		outputStream.close();
+		System.out.println("Done!");}
+		return filepath;
 	}
 
 		public static String getFileName(Part filePart)

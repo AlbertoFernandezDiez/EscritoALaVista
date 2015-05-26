@@ -157,19 +157,20 @@ public class GestorBD {
 		return autor;
 	}
 
-	public int insertarObra(int pAutor, String pTitulo, String pResumen){
+	public int insertarObra(int pAutor, String pTitulo, String pResumen, String pRuta){
 		int id = 0;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/tfg", "root", "root");
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("INSERT INTO `obra` (`autor`, `titulo`, `resumen`, "
-					+ "`fecha_in` , `fecha_mod`) VALUES ( ?, ?, ?, ?, ?)");
+					+ "`fecha_in` , `fecha_mod`,`portada`) VALUES ( ?, ?, ?, ?, ?,?)");
 			st.setInt(1, pAutor);
 			st.setString(2, pTitulo);
 			st.setString(3, pResumen);
 			st.setDate(4, new Date(System.currentTimeMillis()));
 			st.setDate(5, new Date(System.currentTimeMillis()));
+			st.setString(6, pRuta);
 			st.execute();
 
 			st = (PreparedStatement) conexion.prepareStatement("SELECT id FROM obra where autor = ? and titulo = ? and resumen = ?");
@@ -187,18 +188,19 @@ public class GestorBD {
 		return id;
 	}
 
-	public void insertarCapitulo(int pObra, String pTitulo, String pCapitulo, String pComentario){
+	public void insertarCapitulo(int pObra, String pTitulo, String pCapitulo, String pComentario,String pRuta){
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/tfg", "root", "root");
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("INSERT INTO `capitulo` (`obra`, `nombre`, `texto`,"
-					+ " `comentarios_autor`, `fecha_comentario`) VALUES (?, ?, ?, ?, ?)");
+					+ " `comentarios_autor`, `fecha_comentario`,`imagen`) VALUES (?, ?, ?, ?, ?,?)");
 			st.setInt(1, pObra);
 			st.setString(2, pTitulo);
 			st.setString(3, pCapitulo);
 			st.setString(4, pComentario);
 			st.setDate(5, new Date(System.currentTimeMillis()));
+			st.setString(6, pRuta);
 			st.execute();
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -363,7 +365,7 @@ public class GestorBD {
 					"jdbc:mysql://localhost:3306/tfg", "root", "root");
 
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("UPDATE `tfg`.`obra` SET "
-					+ " `titulo`=?, `resumen`=?, `fecha_mod`=?, `portada`=? WHERE `id`='?';");
+					+ " `titulo`=?, `resumen`=?, `fecha_mod`=?, `portada`=? WHERE `id`=?;");
 
 			st.setString(1, tituloObra);
 			st.setString(2, resumen);
@@ -382,8 +384,28 @@ public class GestorBD {
 	}
 
 	public void updateChapter(int idCap, String tituloCap, String capitulo,
-			String resumen, String string) {
-		// TODO Auto-generated method stub
-		
+			String resumen, String pRuta) {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("UPDATE `tfg`.`obra` SET `titulo`='?',"
+					+ " `resumen`='?', `fecha_mod`='?', `portada`='?' WHERE `id`='?';");
+
+			st.setString(1, tituloCap);
+			st.setString(2, resumen);
+			st.setDate(3, new Date(System.currentTimeMillis()));
+			st.setString(4, pRuta);
+			st.setInt(5, idCap);
+			
+			st.executeUpdate();
+
+			st.close();
+			conexion.close();
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 	}
 }
