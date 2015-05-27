@@ -7,10 +7,10 @@
 <%@page import="packBD.GestorBD"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-<meta charset = 'utf8'>
+<meta charset = 'UTF-8'>
 <script src="js/loadSelect.js"></script>
 <script
 	src="js/jquery-1.10.2.js">
@@ -50,7 +50,7 @@
 			:</label>
 		<textarea rows="5" cols="20" id="resumen" name="resumen" spellcheck="true"></textarea>
 		<input id="fileObra" type="file" name="fileObra" size="50" />
-		<input id='rutaP' type='hidden' name='rutaP'/>
+		<input id='rutaP' type='text' name='rutaP'/>
 		<input type='button' id='cambiarP' value='Cambiar Portada' onclick='$("#rutaP").val("");'>
 		<br> <label for="titCap">Titulo Capitulo :</label> <input
 			type="text" id="titCap" name="titCap" spellcheck="true"> <br> <label
@@ -59,7 +59,7 @@
 		<br> <label for="comentarios" spellcheck="true">Comentarios :</label>
 		<textarea rows="5" cols="20" id="comentarios" name="comentarios" spellcheck="true"></textarea>
 		<input id="fileCapi" type="file" name="fileCapi" size="50" />
-		<input id='rutaC' type='hidden' name='rutaC' />
+		<input id='rutaC' type='text' name='rutaC' />
 		<input type='button' id='cambiarP' value='Cambiar Portada' onclick='$("#rutaC").val("");'>
 		
 		

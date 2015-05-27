@@ -113,8 +113,14 @@ public class LoadSelectChapters extends HttpServlet {
 
 		JSONObject jsonCapitulo = new JSONObject(); 
 		jsonCapitulo.put("titulo", cap.getNombre());
-		jsonCapitulo.put("capitulo", cap.getTextoC());
+		JSONArray array = new JSONArray();	
+		for (String x:cap.getTexto())
+			{
+				array.put(x);
+			}
+		jsonCapitulo.put("capitulo", array);
 		jsonCapitulo.put("comentarioA", cap.getComentariosAutor());
+		
 		jsonCapitulo.put("imagen", cap.getImagen());
 
 

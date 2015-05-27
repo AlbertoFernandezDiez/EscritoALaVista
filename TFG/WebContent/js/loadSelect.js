@@ -84,6 +84,11 @@ function updateChapter(result){
 	$("#capitulo").val("");
 	$("#comentarios").val("");	
 	$("#titCap").val(result.titulo);
+	
+	$.each(result.capitulo, function(i,item){
+		$("#capitulo").append(item);
+	});
+	
 	$("#capitulo").val(result.capitulo);
 	$("#comentarios").val(result.comentarioA);
 	$('#rutaC').val(result.imagen);
