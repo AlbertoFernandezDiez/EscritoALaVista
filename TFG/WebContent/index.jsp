@@ -22,7 +22,7 @@
 			<ul>
 				<li>INICIO</li>
 				<li>CATEGORIA</li>
-				<li><a href ="uploadBook.jsp">CREAR HISTORIA</a></li>
+				<li><a href ="UploadBook">CREAR HISTORIA</a></li>
 				<li>IDENTIFICARSE</li>
 			</ul>
 		</nav>

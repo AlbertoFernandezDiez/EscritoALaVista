@@ -274,9 +274,17 @@ public class GestorBD {
 			Connection conexion = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/tfg", "root", "root");
 
-			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select * from obra order by fecha_mod asc limit ? offset ?");
+			PreparedStatement st;
+			if (limit != 0)
+			{
+				 st = (PreparedStatement) conexion.prepareStatement("select * from obra order by fecha_mod asc limit ? offset ?");
 			st.setInt(1, limit);
 			st.setInt(2, offset);
+			}
+			else{
+				 st = (PreparedStatement) conexion.prepareStatement("select * from obra order by fecha_mod asc");
+			}
+			
 			ResultSet rs = st.executeQuery();
 			while (rs.next())	   
 			{
@@ -408,4 +416,36 @@ st.setString(3, comentario);
 			e.printStackTrace();
 		}		
 	}
+
+	public ArrayList<Autor> getAutoresBeans() {
+		ArrayList<packBeans.Autor> lista = new ArrayList<packBeans.Autor>();
+		packBeans.Autor autor = null;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT * FROM tfg.autor ");
+
+			ResultSet rs = st.executeQuery();
+			if (rs.next())	   
+			{
+				autor = new Autor();
+				autor.setId(rs.getInt("id"));
+				autor.setImagen(rs.getString("imagen"));
+				autor.setNacimiento(rs.getDate("nacimiento"));
+				autor.setNombre(rs.getString("nombre"));
+				autor.setPais(rs.getString("pais"));
+				autor.setAbout(rs.getString("about"));
+				lista.add(autor);
+			}
+			rs.close();
+			st.close();
+			conexion.close();
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lista;
+		}
 }
