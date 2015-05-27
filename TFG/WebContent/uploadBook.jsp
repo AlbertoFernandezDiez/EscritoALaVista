@@ -44,7 +44,7 @@
 			:</label>
 		<textarea rows="5" cols="20" id="resumen" name="resumen"
 			spellcheck="true"></textarea>
-		<input id="fileObra" type="file" name="fileObra" size="50" /> <input
+		<input id="fileObra" type="file" name="fileObra" size="50" accept='image/*'/> <input
 			id='rutaP' type='hidden' name='rutaP' /> <input type='button'
 			id='cambiarP' value='Cambiar Portada' onclick='$("#rutaP").val("");'>
 		<br> <label for="titCap">Titulo Capitulo :</label> <input
@@ -56,7 +56,7 @@
 			:</label>
 		<textarea rows="5" cols="20" id="comentarios" name="comentarios"
 			spellcheck="true"></textarea>
-		<input id="fileCapi" type="file" name="fileCapi" size="50" /> <input
+		<input id="fileCapi" type="file" name="fileCapi" size="50" accept='image/*'/> <input
 			id='rutaC' type='hidden' name='rutaC' /> <input type='button'
 			id='cambiarP' value='Cambiar Portada' onclick='$("#rutaC").val("");'>
 
