@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.mysql.jdbc.PreparedStatement;
 
@@ -277,14 +278,14 @@ public class GestorBD {
 			PreparedStatement st;
 			if (limit != 0)
 			{
-				 st = (PreparedStatement) conexion.prepareStatement("select * from obra order by fecha_mod asc limit ? offset ?");
-			st.setInt(1, limit);
-			st.setInt(2, offset);
+				st = (PreparedStatement) conexion.prepareStatement("select * from obra order by fecha_mod asc limit ? offset ?");
+				st.setInt(1, limit);
+				st.setInt(2, offset);
 			}
 			else{
-				 st = (PreparedStatement) conexion.prepareStatement("select * from obra order by fecha_mod asc");
+				st = (PreparedStatement) conexion.prepareStatement("select * from obra order by fecha_mod asc");
 			}
-			
+
 			ResultSet rs = st.executeQuery();
 			while (rs.next())	   
 			{
@@ -296,6 +297,7 @@ public class GestorBD {
 				aux.setPortada(rs.getString("portada"));
 				aux.setResumen(rs.getString("resumen"));
 				aux.setTitulo(rs.getString("titulo"));
+
 
 				lista.add(aux);
 			}
@@ -354,6 +356,8 @@ public class GestorBD {
 				autor.setNombre(rs.getString("nombre"));
 				autor.setPais(rs.getString("pais"));
 				autor.setAbout(rs.getString("about"));
+				autor.setEmail(rs.getString("email"));
+
 			}
 			rs.close();
 			st.close();
@@ -380,7 +384,7 @@ public class GestorBD {
 			st.setDate(3, new Date(System.currentTimeMillis()));
 			st.setString(4, portada);
 			st.setInt(5, idOb);
-			
+
 			st.executeUpdate();
 
 			st.close();
@@ -403,10 +407,10 @@ public class GestorBD {
 
 			st.setString(1, tituloCap);
 			st.setString(2, capitulo);
-st.setString(3, comentario);
+			st.setString(3, comentario);
 			st.setString(4, pRuta);
 			st.setInt(5, idCap);
-			
+
 			st.executeUpdate();
 
 			st.close();
@@ -437,6 +441,7 @@ st.setString(3, comentario);
 				autor.setNombre(rs.getString("nombre"));
 				autor.setPais(rs.getString("pais"));
 				autor.setAbout(rs.getString("about"));
+				autor.setEmail(rs.getString("email"));
 				lista.add(autor);
 			}
 			rs.close();
@@ -447,5 +452,26 @@ st.setString(3, comentario);
 			e.printStackTrace();
 		}
 		return lista;
+	}
+
+	public HashMap<Integer, String> getHasMapAutores() {
+		HashMap<Integer, String> autores = null;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select id, nombre from autor;");
+			ResultSet rs = st.executeQuery();
+			autores = new HashMap<>();
+			while(rs.next())
+			{		
+				autores.put(rs.getInt("id"), rs.getString("nombre"));
+			}
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		return autores;
+	}
+
 }

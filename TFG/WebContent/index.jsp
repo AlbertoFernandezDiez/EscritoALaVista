@@ -18,22 +18,29 @@
 		<header>
 			<h1>Nombre de la web</h1>
 		</header>
+		<c:set var="autor" value="${requestScope.autores}" scope="request"></c:set>
+
 		<nav>
 			<ul>
 				<li>INICIO</li>
 				<li>CATEGORIA</li>
-				<li><a href ="UploadBook">CREAR HISTORIA</a></li>
+				<li><a href="UploadBook">CREAR HISTORIA</a></li>
 				<li>IDENTIFICARSE</li>
 			</ul>
 		</nav>
 		<section>
 			<c:forEach items="${requestScope.obras}" var="ob">
 				<article>
+					<img alt='Imagen de perfil'
+						src='<c:out value="${ob.portada}"></c:out>'>
 					<ul>
-						<li><a href="VerHistoria?op=0&hi=<c:out value="${ob.id}"></c:out>"><c:out value="${ob.titulo}"></c:out></a></li>
+						<li><a
+							href="VerHistoria?op=0&hi=<c:out value="${ob.id}"></c:out>"><c:out
+									value="${ob.titulo}"></c:out></a></li>
 						<li><c:out value="${ob.fecha_in}"></c:out></li>
 						<li><c:out value="${ob.fecha_mod}"></c:out></li>
-						<li><a href="VerAutor?autor=<c:out value="${ob.autor}"></c:out>">Yo</a></li>
+						<li><a
+							href="VerAutor?autor=<c:out value="${ob.autor}"></c:out>"><c:out value="${autor[ob.autor]}"></c:out></a></li>
 					</ul>
 					<div id='resumen'>
 						<p>

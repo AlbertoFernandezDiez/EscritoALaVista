@@ -5,7 +5,15 @@ import java.sql.Date;
 public class Autor {
 	
 	private int id;
-	private String pais,nombre,about,imagen;
+	private String pais,nombre,about,imagen,email;
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	private Date nacimiento;
 
 	public Autor(){}

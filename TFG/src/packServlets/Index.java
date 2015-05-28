@@ -2,6 +2,7 @@ package packServlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -49,11 +50,13 @@ public class Index extends HttpServlet {
 		}
 		
 		ArrayList<Obra> lista = GestorBD.getGestorBD().getObrasBeans(show, pos);
+		HashMap<Integer, String> autores = GestorBD.getGestorBD().getHasMapAutores();
 		int max = GestorBD.getGestorBD().getMaxObrasN(show);
 		request.setAttribute("obras", lista);
 		request.setAttribute("pos",pos);
 		request.setAttribute("show", show);
 		request.setAttribute("max", max);
+		request.setAttribute("autores", autores);
 		
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
         rd.forward(request, response);

@@ -18,14 +18,12 @@
        http://localhost:8080/TFG/
      </param-value>
   </context-param>
-  
   <servlet>
-  <servlet-name>UploadBook</servlet-name>
-  <servlet-class>packServlets.UploadBook</servlet-class>
+    <servlet-name>UploadBook</servlet-name>
+    <servlet-class>packServlets.UploadBook</servlet-class>
   </servlet>
-  
-<!--   <servlet-mapping>
-  <servlet-name>UploadBook</servlet-name>
-  <url-pattern>UploadBook</url-pattern>
-  </servlet-mapping>-->
+  <servlet-mapping>
+    <servlet-name>UploadBook</servlet-name>
+    <url-pattern>/UB</url-pattern>
+  </servlet-mapping>
 </web-app>

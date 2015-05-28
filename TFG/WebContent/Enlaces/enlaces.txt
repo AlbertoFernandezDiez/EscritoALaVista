@@ -10,3 +10,11 @@ http://www.journaldev.com/2090/jstl-tutorial-with-examples-jstl-core-tags
 
 Etiquetas HTML5
 http://diveintohtml5.info/forms.html
+
+SALTING (APACHE SHIRO) (SEGURIDAD)
+http://stackoverflow.com/questions/24905865/salt-and-hash-passwords-in-jsp
+http://shiro.apache.org/
+http://balusc.blogspot.com.tr/2013/01/apache-shiro-is-it-ready-for-java-ee-6.html
+
+SHA 512
+http://stackoverflow.com/questions/9544159/jquery-jssha-and-sha512-how-to-call-function

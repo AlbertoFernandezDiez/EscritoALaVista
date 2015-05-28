@@ -68,3 +68,14 @@ margin-right : auto;
 padding : 0px;
  /* margin: 0 auto;*/
 }
+
+article img {
+clear: left; 
+float: left;
+margin-left: 5px;
+ margin-right: 3px; 
+ padding: 2px;  
+ display: block;
+ max-height:140px;
+ max-width: 130px;
+}

@@ -3,10 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <title>Registrarse</title>
+<script src="js/jquery-1.10.2.js"></script>
+<script>
+function validarFormulario(){
+	alert("Pulsado");
+}
+
+</script>
 </head>
 <body>
 
-	<form method="POST" enctype="multipart/form-data">
+	<form id='registro' method="POST" action="Registrar" onsubmit='validarFormulario() 	' enctype="multipart/form-data">
 	
 		<label for="usuario">Nombre de usuario :</label> <input id="usuario"
 			name="usuario" type="text" placeholder="usuariodeprueba"
