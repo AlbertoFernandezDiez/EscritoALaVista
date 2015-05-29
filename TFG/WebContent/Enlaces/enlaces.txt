@@ -18,3 +18,8 @@ http://balusc.blogspot.com.tr/2013/01/apache-shiro-is-it-ready-for-java-ee-6.htm
 
 SHA 512
 http://stackoverflow.com/questions/9544159/jquery-jssha-and-sha512-how-to-call-function
+---> http://sourceforge.net/projects/jssha/files/jsSHA/1.3/
+
+
+HTTPS
+https://tomcat.apache.org/tomcat-6.0-doc/ssl-howto.html

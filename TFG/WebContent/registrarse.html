@@ -4,39 +4,65 @@
 <meta charset="UTF-8">
 <title>Registrarse</title>
 <script src="js/jquery-1.10.2.js"></script>
-<script>
-function validarFormulario(){
-	alert("Pulsado");
-}
+<script src="js/sha512.js"></script>
 
+<script>
+	function toSHA512(password) {
+		var jsSha = new jsSHA(password);
+		var hash = jsSha.getHash("SHA-512", "HEX");
+
+		return hash;
+		
+		
+	}
+	
+	function presubmit(){
+		$( "#registro" ).submit(function( event ) {
+			  var $contra1 = $("#contrasena1");
+				var $contra2 = $("#contrasena2");
+				if ($contra1.val() == $contra2.val()) {
+					$contra1.val(toSHA512($contra1.val()));
+					$contra2.val(toSHA512($contra2.val()));
+		    return;
+		  }
+				else{}
+		  $( "span" ).text( "Not valid!" ).show().fadeOut( 1000 );
+		  event.preventDefault();
+	});}
 </script>
 </head>
 <body>
 
-	<form id='registro' method="POST" action="Registrar" onsubmit='validarFormulario() 	' enctype="multipart/form-data">
-	
+	<form id='registro' method="POST" action="Registrar"
+		enctype="multipart/form-data">
+
 		<label for="usuario">Nombre de usuario :</label> <input id="usuario"
 			name="usuario" type="text" placeholder="usuariodeprueba"
-			required='true'><br>
-			<label for="email">Email :</label> <input id="email"
-			name="email" type="email" placeholder="ejemplo@ejemplo.com"
-			required='true'><br>
-			 <label for="contrasena1">Contraseña
-			:</label> <input id="contrasena1" pattern="[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{6,}" title="Six or more characters"  name="contrasena1" type="password"
+			required='true'><br> <label for="email">Email :</label>
+		<input id="email" name="email" type="email"
+			placeholder="ejemplo@ejemplo.com" required='true'><br> <label
+			for="contrasena1">Contraseña :</label> <input id="contrasena1"
+			pattern="[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{6,}"
+			title="Six or more characters" name="contrasena1" type="password"
 			placeholder="Introduce una contraseña" required='true'><br>
 		<label for="contrasena2">Contraseña :</label> <input id="contrasena2"
-			name="contrasena2" type="password" placeholder="Repite la contraseña" pattern="[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{6,}" title="Six or more characters" 
-			required='true'><br> <label for="pais">Pais :</label> <input
-			id="pais" name="pais" type="text" placeholder="ej:Francia"
-			required='true'><br> <label for="nacimiento">Fecha
-			de nacimiento :</label> <input id="nacimiento" name="nacimiento" type="date"
-			placeholder='MM/dd/yyyy' required='true'><br> <label
-			for="about">Habla sobre ti :</label><br>
+			name="contrasena2" type="password" placeholder="Repite la contraseña"
+			pattern="[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{6,}"
+			title="Six or more characters" required='true'><br> <label
+			for="pais">Pais :</label> <input id="pais" name="pais" type="text"
+			placeholder="ej:Francia" required='true'><br> <label
+			for="nacimiento">Fecha de nacimiento :</label> <input id="nacimiento"
+			name="nacimiento" type="date" placeholder='MM/dd/yyyy'
+			required='true'><br> <label for="about">Habla
+			sobre ti :</label><br>
 		<textarea id="about" name="about" rows="4" cols="50" required='true'
-			spellcheck="true"></textarea><br>
-			<input id='file' name='file' type='file' accept='image/*' ><br>
+			spellcheck="true"></textarea>
+		<br> <input id='file' name='file' type='file' accept='image/*'><br>
 		<input id='submit' name='submit' type='submit'>
 
+<script>
+presubmit();
+</script>
 	</form>
 
 </body>

@@ -26,6 +26,7 @@
 				<li>CATEGORIA</li>
 				<li><a href="UploadBook">CREAR HISTORIA</a></li>
 				<li>IDENTIFICARSE</li>
+				<li><a href="registrarse.html">REGISTRARSE</a></li>
 			</ul>
 		</nav>
 		<section>
