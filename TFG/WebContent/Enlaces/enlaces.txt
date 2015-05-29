@@ -23,3 +23,5 @@ http://stackoverflow.com/questions/9544159/jquery-jssha-and-sha512-how-to-call-f
 
 HTTPS
 https://tomcat.apache.org/tomcat-6.0-doc/ssl-howto.html
+https://www.digicert.com/es/instalar-certificado-ssl-tomcat.htm
+http://www.adictosaltrabajo.com/tutoriales/sslen-tomcat/

@@ -1,5 +1,7 @@
 package packBD;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -472,6 +474,55 @@ public class GestorBD {
 			e.printStackTrace();
 		}
 		return autores;
+	}
+
+	public void addUser(String nombre, String email, String password,
+			String pais, Date nac, String about, String ruta) {
+		// TODO Auto-generated method stub
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+			String sal = toSha512(String.valueOf(System.currentTimeMillis()));
+			String contra = toSha512(toSha512(password) + sal);
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("INSERT INTO `tfg`.`autor` (`pais`, `nacimiento`, `nombre`, `password`, `sal`, `about`, `imagen`, `email`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
+			st.setString(1, pais);
+			st.setDate(2, nac);
+			st.setString(3, nombre);
+			st.setString(4, contra);
+			st.setString(5, sal);
+			st.setString(6, about);
+			st.setString(7, ruta);
+			st.setString(8, email);
+			st.executeUpdate();
+			
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private String toSha512(String contrasena){
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("SHA-512");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		String clave = contrasena;
+		md.update(clave.getBytes());
+		String output = "";
+		byte[] mb = md.digest();
+		for (int i = 0; i < mb.length; i++) {
+			byte temp = mb[i];
+			String s = Integer.toHexString(new Byte(temp));
+			while (s.length() < 2) {
+				s = "0" + s;
+			}
+			s = s.substring(s.length() - 2);
+			output += s;
+		}
+		return output;
 	}
 
 }
