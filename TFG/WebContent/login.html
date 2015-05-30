@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/sha512.js"></script>
+<script src="js/validations.js"></script>
+
+<title>LogIn</title>
+</head>
+<body>
+	<form id='login' method="POST" action="LogIn"
+		enctype="multipart/form-data">
+
+		<label for="usuario">Nombre de usuario :</label> <input id="usuario"
+			name="usuario" type="text" placeholder="usuariodeprueba"
+			required='true'> <label for="contrasena">Contraseña:</label>
+		<input id="contrasena" name="contrasena" type="password"
+			placeholder="Introduce una contraseña" required='true'> <input
+			type="submit" name="submit" id="submit">
+	</form>
+
+	<script>
+			loginSubmit();
+			</script>
+</body>
+</html>

@@ -5,31 +5,9 @@
 <title>Registrarse</title>
 <script src="js/jquery-1.10.2.js"></script>
 <script src="js/sha512.js"></script>
+<script src="js/validations.js"></script>
 
-<script>
-	function toSHA512(password) {
-		var jsSha = new jsSHA(password);
-		var hash = jsSha.getHash("SHA-512", "HEX");
 
-		return hash;
-		
-		
-	}
-	
-	function presubmit(){
-		$( "#registro" ).submit(function( event ) {
-			  var $contra1 = $("#contrasena1");
-				var $contra2 = $("#contrasena2");
-				if ($contra1.val() == $contra2.val()) {
-					$contra1.val(toSHA512($contra1.val()));
-					$contra2.val(toSHA512($contra2.val()));
-		    return;
-		  }
-				else{}
-		  $( "span" ).text( "Not valid!" ).show().fadeOut( 1000 );
-		  event.preventDefault();
-	});}
-</script>
 </head>
 <body>
 

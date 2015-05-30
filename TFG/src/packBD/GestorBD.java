@@ -525,4 +525,43 @@ public class GestorBD {
 		return output;
 	}
 
+	/**
+	 * Metodo que devuelve el id de usuario si 
+	 * la contraseña y el usuario son correctos
+	 * @param username el nombre del usuario
+	 * @param password la contraseña con SHA512 
+	 * aplicado
+	 * @return el id del usuario en BD (si los
+	 * datos no son correctos se devuelve 0)
+	 */
+	public int checkUser(String username, String password) {
+		// TODO Auto-generated method stub
+		int id = 0;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+			
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT id,password,sal"
+					+ " FROM tfg.autor where nombre = ?;");
+			st.setString(1, username);
+			
+			ResultSet rs = st.executeQuery();
+			
+			if (rs.next()){
+				String sal = rs.getString("sal");
+				String contra = rs.getString("password");
+				String passw = toSha512(toSha512(password) + sal);
+				
+				if (contra.equals(passw))
+					id = rs.getInt("id");
+			}
+			
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return id;
+	}
+
 }
