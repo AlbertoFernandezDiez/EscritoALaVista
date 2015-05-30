@@ -6,7 +6,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <title>
-
 <c:out value="${requestScope.tit}" ></c:out>
 </title>
 <style>
@@ -15,6 +14,12 @@ table,th,td
 border:1px solid black;
 }
 </style>
+
+<script src="js/jquery-1.10.2.js"></script>
+<script>
+
+</script>
+
 </head>
 <body>
 
@@ -30,6 +35,22 @@ border:1px solid black;
 </c:forEach>
 </tbody>
 </table>
+
+<fieldset>
+	<legend>Exportar:</legend>	
+<form id='exportar' name='exportar' method='GET' action='Hello'>
+	<input type="radio" name="formato" value="Hello" checked="checked" >Itext<br>
+	<input type="radio" name="formato" value="EpubCreator">Epub<br>
+	<input type="radio" name="formato" value="LatexCreator">Latex<br>
+<input type='submit' name='exportar'>
+</form>
+</fieldset>
+
+<script>
+$( "input[name=formato]:radio" ).change(function() {
+  $( "#exportar").attr('action', $(this).val());
+});
+</script>
 
 <div id="historia">
 

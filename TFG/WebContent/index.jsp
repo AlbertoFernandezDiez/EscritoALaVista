@@ -25,13 +25,19 @@
 				<li>INICIO</li>
 				<li>CATEGORIA</li>
 				<li><a href="UploadBook">CREAR HISTORIA</a></li>
-				<li>IDENTIFICARSE</li>
-				<li><a href="registrarse.html">REGISTRARSE</a></li>
-				<c:if test="${not empty requestScope.userId}">
-					<li><a
-						href='VerAutor?autor=<c:out value="${requestScope.userId}"></c:out>'><c:out
-								value="${requestScope.userName}"></c:out></a></li>
-				</c:if>
+
+				<c:choose>
+					<c:when test="${not empty requestScope.userId}">
+						<li><a
+							href='VerAutor?autor=<c:out value="${requestScope.userId}"></c:out>'><c:out
+									value="${requestScope.userName}"></c:out></a></li>
+						<li><a href="LogOut">Logout</a></li>
+					</c:when>
+					<c:otherwise>
+						<li><a href='login.html'>IDENTIFICARSE</a></li>
+						<li><a href="registrarse.html">REGISTRARSE</a></li>
+					</c:otherwise>
+				</c:choose>
 			</ul>
 		</nav>
 		<section>

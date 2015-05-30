@@ -28,3 +28,6 @@ http://www.adictosaltrabajo.com/tutoriales/sslen-tomcat/
 
 LOGIN/LOGOUT JSP
 http://mrbool.com/how-to-create-a-login-form-with-jsp/25685
+
+CAMBIAR DESTINO CON RADIOBUTTON
+http://jsfiddle.net/N9tBx/

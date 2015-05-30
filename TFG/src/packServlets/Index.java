@@ -55,8 +55,12 @@ public class Index extends HttpServlet {
 		String user = (String) session.getAttribute("username");
 		int id = 0;
 		
+		try {
 		id = (int) session.getValue("id");
-		
+		}
+		catch(NullPointerException e){
+			e.printStackTrace();
+		}
 		if (id != 0)
 		{
 		request.setAttribute("userId",id);
