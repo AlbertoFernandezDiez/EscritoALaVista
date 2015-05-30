@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -106,18 +107,27 @@ public class Hello extends HttpServlet {
 	public void init( ){
 		// Get the file location where it would be stored.
 		filePath =getServletContext().getInitParameter("file-upload"); 
-		folder = new File(filePath,"/output/temp");
+		folder = new File(filePath,"/output/Itext");
 
 	}
 
 	protected void doGet(
 			HttpServletRequest request, HttpServletResponse response)
 					throws ServletException, IOException {
-		response.setContentType("application/pdf");
+		String idS = request.getParameter("id");
+		int id = 0;
+
+		try{
+			id = Integer.parseInt(idS);
+		}
+		catch(NumberFormatException e){
+			e.printStackTrace();
+		}
+		
 		FileOutputStream pdf2 = null;
 		FileOutputStream pdf1 = null;
-		Obra obra = GestorBD.getGestorBD().getObra(3);
-		Usuario autor = GestorBD.getGestorBD().getAutor(3);
+		Obra obra = GestorBD.getGestorBD().getObra(id);
+		Usuario autor = GestorBD.getGestorBD().getAutor(id);
 		File file1,file2;
 		
 		try {
@@ -288,7 +298,13 @@ public class Hello extends HttpServlet {
 			throw new IOException(de.getMessage());
 		}
 		try {
-			joinPDF(file1,file2,obra,autor,response);
+			String fileName = joinPDF(file1,file2,obra,autor,response);
+
+			PrintWriter pw = response.getWriter();
+			pw.write("<!DOCTYPE html><html><head><meta charset='UTF-8'>"
+					+ "<title>Registrarse</title></head><body><a href='output/Itext/"+fileName+"'>"+obra.getTitulo()+"</a></body></html>");
+			pw.close();
+
 		} catch (DocumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -313,14 +329,16 @@ public class Hello extends HttpServlet {
 
 
 
-	private void joinPDF(File pdf1, File pdf2, Obra obra,Usuario autor, HttpServletResponse response) throws IOException, DocumentException {
+	private String joinPDF(File pdf1, File pdf2, Obra obra,Usuario autor, HttpServletResponse response) throws IOException, DocumentException {
 		// TODO Auto-generated method stub
 		PdfReader reader ;//= new PdfReader(new RandomAccessFileOrArray(pdf1.getAbsolutePath()), null);
 		String src[] = {pdf1.getAbsolutePath(),pdf2.getAbsolutePath()};
 		Document document = new Document(PageSize.A4, 50, 50, 50, 50);
 
-
-		PdfCopy copy = new PdfCopy(document, response.getOutputStream());
+		File file = new File(folder, obra.getTitulo()+".pdf");
+		FileOutputStream pdf = new FileOutputStream(file);
+		
+		PdfCopy copy = new PdfCopy(document, pdf);
 		document.open();
 
 		document.addTitle(obra.getTitulo());
@@ -356,9 +374,11 @@ public class Hello extends HttpServlet {
 		// step 5
 		document.close();
 		copy.close();
+		pdf.close();
 		pdf1.delete();
 		pdf2.delete();
 
+		return file.getName();
 
 	}
 

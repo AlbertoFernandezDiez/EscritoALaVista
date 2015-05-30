@@ -42,6 +42,7 @@ border:1px solid black;
 	<input type="radio" name="formato" value="Hello" checked="checked" >Itext<br>
 	<input type="radio" name="formato" value="EpubCreator">Epub<br>
 	<input type="radio" name="formato" value="LatexCreator">Latex<br>
+	<input type="hidden" name="id" value="<c:out value="${requestScope.id}" ></c:out>">
 <input type='submit' name='exportar'>
 </form>
 </fieldset>

@@ -2,6 +2,7 @@ package packConversor;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -37,17 +38,29 @@ public class LatexCreator extends HttpServlet {
 	}
 	public void init( ){
 		// Get the file location where it would be stored.
-		
+
 		filePath =getServletContext().getInitParameter("file-upload"); 
 		folder = new File(filePath,"/latex");
 
 	}
-	
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+
+		String idS = request.getParameter("id");
+		int id = 0;
+
+		try{
+			id = Integer.parseInt(idS);
+		}
+		catch(NumberFormatException e){
+			e.printStackTrace();
+		}
+
+
 		File workingDirectory = new File(folder.getAbsolutePath());
 		if (!workingDirectory.exists())
 		{
@@ -55,10 +68,10 @@ public class LatexCreator extends HttpServlet {
 		}
 		System.out.println(workingDirectory.getAbsolutePath());
 
-		Obra obra = GestorBD.getGestorBD().getObra(3);
-		ListaCapitulos lista = GestorBD.getGestorBD().getCapitulos(3);
-		Usuario autor = GestorBD.getGestorBD().getAutor(3);
-		File invoice1 = new File(workingDirectory + File.separator + "invoice1.tex");
+		Obra obra = GestorBD.getGestorBD().getObra(id);
+		ListaCapitulos lista = GestorBD.getGestorBD().getCapitulos(id);
+		Usuario autor = GestorBD.getGestorBD().getAutor(id);
+		File invoice1 = new File(workingDirectory + File.separator + obra.getTitulo() + ".tex");
 
 		File template = new File(workingDirectory + File.separator+ "invoiceTemplate.tex");
 
@@ -67,7 +80,6 @@ public class LatexCreator extends HttpServlet {
 			tempDir.mkdir();
 		}
 		try {
-			System.out.println(new File(filePath , obra.getPortada()).getAbsolutePath());
 			JLRConverter converter = new JLRConverter(workingDirectory);
 
 			ArrayList<ArrayList<String>> book = loadChapters(lista,autor);
@@ -81,7 +93,7 @@ public class LatexCreator extends HttpServlet {
 			}
 
 
-			File desktop = new File(tempDir + File.separator + "Desktop");
+			File desktop = new File(filePath + File.separator + "Output");
 
 			JLRGenerator pdfGen = new JLRGenerator();           
 
@@ -89,7 +101,11 @@ public class LatexCreator extends HttpServlet {
 				System.out.println(pdfGen.getErrorMessage());
 			}
 
-			JLROpener.open(pdfGen.getPDF());
+			PrintWriter pw = response.getWriter();
+
+			pw.write("<!DOCTYPE html><html><head><meta charset='UTF-8'>"
+					+ "<title>Registrarse</title></head><body><a href='output/"+pdfGen.getPDF().getName()+"'>"+obra.getTitulo()+"</a></body></html>");
+			pw.close();
 
 
 		} catch (IOException ex) {

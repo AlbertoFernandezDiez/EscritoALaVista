@@ -67,7 +67,7 @@ public class EpubCreator extends HttpServlet {
 	public void init(){
 		// TODO Auto-generated method stub
 		filePath = getServletContext().getInitParameter("file-upload"); 
-		folder = new File(filePath,"/output/temp");
+		folder = new File(filePath,"/output");
 		if (!folder.exists())
 		{
 			folder.mkdirs();
@@ -82,9 +82,21 @@ public class EpubCreator extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		Obra obra = GestorBD.getGestorBD().getObra(3);
-		ListaCapitulos lista = GestorBD.getGestorBD().getCapitulos(3);
-		Usuario autor = GestorBD.getGestorBD().getAutor(3);
+		
+		String idS = request.getParameter("id");
+		int id = 0;
+
+		try{
+			id = Integer.parseInt(idS);
+		}
+		catch(NumberFormatException e){
+			e.printStackTrace();
+		}
+
+		
+		Obra obra = GestorBD.getGestorBD().getObra(id);
+		ListaCapitulos lista = GestorBD.getGestorBD().getCapitulos(id);
+		Usuario autor = GestorBD.getGestorBD().getAutor(id);
 		
 		try{
 			// create new EPUB document
@@ -242,6 +254,11 @@ public class EpubCreator extends HttpServlet {
 					new FileOutputStream(new File(folder,obra.getTitulo() + ".epub")));
 			epub.serialize(writer);
 
+PrintWriter pw = response.getWriter();
+			
+			pw.write("<!DOCTYPE html><html><head><meta charset='UTF-8'>"
+					+ "<title>Registrarse</title></head><body><a href='output/"+ obra.getTitulo() + ".epub'>"+obra.getTitulo()+"</a></body></html>");
+			pw.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
