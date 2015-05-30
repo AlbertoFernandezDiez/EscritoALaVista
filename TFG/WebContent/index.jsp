@@ -27,6 +27,11 @@
 				<li><a href="UploadBook">CREAR HISTORIA</a></li>
 				<li>IDENTIFICARSE</li>
 				<li><a href="registrarse.html">REGISTRARSE</a></li>
+				<c:if test="${not empty requestScope.userId}">
+					<li><a
+						href='VerAutor?autor=<c:out value="${requestScope.userId}"></c:out>'><c:out
+								value="${requestScope.userName}"></c:out></a></li>
+				</c:if>
 			</ul>
 		</nav>
 		<section>
@@ -41,7 +46,8 @@
 						<li><c:out value="${ob.fecha_in}"></c:out></li>
 						<li><c:out value="${ob.fecha_mod}"></c:out></li>
 						<li><a
-							href="VerAutor?autor=<c:out value="${ob.autor}"></c:out>"><c:out value="${autor[ob.autor]}"></c:out></a></li>
+							href="VerAutor?autor=<c:out value="${ob.autor}"></c:out>"><c:out
+									value="${autor[ob.autor]}"></c:out></a></li>
 					</ul>
 					<div id='resumen'>
 						<p>

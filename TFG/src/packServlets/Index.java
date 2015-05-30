@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import packBD.GestorBD;
 import packBeans.Obra;
@@ -47,6 +48,19 @@ public class Index extends HttpServlet {
 			
 			pos = 0;
 			show = 10;
+		}
+		
+		HttpSession session = request.getSession();
+		
+		String user = (String) session.getAttribute("username");
+		int id = 0;
+		
+		id = (int) session.getValue("id");
+		
+		if (id != 0)
+		{
+		request.setAttribute("userId",id);
+		request.setAttribute("userName",user);
 		}
 		
 		ArrayList<Obra> lista = GestorBD.getGestorBD().getObrasBeans(show, pos);

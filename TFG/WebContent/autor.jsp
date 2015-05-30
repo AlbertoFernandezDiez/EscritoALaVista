@@ -15,7 +15,7 @@
 <h2>Nacimiento: <c:out value="${autor.nacimiento}"></c:out></h2>
 <img alt="Foto de perfil" src="<c:out value="${autor.imagen}"></c:out>">
 <p>
-<c:set var="cap" value="emp" scope="request"></c:set>
+<c:out value="${autor.about}"></c:out>
 </p>
 
 </body>
