@@ -2,13 +2,14 @@ package packConversor;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -124,12 +125,37 @@ System.out.println(idS);
 			e.printStackTrace();
 		}
 		
-		FileOutputStream pdf2 = null;
-		FileOutputStream pdf1 = null;
+		
 		Obra obra = GestorBD.getGestorBD().getObra(id);
 		Usuario autor = GestorBD.getGestorBD().getAutor(id);
-		File file1,file2;
+		File file = new File(folder,obra.getTitulo() +".pdf");
+		if (file.exists())
+		{
+			Date modifydate = new Date(file.lastModified());
 		
+			if (obra.getFecha_mod().compareTo(modifydate) <= 0)
+				{
+				file.delete();
+				createPDF(response, id, obra, autor);
+
+				}
+		}
+		else{
+		createPDF(response, id, obra, autor);
+		}
+		PrintWriter pw = response.getWriter();
+		pw.write("<!DOCTYPE html><html><head><meta charset='UTF-8'>"
+				+ "<title>Registrarse</title></head><body><a href='output/Itext/"+file.getName()+"'>"+obra.getTitulo()+"</a></body></html>");
+		
+
+	}
+
+	private void createPDF(HttpServletResponse response, int id, Obra obra,
+			Usuario autor)
+			throws FileNotFoundException, MalformedURLException, IOException {
+		FileOutputStream pdf2;
+		FileOutputStream pdf1;
+		File file1, file2;
 		try {
 			if (!folder.exists())
 				folder.mkdirs();
@@ -238,7 +264,7 @@ System.out.println(idS);
 
 			Document d = new Document(pageSize[type], 50, 50, 50, 50);
 			// add index page.
-			file1 = new File(folder, obra.getTitulo()+"1.pdf");
+			 file1 = new File(folder, obra.getTitulo()+"1.pdf");
 			pdf1 = new FileOutputStream(file1);
 
 			PdfWriter w = PdfWriter.getInstance(d, pdf1);
@@ -309,8 +335,6 @@ System.out.println(idS);
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-
 	}
 
 	private void anadirImagen(Document document, String imagen)

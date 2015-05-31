@@ -127,7 +127,7 @@ public class uploadBookChapter extends HttpServlet {
 		}
 
 
-
+		response.sendRedirect("Index");
 
 
 
