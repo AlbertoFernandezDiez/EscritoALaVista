@@ -116,7 +116,7 @@ public class Hello extends HttpServlet {
 					throws ServletException, IOException {
 		String idS = request.getParameter("id");
 		int id = 0;
-
+System.out.println(idS);
 		try{
 			id = Integer.parseInt(idS);
 		}
@@ -167,7 +167,7 @@ public class Hello extends HttpServlet {
 			 * sus correspondientes maracadores
 			 */
 			String[] parrafos;
-			ListaCapitulos lista = GestorBD.getGestorBD().getCapitulos(3);
+			ListaCapitulos lista = GestorBD.getGestorBD().getCapitulos(id);
 			Capitulo aux = null;
 			Iterator<Capitulo> it = lista.getIterator();
 			ArrayList<Chapter> chapterList = new ArrayList<Chapter>();
@@ -252,7 +252,7 @@ public class Hello extends HttpServlet {
 			Chunk secTitle = new Chunk(obra.getTitulo() ,new Font(FontFamily.HELVETICA, 35, Font.BOLD, BaseColor.BLUE));
 			PdfContentByte canvas = w.getDirectContent();
 			ColumnText ct= new ColumnText(w.getDirectContent());
-			if (image.exists()){
+			if (image != null && image.exists()){
 			img = Image.getInstance(image.getAbsolutePath());
 			//img.scaleToFit(pageSize[type]);
 		//	img.scaleToFit(pageSize[type].getWidth(), pageSize[type].getHeight());
@@ -324,6 +324,8 @@ public class Hello extends HttpServlet {
 		img.setSpacingAfter(50);
 		img.setSpacingBefore(25);
 		document.add(img);}
+		img = null;
+		image = null;
 	}
 
 

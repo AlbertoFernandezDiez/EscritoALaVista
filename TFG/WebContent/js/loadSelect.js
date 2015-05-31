@@ -13,7 +13,8 @@ function loadChapterSel(id){
 	var sel = $("#selCap");
 	sel.val(0);
 	var url = $("#url").val();
-	url = url + "LoadSelectChapters" ;
+	//url = url + "LoadSelectChapters" ;
+	url = "LoadSelectChapters" ;
 	$("#titOb").val("");
 	$("#resumen").val("");
 	$("#selectCapitulo").html("<option name=default value=0>Nueva Obra</option>");
@@ -34,7 +35,9 @@ function loadChapter(id){
 	var sel = $("#selCap");
 	sel.val();
 	var url = $("#url").val();
-	url = url + "LoadSelectChapters" ;
+	//url = url + "LoadSelectChapters" ;
+	url = "LoadSelectChapters" ;
+
 	if (id != 0)
 	{
 		$.ajax({op:1,url:url,type: 'POST',data:{op:2 ,capitulo: id},success:function(result){updateChapter(result);},
