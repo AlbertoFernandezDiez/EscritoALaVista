@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.sql.Date;
 import java.util.Iterator;
 
 import javax.servlet.ServletConfig;
@@ -98,6 +99,34 @@ public class EpubCreator extends HttpServlet {
 		ListaCapitulos lista = GestorBD.getGestorBD().getCapitulos(id);
 		Usuario autor = GestorBD.getGestorBD().getAutor(id);
 		
+		File file = new File(folder,obra.getTitulo() +".epub");
+		if (file.exists())
+		{
+			Date modifydate = new Date(file.lastModified());
+		
+			if (obra.getFecha_mod().compareTo(modifydate) <= 0)
+				{
+				file.delete();
+				createEpub(obra, lista, autor);
+
+				}
+		}
+		else{
+			createEpub(obra, lista, autor);
+		}
+
+		
+		
+		
+		PrintWriter pw = response.getWriter();
+		
+		pw.write("<!DOCTYPE html><html><head><meta charset='UTF-8'>"
+				+ "<title>Registrarse</title></head><body><a href='output/"+ obra.getTitulo() + ".epub'>"+obra.getTitulo()+"</a></body></html>");
+		pw.close();
+	}
+
+
+	private void createEpub(Obra obra, ListaCapitulos lista, Usuario autor) {
 		try{
 			// create new EPUB document
 			Publication epub = new Publication();
@@ -254,11 +283,7 @@ public class EpubCreator extends HttpServlet {
 					new FileOutputStream(new File(folder,obra.getTitulo() + ".epub")));
 			epub.serialize(writer);
 
-PrintWriter pw = response.getWriter();
-			
-			pw.write("<!DOCTYPE html><html><head><meta charset='UTF-8'>"
-					+ "<title>Registrarse</title></head><body><a href='output/"+ obra.getTitulo() + ".epub'>"+obra.getTitulo()+"</a></body></html>");
-			pw.close();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

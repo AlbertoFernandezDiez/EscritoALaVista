@@ -3,6 +3,7 @@ package packConversor;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -71,6 +72,34 @@ public class LatexCreator extends HttpServlet {
 		Obra obra = GestorBD.getGestorBD().getObra(id);
 		ListaCapitulos lista = GestorBD.getGestorBD().getCapitulos(id);
 		Usuario autor = GestorBD.getGestorBD().getAutor(id);
+		
+		
+		File file = new File(folder,obra.getTitulo() +".pdf");
+
+		if (file.exists())
+		{
+			Date modifydate = new Date(file.lastModified());
+		
+			if (obra.getFecha_mod().compareTo(modifydate) <= 0)
+				{
+				file.delete();
+				createPDF(workingDirectory, obra, lista, autor);
+
+				}
+		}
+		else{
+			createPDF(workingDirectory, obra, lista, autor);
+		}
+		
+		PrintWriter pw = response.getWriter();
+
+		pw.write("<!DOCTYPE html><html><head><meta charset='UTF-8'>"
+				+ "<title>Registrarse</title></head><body><a href='output/"+file.getName()+"'>"+obra.getTitulo()+"</a></body></html>");
+		pw.close();
+
+	}
+	private void createPDF(File workingDirectory, Obra obra,
+			ListaCapitulos lista, Usuario autor) {
 		File invoice1 = new File(workingDirectory + File.separator + obra.getTitulo() + ".tex");
 
 		File template = new File(workingDirectory + File.separator+ "invoiceTemplate.tex");
@@ -101,12 +130,7 @@ public class LatexCreator extends HttpServlet {
 				System.out.println(pdfGen.getErrorMessage());
 			}
 
-			PrintWriter pw = response.getWriter();
-
-			pw.write("<!DOCTYPE html><html><head><meta charset='UTF-8'>"
-					+ "<title>Registrarse</title></head><body><a href='output/"+pdfGen.getPDF().getName()+"'>"+obra.getTitulo()+"</a></body></html>");
-			pw.close();
-
+			
 
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());
