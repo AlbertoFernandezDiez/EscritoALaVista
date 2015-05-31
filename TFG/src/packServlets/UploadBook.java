@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import packBD.GestorBD;
 import packBeans.Obra;
@@ -32,15 +33,29 @@ public class UploadBook extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+	HttpSession session = request.getSession();
+		
+		String user = (String) session.getAttribute("username");
+		int id = 0;
+		
+		try {
+		id = (int) session.getValue("id");
 		// TODO Auto-generated method stub
-		ArrayList<packBeans.Obra> listaO = GestorBD.getGestorBD().getObrasBeans(0, 0);
-		ArrayList<packBeans.Autor>listaA = GestorBD.getGestorBD().getAutoresBeans();
+		ArrayList<packBeans.Obra> listaO = GestorBD.getGestorBD().getObrasBeans(0, 0, id);
 		request.setAttribute("obras", listaO);
-		request.setAttribute("autores",listaO);
+		request.setAttribute("autor",id);
 		
 		
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/uploadBook.jsp");
         rd.forward(request, response);
+		}
+		catch(NullPointerException e){
+			e.printStackTrace();
+			response.sendRedirect("Error/NoLogeado.html");
+		}
+		
+	
 	}
 
 	

@@ -268,7 +268,7 @@ public class GestorBD {
 		return lista;
 	}
 
-	public ArrayList<packBeans.Obra> getObrasBeans(int limit, int offset){
+	public ArrayList<packBeans.Obra> getObrasBeans(int limit, int offset, int id){
 		ArrayList<packBeans.Obra> lista = new ArrayList<packBeans.Obra>();
 		packBeans.Obra aux = null;
 
@@ -280,12 +280,26 @@ public class GestorBD {
 			PreparedStatement st;
 			if (limit != 0)
 			{
-				st = (PreparedStatement) conexion.prepareStatement("select * from obra order by fecha_mod asc limit ? offset ?");
-				st.setInt(1, limit);
-				st.setInt(2, offset);
+				if (id == 0){
+					st = (PreparedStatement) conexion.prepareStatement("select * from obra order by fecha_mod asc limit ? offset ?");
+					st.setInt(1, limit);
+					st.setInt(2, offset);
+				}
+				else{
+				st = (PreparedStatement) conexion.prepareStatement("select * from obra where autor = ? order by fecha_mod asc limit ? offset ?");
+				st.setInt(1, id);
+				st.setInt(2, limit);
+				st.setInt(3, offset);}
 			}
 			else{
-				st = (PreparedStatement) conexion.prepareStatement("select * from obra order by fecha_mod asc");
+				if (id == 0){
+					st = (PreparedStatement) conexion.prepareStatement("select * from obra order by fecha_mod asc");
+				}
+				else{
+					st = (PreparedStatement) conexion.prepareStatement("select * from obra where autor = ? order by fecha_mod asc");
+				st.setInt(1, id);
+				}
+				
 			}
 
 			ResultSet rs = st.executeQuery();

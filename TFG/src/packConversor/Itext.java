@@ -80,7 +80,7 @@ import com.itextpdf.text.pdf.draw.LineSeparator;
  * Servlet implementation class Hello
  */
 @WebServlet("/Hello")
-public class Hello extends HttpServlet {
+public class Itext extends HttpServlet {
 
 	private float pageWidth,pageHeight;
 	private PdfContentByte canvas;

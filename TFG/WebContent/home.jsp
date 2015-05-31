@@ -39,7 +39,7 @@ border:1px solid black;
 <fieldset>
 	<legend>Exportar:</legend>	
 <form id='exportar' name='exportar' method='GET' action='Hello'>
-	<input type="radio" name="formato" value="Hello" checked="checked" >Itext<br>
+	<input type="radio" name="formato" value="Itext" checked="checked" >Itext<br>
 	<input type="radio" name="formato" value="EpubCreator">Epub<br>
 	<input type="radio" name="formato" value="LatexCreator">Latex<br>
 	<input type="hidden" name="id" value="<c:out value="${requestScope.id}" ></c:out>">

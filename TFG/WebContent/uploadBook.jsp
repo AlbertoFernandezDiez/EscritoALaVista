@@ -26,7 +26,8 @@
 		value=<%=getServletContext().getInitParameter("server-url")%>>
 	<form action="uploadBookChapter" method="POST"
 		enctype="multipart/form-data">
-
+	
+	<input type='hidden' name='autor' id='autor' value='<c:out value="${requestScope.autor}"></c:out>'>
 
 		<select id="selectObra" name="selectObra" size=1
 			onChange="loadChapterSel($('#selectObra').val())">

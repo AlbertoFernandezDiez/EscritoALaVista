@@ -77,22 +77,22 @@ public class uploadBookChapter extends HttpServlet {
 		String tituloObra = request.getParameter("titOb");
 		String rutaP = request.getParameter("rutaP");
 		String rutaC = request.getParameter("rutaC");
-
+		String idAutorS = request.getParameter("autor");
 
 		if (tituloCap != null && tituloObra != null 
 				&& idSCap != null && idSOb != null
-				&& capitulo != null && resumen != null){
+				&& capitulo != null && resumen != null && idAutorS != null){
 			int idCap = Integer.parseInt(idSCap);
 			int idOb = Integer.parseInt(idSOb);
-
+			int idAutor = Integer.parseInt(idAutorS);
 			if (idOb == 0)
 			{ 
 				int id;
 				//Obra nueva
 				if (!rutaP.matches(""))
-					id = GestorBD.getGestorBD().insertarObra(1, tituloObra, resumen,rutaP);
+					id = GestorBD.getGestorBD().insertarObra(idAutor, tituloObra, resumen,rutaP);
 				else
-					id = GestorBD.getGestorBD().insertarObra(1, tituloObra, resumen,loadFile(request,"fileObra"));
+					id = GestorBD.getGestorBD().insertarObra(idAutor, tituloObra, resumen,loadFile(request,"fileObra"));
 
 				if (idCap == 0){
 					if (!rutaC.matches(""))

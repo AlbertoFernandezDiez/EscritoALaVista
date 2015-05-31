@@ -24,10 +24,11 @@
 			<ul>
 				<li>INICIO</li>
 				<li>CATEGORIA</li>
-				<li><a href="UploadBook">CREAR HISTORIA</a></li>
+				
 
 				<c:choose>
 					<c:when test="${not empty requestScope.userId}">
+					<li><a href="UploadBook">CREAR HISTORIA</a></li>
 						<li><a
 							href='VerAutor?autor=<c:out value="${requestScope.userId}"></c:out>'><c:out
 									value="${requestScope.userName}"></c:out></a></li>
