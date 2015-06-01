@@ -1,0 +1,6 @@
+.jumbotron	 {padding: 40px 15px;;}
+.error-actions {margin-top:15px;margin-bottom:15px;text-align: center;}
+.error-actions .btn{
+	margin-left:10px;
+	margin-right:10px;
+}

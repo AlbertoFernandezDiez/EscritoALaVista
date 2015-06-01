@@ -72,25 +72,26 @@ public class LatexCreator extends HttpServlet {
 		Obra obra = GestorBD.getGestorBD().getObra(id);
 		ListaCapitulos lista = GestorBD.getGestorBD().getCapitulos(id);
 		Usuario autor = GestorBD.getGestorBD().getAutor(id);
-		
-		
+
+
 		File file = new File(folder,obra.getTitulo() +".pdf");
 
 		if (file.exists())
 		{
 			Date modifydate = new Date(file.lastModified());
-		
+
 			if (obra.getFecha_mod().compareTo(modifydate) <= 0)
-				{
+			{
 				file.delete();
 				createPDF(workingDirectory, obra, lista, autor);
 
-				}
+			}
 		}
 		else{
 			createPDF(workingDirectory, obra, lista, autor);
 		}
-		
+
+
 		PrintWriter pw = response.getWriter();
 
 		pw.write("<!DOCTYPE html><html><head><meta charset='UTF-8'>"
@@ -130,7 +131,7 @@ public class LatexCreator extends HttpServlet {
 				System.out.println(pdfGen.getErrorMessage());
 			}
 
-			
+
 
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());

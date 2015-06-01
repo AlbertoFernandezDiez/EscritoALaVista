@@ -95,7 +95,7 @@ public class Itext extends HttpServlet {
 
 	private static Rectangle[] pageSize ={new Rectangle(600,800),
 		new Rectangle(758,1024)};
-	
+
 	private static Rectangle[] titlepage = {new Rectangle(400,600),
 		new Rectangle(558,824)};
 
@@ -117,49 +117,51 @@ public class Itext extends HttpServlet {
 					throws ServletException, IOException {
 		String idS = request.getParameter("id");
 		int id = 0;
-System.out.println(idS);
+		System.out.println(idS);
 		try{
 			id = Integer.parseInt(idS);
 		}
 		catch(NumberFormatException e){
 			e.printStackTrace();
 		}
-		
-		
+
+
 		Obra obra = GestorBD.getGestorBD().getObra(id);
 		Usuario autor = GestorBD.getGestorBD().getAutor(id);
 		File file = new File(folder,obra.getTitulo() +".pdf");
 		if (file.exists())
 		{
 			Date modifydate = new Date(file.lastModified());
-		
+
 			if (obra.getFecha_mod().compareTo(modifydate) <= 0)
-				{
+			{
 				file.delete();
 				createPDF(response, id, obra, autor);
 
-				}
+			}
 		}
 		else{
-		createPDF(response, id, obra, autor);
+			createPDF(response, id, obra, autor);
 		}
+
+
 		PrintWriter pw = response.getWriter();
 		pw.write("<!DOCTYPE html><html><head><meta charset='UTF-8'>"
 				+ "<title>Registrarse</title></head><body><a href='output/Itext/"+file.getName()+"'>"+obra.getTitulo()+"</a></body></html>");
-		
+
 
 	}
 
 	private void createPDF(HttpServletResponse response, int id, Obra obra,
 			Usuario autor)
-			throws FileNotFoundException, MalformedURLException, IOException {
+					throws FileNotFoundException, MalformedURLException, IOException {
 		FileOutputStream pdf2;
 		FileOutputStream pdf1;
 		File file1, file2;
 		try {
 			if (!folder.exists())
 				folder.mkdirs();
-		
+
 			Document document = new Document(pageSize[type], 50, 50, 50, 50);
 			pageHeight = document.getPageSize().getTop();
 			pageWidth = document.getPageSize().getRight();
@@ -211,9 +213,9 @@ System.out.println(idS);
 				chapterList.add(chapter);
 				document.add(UNDERLINE);
 				document.add(Chunk.NEWLINE);
-				
+
 				if (aux.getImagen() != null)
-				anadirImagen(document, aux.getImagen());
+					anadirImagen(document, aux.getImagen());
 
 				for (int i = 0; i < parrafos.length;i++)
 				{
@@ -236,11 +238,11 @@ System.out.println(idS);
 			chapterList.add(chapter);
 			document.add(UNDERLINE);
 
-			
+
 			if (autor.getImagen() != null) 
-			anadirImagen(document, autor.getImagen());
-			
-			
+				anadirImagen(document, autor.getImagen());
+
+
 			parrafos = autor.getAbout();
 			for (int i = 0; i < parrafos.length;i++)
 			{
@@ -264,30 +266,30 @@ System.out.println(idS);
 
 			Document d = new Document(pageSize[type], 50, 50, 50, 50);
 			// add index page.
-			 file1 = new File(folder, obra.getTitulo()+"1.pdf");
+			file1 = new File(folder, obra.getTitulo()+"1.pdf");
 			pdf1 = new FileOutputStream(file1);
 
 			PdfWriter w = PdfWriter.getInstance(d, pdf1);
 			IndexEvent indexEvent = new IndexEvent();
 			w.setPageEvent(indexEvent);
 			d.open();
-			
+
 			if (obra.getPortada() != null)
-			image = new File(filePath,obra.getPortada());
-			
+				image = new File(filePath,obra.getPortada());
+
 			Chunk secTitle = new Chunk(obra.getTitulo() ,new Font(FontFamily.HELVETICA, 35, Font.BOLD, BaseColor.BLUE));
 			PdfContentByte canvas = w.getDirectContent();
 			ColumnText ct= new ColumnText(w.getDirectContent());
 			if (image != null && image.exists()){
-			img = Image.getInstance(image.getAbsolutePath());
-			//img.scaleToFit(pageSize[type]);
-		//	img.scaleToFit(pageSize[type].getWidth(), pageSize[type].getHeight());
-			//img.scaleAbsolute(pageSize[type]);
-		//	img.scaleAbsolute(writer.getBoxSize("art"));
-			img.scaleAbsolute(titlepage[type]);
-			img.setAbsolutePosition((pageSize[type].getWidth() - titlepage[type].getWidth())/2, (pageSize[type].getHeight() - titlepage[type].getHeight())/2);
-		//	img.setAbsolutePosition(document.getPageSize().getRight()/2, document.getPageSize().getTop()/2);
-			canvas.addImage(img);
+				img = Image.getInstance(image.getAbsolutePath());
+				//img.scaleToFit(pageSize[type]);
+				//	img.scaleToFit(pageSize[type].getWidth(), pageSize[type].getHeight());
+				//img.scaleAbsolute(pageSize[type]);
+				//	img.scaleAbsolute(writer.getBoxSize("art"));
+				img.scaleAbsolute(titlepage[type]);
+				img.setAbsolutePosition((pageSize[type].getWidth() - titlepage[type].getWidth())/2, (pageSize[type].getHeight() - titlepage[type].getHeight())/2);
+				//	img.setAbsolutePosition(document.getPageSize().getRight()/2, document.getPageSize().getTop()/2);
+				canvas.addImage(img);
 			}
 			ct.showTextAligned(canvas, Element.ALIGN_CENTER, new Phrase(secTitle), document.getPageSize().getRight()/2, document.getPageSize().getTop()/2, 0);
 			ct.showTextAligned(canvas, Element.ALIGN_CENTER, new Phrase(autor.getNombre()), document.getPageSize().getRight()/2, document.getPageSize().getTop()/2 - secTitle.getFont().getSize() , 0);
@@ -313,7 +315,7 @@ System.out.println(idS);
 			d.add(indexChapter);
 			d.add(Chunk.NEWLINE);
 			d.add(tables);
-			
+
 
 			d.close();
 			w.close();
@@ -342,12 +344,12 @@ System.out.println(idS);
 			DocumentException {
 		image = new File(filePath,imagen);
 		if (image.exists()){
-		img = Image.getInstance(image.getAbsolutePath());
-		img.setAlignment(Chunk.ALIGN_CENTER);
-		img.scalePercent(25);
-		img.setSpacingAfter(50);
-		img.setSpacingBefore(25);
-		document.add(img);}
+			img = Image.getInstance(image.getAbsolutePath());
+			img.setAlignment(Chunk.ALIGN_CENTER);
+			img.scalePercent(25);
+			img.setSpacingAfter(50);
+			img.setSpacingBefore(25);
+			document.add(img);}
 		img = null;
 		image = null;
 	}
@@ -363,7 +365,7 @@ System.out.println(idS);
 
 		File file = new File(folder, obra.getTitulo()+".pdf");
 		FileOutputStream pdf = new FileOutputStream(file);
-		
+
 		PdfCopy copy = new PdfCopy(document, pdf);
 		document.open();
 
@@ -415,7 +417,7 @@ System.out.println(idS);
 
 
 
-	
+
 	private Paragraph addTexto(String texto) {
 		Paragraph preface = new Paragraph();  
 
