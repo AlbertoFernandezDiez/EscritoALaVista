@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.catalina.connector.Request;
 
@@ -46,6 +47,22 @@ public class VerHistoria extends HttpServlet {
 		if (idHS !=  null && idOS != null){
 			idO = Integer.parseInt(idOS);
 			idH = Integer.parseInt(idHS);
+		}
+		
+		HttpSession session = request.getSession();
+		String user = (String) session.getAttribute("username");
+		int id = 0;
+		
+		try {
+		id = (int) session.getValue("id");
+		}
+		catch(NullPointerException e){
+			e.printStackTrace();
+		}
+		if (id != 0)
+		{
+		request.setAttribute("userId",id);
+		request.setAttribute("userName",user);
 		}
 		
 		switch (idO) {

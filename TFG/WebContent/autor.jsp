@@ -7,16 +7,60 @@
 <meta charset='utf8'>
 <c:set var="autor" value="${requestScope.autor}" scope="request"></c:set>
 <title><c:out value="${autor.nombre}"></c:out></title>
+<style>
+.perfilImg{ 
+clear: right; 
+float: right;
+margin-left: 10px;
+ margin-right: 5px; 
+ padding: 10px;  
+ display: block;
+ max-height:240px;
+ max-width: 320px;
+ 
+ .p{
+	text-align: justify;
+ }
+}
+</style>
+<!-- Imports para BootStrap -->
+<script src="js/jquery-1.10.2.js"></script>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+<script src="js/bootstrap.min.js"></script>
+
 </head>
 <body>
 
-<h1>Autor: <c:out value="${autor.nombre}"></c:out></h1>
+<jsp:include page="menu.jsp" />
+
+<div class="container theme-showcase" role="main">
+		
+		<div class='jumbotron'>
+	<div class="panel panel-primary">	
+<div class="panel-heading">
+<h1 class="panel-title"><c:out value="${autor.nombre}"></c:out></h1>
+</div>
+<div class="panel-body">
 <h2>Pais: <c:out value="${autor.pais}"></c:out></h2>
 <h2>Nacimiento: <c:out value="${autor.nacimiento}"></c:out></h2>
-<img alt="Foto de perfil" src="<c:out value="${autor.imagen}"></c:out>">
-<p>
+<img class="img-rounded perfilImg" alt="Foto de perfil" src="<c:out value="${autor.imagen}"></c:out>">
+<p class="text-justify">
 <c:out value="${autor.about}"></c:out>
-</p>
+</p></div>
+</div>
 
+
+<div class="panel panel-primary">	
+<div class="panel-heading">
+<h1 class="panel-title">Mis Obras</h1>
+</div>
+<div class="panel-body">
+<h2>
+<img class="img-rounded perfilImg" alt="Foto de perfil" src="<c:out value="${autor.imagen}"></c:out>">
+<p class="text-justify">
+<c:out value="${autor.about}"></c:out>
+</p></div>
+</div>
 </body>
 </html>

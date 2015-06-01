@@ -42,6 +42,12 @@ public class UploadBook extends HttpServlet {
 		try {
 		id = (int) session.getValue("id");
 		// TODO Auto-generated method stub
+		if (id != 0)
+		{
+		request.setAttribute("userId",id);
+		request.setAttribute("userName",user);
+		}
+		
 		ArrayList<packBeans.Obra> listaO = GestorBD.getGestorBD().getObrasBeans(0, 0, id);
 		request.setAttribute("obras", listaO);
 		request.setAttribute("autor",id);

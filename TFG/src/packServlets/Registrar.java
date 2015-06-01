@@ -64,7 +64,8 @@ public class Registrar extends HttpServlet {
 			GestorBD.getGestorBD().addUser(nombre,email,password,pais,nac,about,ruta);
 			
 		}
-
+		
+		response.sendRedirect("Index");
 
 	}
 

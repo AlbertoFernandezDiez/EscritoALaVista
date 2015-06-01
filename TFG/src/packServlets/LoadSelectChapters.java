@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -40,6 +41,24 @@ public class LoadSelectChapters extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
+HttpSession session = request.getSession();
+		
+		String user = (String) session.getAttribute("username");
+		int idU = 0;
+		
+		try {
+		idU = (int) session.getValue("id");
+		}
+		catch(NullPointerException e){
+			e.printStackTrace();
+		}
+		if (idU != 0)
+		{
+		request.setAttribute("userId",idU);
+		request.setAttribute("userName",user);
+		}
+		
 		String opcionS = request.getParameter("op");
 		int opcion = 0;
 		if (opcionS != null)

@@ -10,7 +10,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <meta charset='utf8'>
 <title>Proyecto</title>
-<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/style.css" /> 
+
+<!-- Imports para BootStrap -->
+<script src="js/jquery-1.10.2.js"></script>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+<script src="js/bootstrap.min.js"></script>
 
 </head>
 <body>
@@ -19,8 +25,8 @@
 			<h1>Nombre de la web</h1>
 		</header>
 		<c:set var="autor" value="${requestScope.autores}" scope="request"></c:set>
-
-		<nav>
+	<jsp:include page="menu.jsp" />
+		<!-- <nav>
 			<ul>
 				<li>INICIO</li>
 				<li>CATEGORIA</li>
@@ -40,7 +46,7 @@
 					</c:otherwise>
 				</c:choose>
 			</ul>
-		</nav>
+		</nav>-->
 		<section>
 			<c:forEach items="${requestScope.obras}" var="ob">
 				<article>
@@ -64,5 +70,6 @@
 				</article>
 			</c:forEach>
 		</section>
+	
 </body>
 </html>
