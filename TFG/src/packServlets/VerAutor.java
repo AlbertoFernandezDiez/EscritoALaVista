@@ -1,6 +1,7 @@
 package packServlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -55,6 +56,9 @@ public class VerAutor extends HttpServlet {
 			id = Integer.parseInt(idS);
 			packBeans.Autor autor = GestorBD.getGestorBD().getAutorBeans(id);
 			request.setAttribute("autor",autor);
+			
+			ArrayList<packBeans.Obra> lista = GestorBD.getGestorBD().getObrasBeans(1000, 0, id);
+			request.setAttribute("obras", lista);
 			
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/autor.jsp");
 	        rd.forward(request, response);
