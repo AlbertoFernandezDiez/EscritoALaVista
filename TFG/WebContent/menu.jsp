@@ -13,6 +13,11 @@
 
 </head>
 <body>-->
+
+<div class="container theme-showcase" role="main">
+		<header>
+			<h1>Nombre de la web</h1>
+		</header>
 	<nav class="navbar navbar-inverse">
 		<div class="container">
 			<div class="navbar-collapse collapse">

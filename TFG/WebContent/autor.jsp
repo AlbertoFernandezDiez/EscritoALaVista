@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<meta charset='utf8'>
+<meta charset="UTF-8">
 <c:set var="autor" value="${requestScope.autor}" scope="request"></c:set>
 <title><c:out value="${autor.nombre}"></c:out></title>
 <link rel="stylesheet" href="css/style.css">
@@ -114,6 +114,7 @@ padding : 0px;
 					</c:forEach>
 				
 				</div>
+			</div>
 			</div>
 </body>
 </html>

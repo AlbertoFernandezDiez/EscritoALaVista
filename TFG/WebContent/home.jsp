@@ -65,6 +65,6 @@ $( "input[name=formato]:radio" ).change(function() {
 <img alt="imagen capítulo" src="<c:out value="${chap.imagen}"></c:out>">
 </c:if>
 </div>
-
+</div>
 </body>
 </html>

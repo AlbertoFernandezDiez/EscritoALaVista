@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset='utf8'>
+<meta charset="UTF-8">
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script src="js/jquery-1.10.2.js"></script>
 <script src="js/sha512.js"></script>
@@ -41,5 +41,6 @@
 	<script>
 			loginSubmit();
 			</script>
+			</div>
 </body>
 </html>
