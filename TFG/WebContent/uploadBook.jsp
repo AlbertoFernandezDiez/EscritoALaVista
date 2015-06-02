@@ -29,9 +29,8 @@
 
 <jsp:include page="menu.jsp" />
 
-	<input type="hidden" id="url"
-		value=<%=getServletContext().getInitParameter("server-url")%>>
-		<div class="container theme-showcase" role="main">
+	
+	<!-- <div class="container theme-showcase" role="main"> -->
 		
 		<div class='jumbotron'>
 		<div class="form-group">

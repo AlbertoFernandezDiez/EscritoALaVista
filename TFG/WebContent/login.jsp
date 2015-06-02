@@ -20,7 +20,9 @@
 </head>
 <body>
 	<jsp:include page="menu.jsp" />
-<div class="container theme-showcase" role="main">
+	
+<!-- <div class="container theme-showcase" role="main"> -->
+
 <div class='jumbotron'>
 	<div class="form-group">
 	<form id='login' method="POST" action="LogIn"

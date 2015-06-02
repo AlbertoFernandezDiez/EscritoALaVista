@@ -20,8 +20,9 @@
 	<jsp:include page="menu.jsp" />
 
 
-	<div class="container theme-showcase" role="main">
-		<div class='jumbotron'>
+<!-- 	<div class="container theme-showcase" role="main">
+ -->
+ 		<div class='jumbotron'>
 			<div class="form-group">
 				<form id='registro' method="POST" action="Registrar"
 					enctype="multipart/form-data" role='form'>

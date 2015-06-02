@@ -9,38 +9,7 @@
 <title><c:out value="${autor.nombre}"></c:out></title>
 <link rel="stylesheet" href="css/style.css">
 
-<style>
-/*
-.perfilImg {
-	clear: right;
-	float: right;
-	margin-left: 10px;
-	margin-right: 5px;
-	padding: 10px;
-	display: block;
-	max-height: 240px;
-	max-width: 320px;
-}
 
-.col-sm-4 img {
-	max-height: 140px;
-	max-width: 130px;
-}
-
-.row{
- border-style: solid;
-  border-width: 2px;
-   border-radius: 15px 15px;
-   width:98%; 
-}
-
-.obras{
- margin-left : 1%;
-margin-right : 1%;
-padding : 0px;
-}*/
-
-</style>
 <!-- Imports para BootStrap -->
 <script src="js/jquery-1.10.2.js"></script>
 <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -52,7 +21,7 @@ padding : 0px;
 
 	<jsp:include page="menu.jsp" />
 
-	<div class="container theme-showcase" role="main">
+	<!-- <div class="container theme-showcase" role="main"> -->
 
 		<div class='jumbotron'>
 			<div class="panel panel-primary">
@@ -86,7 +55,7 @@ padding : 0px;
 				</div>
 				<div class="panel-body obras">
 					<c:forEach items="${requestScope.obras}" var="ob">
-						<div class="row">
+						<div class="row custom">
 							<div class="col-sm-4" ></div>
 							<div class="col-sm-2" >
 								<a href="VerHistoria?op=0&hi=<c:out value="${ob.id}"></c:out>"><c:out
