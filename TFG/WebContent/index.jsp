@@ -13,7 +13,7 @@
 <meta charset="UTF-8">
 <title>Proyecto</title>
 <link rel="stylesheet" href="css/style.css" /> 
-
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
 <!-- Imports para BootStrap -->
 <script src="js/jquery-1.10.2.js"></script>
 <link rel="stylesheet" href="css/bootstrap.min.css">

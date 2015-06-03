@@ -116,6 +116,7 @@ public class EpubCreator extends HttpServlet {
 		}
 
 
+		response.setCharacterEncoding("UTF-8");
 
 		PrintWriter pw = response.getWriter();
 

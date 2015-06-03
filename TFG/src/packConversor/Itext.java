@@ -328,6 +328,7 @@ public class Itext extends HttpServlet {
 		try {
 			String fileName = joinPDF(file1,file2,obra,autor,response);
 
+			response.setCharacterEncoding("UTF-8");
 			PrintWriter pw = response.getWriter();
 			pw.write("<!DOCTYPE html><html><head><meta charset='UTF-8'>"
 					+ "<title>Registrarse</title></head><body><a href='output/Itext/"+fileName+"'>"+obra.getTitulo()+"</a></body></html>");

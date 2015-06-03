@@ -12,6 +12,7 @@
 <head>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <meta charset='UTF-8'>
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
 <script src="js/loadSelect.js"></script>
 
 <!-- Imports para BootStrap -->
@@ -51,7 +52,7 @@
 			onChange="loadChapter($('#selectCapitulo').val())">>
 			<option name=default value=0>Nuevo Capitulo</option>
 		</select> <br> <label for="titOb">Titulo Obra :</label><input type="text"
-			id="titOb" name="titOb" class='form-control' maxlength='50'> <br> <label for="resumen">Resumen
+			id="titOb" name="titOb" pattern="[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]" title="No se aceptan acentos y ñ en el titulo" class='form-control' maxlength='50'> <br> <label for="resumen">Resumen
 			:</label>
 		<textarea rows="5" cols="20" class='form-control' id="resumen" name="resumen"
 			spellcheck="true" maxlength='512'></textarea>

@@ -91,7 +91,8 @@ public class LatexCreator extends HttpServlet {
 			createPDF(workingDirectory, obra, lista, autor);
 		}
 
-
+		response.setCharacterEncoding("UTF-8");
+		System.out.println(obra.getTitulo());
 		PrintWriter pw = response.getWriter();
 
 		pw.write("<!DOCTYPE html><html><head><meta charset='UTF-8'>"

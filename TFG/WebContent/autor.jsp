@@ -5,6 +5,7 @@
 <head>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <meta charset="UTF-8">
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
 <c:set var="autor" value="${requestScope.autor}" scope="request"></c:set>
 <title><c:out value="${autor.nombre}"></c:out></title>
 <link rel="stylesheet" href="css/style.css">
