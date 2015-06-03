@@ -34,11 +34,13 @@
 		<form id='exportar' name='exportar' class="form-inline" method='GET'
 			role="form" action='Itext'>
 			<div class="form-group">
-				 <label class="radio-inline"></label><input type="radio" name="formato" value="Itext" checked="checked">Itext</label>
-				 <label class="radio-inline"><input type="radio" name="formato" value="EpubCreator">Epub</label>
-				 <label class="radio-inline"><input type="radio" name="formato" value="LatexCreator">Latex</label>
-				 <label class="radio-inline"><input type="hidden" name="id"
-					value="<c:out value="${requestScope.id}" ></c:out>"> <input
+				<label class="radio-inline"><input type="radio"
+					name="formato" value="Itext" checked="checked">Itext</label> <label
+					class="radio-inline"><input type="radio" name="formato"
+					value="EpubCreator">Epub</label> <label class="radio-inline"><input
+					type="radio" name="formato" value="LatexCreator">Latex</label> <label
+					class="radio-inline"><input type="hidden" name="id"
+					value="<c:out value="${requestScope.id}" ></c:out>"></label>	 <input
 					type='submit' class="btn btn-default" name='exportar'>
 			</div>
 		</form>
@@ -99,6 +101,6 @@
 			</div>
 		</div>
 	</div>
-	</div>
+</div>
 </body>
 </html>

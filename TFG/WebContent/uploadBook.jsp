@@ -51,10 +51,10 @@
 			onChange="loadChapter($('#selectCapitulo').val())">>
 			<option name=default value=0>Nuevo Capitulo</option>
 		</select> <br> <label for="titOb">Titulo Obra :</label><input type="text"
-			id="titOb" name="titOb" class='form-control'> <br> <label for="resumen">Resumen
+			id="titOb" name="titOb" class='form-control' maxlength='50'> <br> <label for="resumen">Resumen
 			:</label>
 		<textarea rows="5" cols="20" class='form-control' id="resumen" name="resumen"
-			spellcheck="true"></textarea>
+			spellcheck="true" maxlength='512'></textarea>
 		<input id="fileObra" class='form-control' type="file" name="fileObra" size="50" accept='image/*'/> <input
 			id='rutaP' type='hidden' name='rutaP' /> <input type='button'
 			id='cambiarP' value='Cambiar Portada' onclick='$("#rutaP").val("");'>

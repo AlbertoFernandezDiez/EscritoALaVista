@@ -33,8 +33,8 @@
 	
 	<c:forEach items="${requestScope.obras}" var="ob">
 						<div class="row custom">
-							<div class="col-sm-4" ></div>
-							<div class="col-sm-2" >
+							<div class="col-sm-2" ></div>
+							<div class="col-sm-4" >
 								<a href="VerHistoria?op=0&hi=<c:out value="${ob.id}"></c:out>"><c:out
 										value="${ob.titulo}"></c:out></a>
 							</div>
@@ -48,11 +48,11 @@
 								<a href="VerAutor?autor=<c:out value="${ob.autor}"></c:out>"><c:out
 									value="${autor[ob.autor]}"></c:out></a>
 							</div>
-							<div class="col-sm-4" >
+							<div class="col-sm-2" >
 								<img alt='Imagen de perfil'
 									src='<c:out value="${ob.portada}"></c:out>'>
 							</div>
-							<div class="col-sm-8" >
+							<div class="col-sm-10" >
 								<p class="text-justify"><c:out value="${ob.resumen}"></c:out></p>
 							</div>
 						</div>
