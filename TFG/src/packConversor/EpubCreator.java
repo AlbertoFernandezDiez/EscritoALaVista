@@ -1,6 +1,7 @@
 package packConversor;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
@@ -116,13 +117,25 @@ public class EpubCreator extends HttpServlet {
 		}
 
 
-		response.setCharacterEncoding("UTF-8");
+	/*	response.setCharacterEncoding("UTF-8");
 
 		PrintWriter pw = response.getWriter();
 
 		pw.write("<!DOCTYPE html><html><head><meta charset='UTF-8'>"
 				+ "<title>Registrarse</title></head><body><a href='output/"+ obra.getTitulo() + ".epub'>"+obra.getTitulo()+"</a></body></html>");
-		pw.close();
+		pw.close();*/
+		PrintWriter pw = response.getWriter();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("APPLICATION/OCTET-STREAM");
+		response.setHeader("Content-Disposition","attachment; filename=\"" + file.getName() + "\"");
+		FileInputStream fileInputStream = new FileInputStream(file);  
+
+		int i;   
+		while ((i=fileInputStream.read()) != -1) {  
+			pw.write(i);   
+		}   
+		fileInputStream.close();   
+		pw.close();   
 	}
 
 

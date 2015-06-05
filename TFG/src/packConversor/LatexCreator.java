@@ -1,6 +1,7 @@
 package packConversor;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
@@ -29,7 +30,7 @@ import de.nixosoft.jlr.JLROpener;
 public class LatexCreator extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private String filePath;
-	private File folder;
+	private File folder,latexFolder;
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -41,7 +42,8 @@ public class LatexCreator extends HttpServlet {
 		// Get the file location where it would be stored.
 
 		filePath =getServletContext().getInitParameter("file-upload"); 
-		folder = new File(filePath,"/latex");
+		folder = new File(filePath,"/output");
+		latexFolder = new File(filePath,"/latex");
 
 	}
 
@@ -62,7 +64,7 @@ public class LatexCreator extends HttpServlet {
 		}
 
 
-		File workingDirectory = new File(folder.getAbsolutePath());
+		File workingDirectory = new File(latexFolder.getAbsolutePath());
 		if (!workingDirectory.exists())
 		{
 			workingDirectory.mkdirs();
@@ -90,14 +92,19 @@ public class LatexCreator extends HttpServlet {
 		else{
 			createPDF(workingDirectory, obra, lista, autor);
 		}
-
-		response.setCharacterEncoding("UTF-8");
-		System.out.println(obra.getTitulo());
+		
 		PrintWriter pw = response.getWriter();
+		response.setCharacterEncoding("UTF-8");
+		response.setContentType("APPLICATION/OCTET-STREAM");
+		response.setHeader("Content-Disposition","attachment; filename=\"" + file.getName() + "\"");
+		FileInputStream fileInputStream = new FileInputStream(file);  
 
-		pw.write("<!DOCTYPE html><html><head><meta charset='UTF-8'>"
-				+ "<title>Registrarse</title></head><body><a href='output/"+file.getName()+"'>"+obra.getTitulo()+"</a></body></html>");
-		pw.close();
+		int i;   
+		while ((i=fileInputStream.read()) != -1) {  
+			pw.write(i);   
+		}   
+		fileInputStream.close();   
+		pw.close();   
 
 	}
 	private void createPDF(File workingDirectory, Obra obra,

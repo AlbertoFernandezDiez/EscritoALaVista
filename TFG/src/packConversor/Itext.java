@@ -2,6 +2,7 @@ package packConversor;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -326,13 +327,20 @@ public class Itext extends HttpServlet {
 			throw new IOException(de.getMessage());
 		}
 		try {
-			String fileName = joinPDF(file1,file2,obra,autor,response);
-
-			response.setCharacterEncoding("UTF-8");
+			File file = joinPDF(file1,file2,obra,autor,response);
 			PrintWriter pw = response.getWriter();
-			pw.write("<!DOCTYPE html><html><head><meta charset='UTF-8'>"
-					+ "<title>Registrarse</title></head><body><a href='output/Itext/"+fileName+"'>"+obra.getTitulo()+"</a></body></html>");
-			pw.close();
+			response.setCharacterEncoding("UTF-8");  
+			response.setContentType("APPLICATION/OCTET-STREAM");
+			response.setHeader("Content-Disposition","attachment; filename=\"" + file.getName() + "\"");
+			FileInputStream fileInputStream = new FileInputStream(file);  
+            
+			int i;   
+			while ((i=fileInputStream.read()) != -1) {  
+			pw.write(i);   
+			}   
+			fileInputStream.close();   
+			pw.close();   
+			 
 
 		} catch (DocumentException e) {
 			// TODO Auto-generated catch block
@@ -358,7 +366,7 @@ public class Itext extends HttpServlet {
 
 
 
-	private String joinPDF(File pdf1, File pdf2, Obra obra,Usuario autor, HttpServletResponse response) throws IOException, DocumentException {
+	private File joinPDF(File pdf1, File pdf2, Obra obra,Usuario autor, HttpServletResponse response) throws IOException, DocumentException {
 		// TODO Auto-generated method stub
 		PdfReader reader ;//= new PdfReader(new RandomAccessFileOrArray(pdf1.getAbsolutePath()), null);
 		String src[] = {pdf1.getAbsolutePath(),pdf2.getAbsolutePath()};
@@ -407,7 +415,7 @@ public class Itext extends HttpServlet {
 		pdf1.delete();
 		pdf2.delete();
 
-		return file.getName();
+		return file;
 
 	}
 
