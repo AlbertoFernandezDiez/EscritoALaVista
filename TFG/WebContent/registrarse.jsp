@@ -36,6 +36,8 @@
 						id="contrasena1" class='form-control' pattern="[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{6,}"
 						title="Six or more characters" name="contrasena1" type="password"
 						placeholder="Introduce una contraseña" required='true'><br>
+									<input id="contra" class='form-control' name="contrasena1" type="hidden">
+						
 					<label for="contrasena2">Contraseña :</label> <input
 						id="contrasena2" class='form-control' name="contrasena2" type="password"
 						placeholder="Repite la contraseña"

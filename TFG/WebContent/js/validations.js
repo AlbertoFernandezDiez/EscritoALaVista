@@ -12,8 +12,9 @@ function presubmit(){
 		var $contra1 = $("#contrasena1");
 		var $contra2 = $("#contrasena2");
 		if ($contra1.val() == $contra2.val()) {
-			$contra1.val(toSHA512($contra1.val()));
-			$contra2.val(toSHA512($contra2.val()));
+			$$("#contra").val(toSHA512($contra1.val()));
+			$contra1.remove();
+			$contra2.remove();
 			return;
 		}
 		else{}
@@ -23,9 +24,10 @@ function presubmit(){
 
 function loginSubmit(){
 	$( "#login" ).submit(function( event ) {
-		var $contra = $("#contrasena");
+		var $contras = $("#contrasena");
 
-		$contra.val(toSHA512($contra.val()));
+		$("#contra").val(toSHA512($contras.val()));
+		$contras.remove();
 		return;
 		event.preventDefault();
 

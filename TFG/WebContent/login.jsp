@@ -33,6 +33,7 @@
 			required='true'> <label for="contrasena">Contraseña:</label>
 		<input id="contrasena" class='form-control' name="contrasena" type="password"
 			placeholder="Introduce una contraseña" required='true'> 
+			<input id="contra" class='form-control' name="contrasena" type="hidden">
 			<br>
 			<input
 			type="submit" class='btn btn-default' name="submit" id="submit">
