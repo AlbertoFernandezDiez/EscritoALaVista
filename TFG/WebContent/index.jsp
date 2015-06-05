@@ -10,6 +10,7 @@
 <html>
 <head>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <meta charset="UTF-8">
 <title>Proyecto</title>
 <link rel="stylesheet" href="css/style.css" />
@@ -39,10 +40,11 @@
 								value="${ob.titulo}"></c:out></a>
 					</div>
 					<div class="col-sm-2">
-						<c:out value="${ob.fecha_in}"></c:out>
+						<fmt:formatDate value="${ob.fecha_in}" pattern="dd/MM/yyyy" />
+
 					</div>
 					<div class="col-sm-2">
-						<c:out value="${ob.fecha_mod}"></c:out>
+						<fmt:formatDate value="${ob.fecha_mod}" pattern="dd/MM/yyyy" />
 					</div>
 					<div class="col-sm-2">
 						<a href="VerAutor?autor=<c:out value="${ob.autor}"></c:out>"><c:out
@@ -59,26 +61,27 @@
 					</div>
 				</div>
 				<br>
+
 			</c:forEach>
-	</div>
-				<ul class="pagination center">
-					<c:forEach begin="0" end="${requestScope.max}" step="1"
-						varStatus="loop">
-						<c:choose>
-							<c:when test="${loop.index eq requestScope.pos}">
-								<li class="active"><a
-									href='Index?pos=<c:out value="${loop.index}"></c:out>&show=1'><c:out
-											value="${loop.index}"></c:out></a></li>
-							</c:when>
-							<c:otherwise>
-								<li><a
-									href='Index?pos=<c:out value="${loop.index}"></c:out>&show=1'><c:out
-											value="${loop.index}"></c:out></a></li>
-							</c:otherwise>
-						</c:choose>
-					</c:forEach>
-				</ul>
-	
+		</div>
+		<ul class="pagination center">
+			<c:forEach begin="0" end="${requestScope.max}" step="1"
+				varStatus="loop">
+				<c:choose>
+					<c:when test="${loop.index eq requestScope.pos}">
+						<li class="active"><a
+							href='Index?pos=<c:out value="${loop.index}"></c:out>&show=1'><c:out
+									value="${loop.index}"></c:out></a></li>
+					</c:when>
+					<c:otherwise>
+						<li><a
+							href='Index?pos=<c:out value="${loop.index}"></c:out>&show=1'><c:out
+									value="${loop.index}"></c:out></a></li>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+		</ul>
+
 	</div>
 	</div>
 </body>
