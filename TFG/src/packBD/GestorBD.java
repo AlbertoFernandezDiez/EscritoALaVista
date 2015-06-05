@@ -8,6 +8,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -50,7 +51,7 @@ public class GestorBD {
 			while(rs.next())
 			{			
 				obra = new Obra(rs.getString("titulo"), rs.getString("resumen"),
-						rs.getDate("fecha_in"), rs.getDate("fecha_mod"), rs.getInt("id"),rs.getString("portada"));
+						rs.getDate("fecha_in"), rs.getTimestamp("fecha_mod"), rs.getInt("id"),rs.getString("portada"));
 				lista.addObra(obra);
 			}
 		} catch (SQLException | ClassNotFoundException e) {
@@ -128,7 +129,7 @@ public class GestorBD {
 			if(rs.next())
 			{			
 				obra = new Obra(rs.getString("titulo"), rs.getString("resumen"),
-						rs.getDate("fecha_in"), rs.getDate("fecha_mod"), rs.getInt("id"),rs.getString("portada"));
+						rs.getDate("fecha_in"), rs.getTimestamp("fecha_mod"), rs.getInt("id"),rs.getString("portada"));
 			}
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -172,7 +173,7 @@ public class GestorBD {
 			st.setString(2, pTitulo);
 			st.setString(3, pResumen);
 			st.setDate(4, new Date(System.currentTimeMillis()));
-			st.setDate(5, new Date(System.currentTimeMillis()));
+			st.setTimestamp(5, new java.sql.Timestamp(System.currentTimeMillis()));
 			st.setString(6, pRuta);
 			st.execute();
 
@@ -308,7 +309,7 @@ public class GestorBD {
 				aux = new packBeans.Obra();
 				aux.setAutor(rs.getInt("autor"));
 				aux.setFecha_in(rs.getDate("fecha_in"));
-				aux.setFecha_mod(rs.getDate("fecha_mod"));
+				aux.setFecha_mod(rs.getTimestamp("fecha_mod"));
 				aux.setId(rs.getInt("id"));
 				aux.setPortada(rs.getString("portada"));
 				aux.setResumen(rs.getString("resumen"));
@@ -399,7 +400,7 @@ public class GestorBD {
 
 			st.setString(1, tituloObra);
 			st.setString(2, resumen);
-			st.setDate(3, new Date(System.currentTimeMillis()));
+			st.setTimestamp(3, new java.sql.Timestamp(System.currentTimeMillis()));
 			st.setString(4, portada);
 			st.setInt(5, idOb);
 

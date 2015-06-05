@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -132,10 +133,12 @@ public class Itext extends HttpServlet {
 		File file = new File(folder,obra.getTitulo() +".pdf");
 		if (file.exists())
 		{
-			Date modifydate = new Date(file.lastModified());
-
-			if (obra.getFecha_mod().compareTo(modifydate) <= 0)
+			Timestamp modifydate = new Timestamp(file.lastModified());
+System.out.println(modifydate.toString());
+System.out.println(obra.getFecha_mod().toString());
+			if (obra.getFecha_mod().compareTo(modifydate) > 0)
 			{
+				System.out.println("entra");
 				file.delete();
 				createPDF(response, id, obra, autor);
 
@@ -147,8 +150,17 @@ public class Itext extends HttpServlet {
 
 
 		PrintWriter pw = response.getWriter();
-		pw.write("<!DOCTYPE html><html><head><meta charset='UTF-8'>"
-				+ "<title>Registrarse</title></head><body><a href='output/Itext/"+file.getName()+"'>"+obra.getTitulo()+"</a></body></html>");
+		response.setCharacterEncoding("UTF-8");  
+		response.setContentType("APPLICATION/OCTET-STREAM");
+		response.setHeader("Content-Disposition","attachment; filename=\"" + file.getName() + "\"");
+		FileInputStream fileInputStream = new FileInputStream(file);  
+        
+		int i;   
+		while ((i=fileInputStream.read()) != -1) {  
+		pw.write(i);   
+		}   
+		fileInputStream.close();   
+		pw.close();   
 
 
 	}

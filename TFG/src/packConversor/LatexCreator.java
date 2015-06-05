@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -80,10 +81,12 @@ public class LatexCreator extends HttpServlet {
 
 		if (file.exists())
 		{
-			Date modifydate = new Date(file.lastModified());
-
-			if (obra.getFecha_mod().compareTo(modifydate) <= 0)
-			{
+			Timestamp modifydate = new Timestamp(file.lastModified());
+			System.out.println(modifydate.toString());
+			System.out.println(obra.getFecha_mod().toString());
+						if (obra.getFecha_mod().compareTo(modifydate) > 0)
+						{
+							System.out.println("entra");
 				file.delete();
 				createPDF(workingDirectory, obra, lista, autor);
 

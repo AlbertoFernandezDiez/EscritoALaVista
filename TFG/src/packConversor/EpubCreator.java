@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Iterator;
 
 import javax.servlet.ServletConfig;
@@ -103,10 +104,12 @@ public class EpubCreator extends HttpServlet {
 		File file = new File(folder,obra.getTitulo() +".epub");
 		if (file.exists())
 		{
-			Date modifydate = new Date(file.lastModified());
-
-			if (obra.getFecha_mod().compareTo(modifydate) <= 0)
-			{
+			Timestamp modifydate = new Timestamp(file.lastModified());
+			System.out.println(modifydate.toString());
+			System.out.println(obra.getFecha_mod().toString());
+						if (obra.getFecha_mod().compareTo(modifydate) > 0)
+						{
+							System.out.println("entra");
 				file.delete();
 				createEpub(obra, lista, autor);
 
@@ -117,13 +120,7 @@ public class EpubCreator extends HttpServlet {
 		}
 
 
-	/*	response.setCharacterEncoding("UTF-8");
-
-		PrintWriter pw = response.getWriter();
-
-		pw.write("<!DOCTYPE html><html><head><meta charset='UTF-8'>"
-				+ "<title>Registrarse</title></head><body><a href='output/"+ obra.getTitulo() + ".epub'>"+obra.getTitulo()+"</a></body></html>");
-		pw.close();*/
+	
 		PrintWriter pw = response.getWriter();
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("APPLICATION/OCTET-STREAM");

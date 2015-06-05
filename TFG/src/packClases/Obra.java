@@ -1,13 +1,14 @@
 package packClases;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Obra {
 
 	private String titulo;
 	private String resumen;
 	private Date fecha_in;
-	private Date fecha_mod;
+	private Timestamp fecha_mod;
 	private Capitulo[] listaCapitulos;
 	private int id;
 	private String portada;
@@ -17,7 +18,7 @@ public class Obra {
 	}
 
 	public Obra(String pTitulo, String pResumen, Date pFecha_in,
-			Date pFecha_mod, int pId, String pPortada) {
+			Timestamp pFecha_mod, int pId, String pPortada) {
 		super();
 		this.titulo = pTitulo;
 		this.resumen = pResumen;
@@ -43,7 +44,7 @@ public class Obra {
 		return id;
 	}
 
-	public Date getFecha_mod() {
+	public Timestamp getFecha_mod() {
 		return this.fecha_mod;
 	}
 

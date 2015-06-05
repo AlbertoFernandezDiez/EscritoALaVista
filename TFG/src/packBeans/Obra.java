@@ -1,11 +1,14 @@
 package packBeans;
 
 import java.sql.Date;
+import java.sql.Timestamp;
+
 
 public class Obra {
 	private int id,autor;
 	private String titulo,resumen,portada;
-	private Date fecha_in,fecha_mod;
+	private Date fecha_in;
+	private Timestamp fecha_mod;
 	
 	public Obra(){	}
 
@@ -57,11 +60,11 @@ public class Obra {
 		this.fecha_in = fecha_in;
 	}
 
-	public Date getFecha_mod() {
+	public Timestamp getFecha_mod() {
 		return fecha_mod;
 	}
 
-	public void setFecha_mod(Date fecha_mod) {
+	public void setFecha_mod(Timestamp fecha_mod) {
 		this.fecha_mod = fecha_mod;
 	}
 	
