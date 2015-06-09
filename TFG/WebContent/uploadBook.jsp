@@ -21,6 +21,8 @@
 <link rel="stylesheet" href="css/bootstrap-theme.min.css">
 <script src="js/bootstrap.min.js"></script>
 	
+<link rel="stylesheet" href="css/filedrag.css">
+
 
 
 <title>Upload Book</title>
@@ -56,7 +58,8 @@
 			:</label>
 		<textarea rows="5" cols="20" class='form-control' id="resumen" name="resumen"
 			spellcheck="true" maxlength='512'></textarea>
-		<input id="fileObra" class='form-control' type="file" name="fileObra" size="50" accept='image/*'/> <input
+			<div class="custom-input-file">Clicka o arrastra imagenes aquí
+		<input id="fileObra" class='input-file' type="file" name="fileObra" size="50" accept='image/*'/></div> <input
 			id='rutaP' type='hidden' name='rutaP' /> <input type='button'
 			id='cambiarP' value='Cambiar Portada' onclick='$("#rutaP").val("");'>
 		<br> <label for="titCap">Titulo Capitulo :</label> <input
@@ -68,7 +71,8 @@
 			:</label>
 		<textarea rows="5" class='form-control' cols="20" id="comentarios" name="comentarios"
 			spellcheck="true"></textarea>
-		<input id="fileCapi" class='form-control'	 type="file" name="fileCapi" size="50" accept='image/*'/> <input
+		<div class="custom-input-file">Clicka o arrastra imagenes aquí
+		<input id="fileCapi" class='input-file'	 type="file" name="fileCapi" size="50" accept='image/*'/></div> <input
 			id='rutaC' type='hidden' name='rutaC' /> <input type='button'
 			id='cambiarP' value='Cambiar Portada' onclick='$("#rutaC").val("");'>
 
