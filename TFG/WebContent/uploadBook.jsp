@@ -58,8 +58,8 @@
 			:</label>
 		<textarea rows="5" cols="20" class='form-control' id="resumen" name="resumen"
 			spellcheck="true" maxlength='512'></textarea>
-			<div class="custom-input-file">Clicka o arrastra imagenes aquí
-		<input id="fileObra" class='input-file' type="file" name="fileObra" size="50" accept='image/*'/></div> <input
+			<div class="custom-input-file">
+		<input id="fileObra" class='input-file' type="file" name="fileObra" size="50" accept='image/*'/>Clicka o arrastra imagenes aquí</div> <input
 			id='rutaP' type='hidden' name='rutaP' /> <input type='button'
 			id='cambiarP' value='Cambiar Portada' onclick='$("#rutaP").val("");'>
 		<br> <label for="titCap">Titulo Capitulo :</label> <input
@@ -71,8 +71,9 @@
 			:</label>
 		<textarea rows="5" class='form-control' cols="20" id="comentarios" name="comentarios"
 			spellcheck="true"></textarea>
-		<div class="custom-input-file">Clicka o arrastra imagenes aquí
-		<input id="fileCapi" class='input-file'	 type="file" name="fileCapi" size="50" accept='image/*'/></div> <input
+				<div class="custom-input-file">		<input id="fileCapi" class='input-file'	 type="file" name="fileCapi" size="50" accept='image/*'/>
+				Clicka o arrastra imagenes aquí
+				</div><input
 			id='rutaC' type='hidden' name='rutaC' /> <input type='button'
 			id='cambiarP' value='Cambiar Portada' onclick='$("#rutaC").val("");'>
 

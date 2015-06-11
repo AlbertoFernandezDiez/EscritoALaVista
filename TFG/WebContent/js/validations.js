@@ -12,7 +12,7 @@ function presubmit(){
 		var $contra1 = $("#contrasena1");
 		var $contra2 = $("#contrasena2");
 		if ($contra1.val() == $contra2.val()) {
-			$$("#contra").val(toSHA512($contra1.val()));
+			$("#contra").val(toSHA512($contra1.val()));
 			$contra1.remove();
 			$contra2.remove();
 			return;

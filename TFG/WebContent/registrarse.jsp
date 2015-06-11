@@ -59,9 +59,11 @@
 				<div>
 					<!-- <label for="fileselect">Elige los ficheros a subir:</label>-->
 					
-					<div class="custom-input-file">Clicka o arrastra imagenes aquí
-					<input type="file" class="input-file" id="fileselect" accept='image/*' />
+					<div class="custom-input-file">
+					<input type="file" class="input-file" id="fileselect" name='file' accept='image/*' />
+					Clicka o arrastra imagenes aquí
 					</div>
+					
 				</div>
 				<input id='submit' name='submit' type='submit'>
 
@@ -69,7 +71,6 @@
 presubmit();
 </script>
 			</form>
-							<script src="js/filedrag.js"></script>
 			
 		</div>
 	</div>
