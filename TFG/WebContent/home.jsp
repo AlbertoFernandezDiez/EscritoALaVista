@@ -21,13 +21,12 @@
 	});
 	
 	function sendComment(){
-		var id = $('#user').val();
 		var obra = $('#obra').val();
 		var capitulo = $('#capitulo').val();
 		var texto = $('#comentario').val();
 		
-		$.ajax({url:"/uploadComment",
-			type:'POST',data:{id:id,obra:obra,capitulo:capitulo ,texto:texto},
+		$.ajax({url:"UC",
+			type:'POST',data:{obra:obra,capitulo:capitulo ,texto:texto},
 			success:function(result){alert('ok');},
 				error:function(request,error){	alert("Error: " + error);}
 			});

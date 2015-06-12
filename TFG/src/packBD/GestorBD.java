@@ -517,6 +517,16 @@ public class GestorBD {
 		return autores;
 	}
 
+	/**
+	 * Metodo que crea un nuevo usuario
+	 * @param nombre	Nombre de usuario
+	 * @param email	Email del usuario
+	 * @param password Contraseña del usuario (Aplicado SHA-512)
+	 * @param pais	Pais del usuario
+	 * @param nac	Fecha de nacimiento
+	 * @param about	Sobre el usuario
+	 * @param ruta	Ruta de la imagen del perfil
+	 */
 	public void addUser(String nombre, String email, String password,
 			String pais, Date nac, String about, String ruta) {
 		// TODO Auto-generated method stub
@@ -603,6 +613,41 @@ public class GestorBD {
 			e.printStackTrace();
 		}
 		return id;
+	}
+
+	/**
+	 * Metodo que añade un comentario en la BD
+	 * @param id	Id del usuario en BD
+	 * @param capitulo	Id del capitulo en BD
+	 * @param obra	Id de la obra en BD
+	 * @param texto	El texto del comentario
+	 * @return	True si no ha habido errrores, false en caso contrario
+	 */
+	public boolean addComment(int id, int capitulo, int obra, String texto) {
+		// TODO Auto-generated method stub
+		boolean result = false;
+		try{
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection conexion = DriverManager.getConnection(
+				"jdbc:mysql://localhost:3306/tfg", "root", "root");
+
+		PreparedStatement st = (PreparedStatement) conexion.prepareStatement("INSERT INTO `tfg`.`comentario` "
+				+ "(`autor`, `obra`, `capitulo`, `texto`,`fecha_comentario`) "
+				+ "VALUES (?, ?, ?, ?, ?);");
+		st.setInt(1, id);
+		st.setInt(2, obra);
+		st.setInt(3, capitulo);
+		st.setString(4, texto);
+		st.setTimestamp(5, new java.sql.Timestamp(System.currentTimeMillis()));
+		// new java.sql.Timestamp(System.currentTimeMillis())
+		
+		result = st.execute();
+		
+	} catch (SQLException | ClassNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+		return result;
 	}
 
 }
