@@ -16,7 +16,16 @@
 
 <link rel="stylesheet" href="css/filedrag.css">
 
+<script>
+	function readfiles(files) {
+		alert(files[i].name);
+	}
 
+	function resetFormElement(e) {
+		e.wrap('<form>').closest('form').get(0).reset();
+		e.unwrap();
+	}
+</script>
 </head>
 <body>
 
@@ -55,23 +64,40 @@
 					for="about">Habla sobre ti :</label><br>
 				<textarea id="about" name="about" rows="4" cols="50" required='true'
 					class='form-control' spellcheck="true"></textarea>
-				<br> <!-- <input id='file' name='file' type='file' accept='image/*'><br>-->
+				<br>
+				<!-- <input id='file' name='file' type='file' accept='image/*'><br>-->
 				<div>
 					<!-- <label for="fileselect">Elige los ficheros a subir:</label>-->
-					
+
 					<div class="custom-input-file">
-					<input type="file" class="input-file" id="fileselect" name='file' accept='image/*' />
-					Clicka o arrastra imagenes aquí
+						<input type="file" class="input-file" id="fileselect" name='file'
+							accept='image/*' /> Clicka o arrastra imagenes aquí
 					</div>
-					
+					<span id='fileselectinfo'> </span>
+					<script>
+						$('#fileselect')
+								.change(
+										function(e) {
+											//Si el archivo es una imagen se muestra su nombre en el Spam
+											if (e.target.files[0].type
+													.match('image/*'))
+												$('#fileselectinfo').text(
+														e.target.files[0].name);
+											else {
+												//Si no se borra del input y se borra el nombre
+												resetFormElement($('#fileselect'));
+												$('#fileselectinfo').text('');
+											}
+										});
+					</script>
 				</div>
 				<input id='submit' name='submit' type='submit'>
 
 				<script>
-presubmit();
-</script>
+					presubmit();
+				</script>
 			</form>
-			
+
 		</div>
 	</div>
 	</div>
