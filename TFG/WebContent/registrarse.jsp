@@ -17,20 +17,54 @@
 <link rel="stylesheet" href="css/filedrag.css">
 
 <script>
-	function readfiles(files) {
+	/*function readfiles(files) {
 		alert(files[i].name);
 	}
-
+*/
 	function resetFormElement(e) {
 		e.wrap('<form>').closest('form').get(0).reset();
 		e.unwrap();
 	}
+	
+	function gestorArchivos(nombre){
+		$('#'+nombre)
+				.change(
+						function(e) {
+							//Si el archivo es una imagen se muestra su nombre en el Spam
+							if (e.target.files[0].type
+									.match('image/*'))
+								$('#'+nombre+'info').text(
+										e.target.files[0].name);
+							else {
+								//Si no se borra del input y se borra el nombre
+								resetFormElement($('#'+nombre));
+								$('#'+nombre+'info').text('');
+								$('#myModal').modal('show')
+							}
+						});
+		}
 </script>
 </head>
 <body>
 
 	<jsp:include page="menu.jsp" />
-
+<!-- Modal para mostrar error tipo imagen -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Fichero no válido</h4>
+        </div>
+        <div class="modal-body">
+          <p>Tipo de fichero no aceptado, debe ser un archivo de imagen</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 	<!-- 	<div class="container theme-showcase" role="main">
  -->
@@ -74,21 +108,8 @@
 							accept='image/*' /> Clicka o arrastra imagenes aquí
 					</div>
 					<span id='fileselectinfo'> </span>
-					<script>
-						$('#fileselect')
-								.change(
-										function(e) {
-											//Si el archivo es una imagen se muestra su nombre en el Spam
-											if (e.target.files[0].type
-													.match('image/*'))
-												$('#fileselectinfo').text(
-														e.target.files[0].name);
-											else {
-												//Si no se borra del input y se borra el nombre
-												resetFormElement($('#fileselect'));
-												$('#fileselectinfo').text('');
-											}
-										});
+					<script>				
+					gestorArchivos('fileselect');				
 					</script>
 				</div>
 				<input id='submit' name='submit' type='submit'>
