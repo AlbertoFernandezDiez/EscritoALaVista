@@ -75,11 +75,10 @@ public class uploadBookChapter extends HttpServlet {
 		String idSOb = request.getParameter("selectObra");
 		String tituloCap = request.getParameter("titCap");
 		String tituloObra = request.getParameter("titOb");
-		String rutaP = request.getParameter("rutaP");
-		String rutaC = request.getParameter("rutaC");
+
 		String idAutorS = request.getParameter("autor");
-Part filePartObra = request.getPart("fileObra");
-Part filePartCapi = request.getPart("fileCapi");
+		Part filePartObra = request.getPart("fileObra");
+		Part filePartCapi = request.getPart("fileCapi");
 		if (tituloCap != null && tituloObra != null 
 				&& idSCap != null && idSOb != null
 				&& capitulo != null && resumen != null && idAutorS != null){
@@ -105,9 +104,9 @@ Part filePartCapi = request.getPart("fileCapi");
 			else
 			{
 				//Update o inserccion de una obra ya existente
-				
+
 				if (filePartObra.getSize()==0)
-				GestorBD.getGestorBD().updateObra(idOb,tituloObra,resumen,null);
+					GestorBD.getGestorBD().updateObra(idOb,tituloObra,resumen,null);
 				else
 					GestorBD.getGestorBD().updateObra(idOb,tituloObra,resumen,loadFile(request,"fileObra"));
 
@@ -116,13 +115,13 @@ Part filePartCapi = request.getPart("fileCapi");
 					if(filePartCapi.getSize()==0)
 						GestorBD.getGestorBD().updateChapter(idCap,tituloCap,capitulo,comentario,null);
 
-						//					GestorBD.getGestorBD().updateChapter(idCap,tituloCap,capitulo,comentario,rutaC);
+					//					GestorBD.getGestorBD().updateChapter(idCap,tituloCap,capitulo,comentario,rutaC);
 					else
 						GestorBD.getGestorBD().updateChapter(idCap,tituloCap,capitulo,comentario,loadFile(request,"fileCapi"));
 
 				}else{
-					if(!rutaC.matches(""))
-					GestorBD.getGestorBD().insertarCapitulo(idOb, tituloCap, capitulo, comentario,rutaC);
+					if(filePartCapi.getSize()==0)
+						GestorBD.getGestorBD().insertarCapitulo(idOb, tituloCap, capitulo, comentario,null);
 					else
 						GestorBD.getGestorBD().insertarCapitulo(idOb, tituloCap, capitulo, comentario,loadFile(request,"fileCapi"));
 				}
@@ -140,7 +139,6 @@ Part filePartCapi = request.getPart("fileCapi");
 	ServletException, FileNotFoundException {
 		Part file = request.getPart(fileID);
 		String filepath =null;
-		System.out.println(file.getSize());
 
 
 		if (file.getSize() != 0){
@@ -158,7 +156,7 @@ Part filePartCapi = request.getPart("fileCapi");
 				outputStream.write(bytes, 0, read);
 			}
 			outputStream.close();
-			System.out.println("Done!");}
+		}
 		return filepath;
 	}
 
