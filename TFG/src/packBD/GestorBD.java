@@ -15,6 +15,7 @@ import java.util.HashMap;
 import com.mysql.jdbc.PreparedStatement;
 
 import packBeans.Autor;
+import packBeans.Comentario;
 import packClases.Capitulo;
 import packClases.ListaCapitulos;
 import packClases.ListaObras;
@@ -648,6 +649,50 @@ public class GestorBD {
 		e.printStackTrace();
 	}
 		return result;
+	}
+
+	/**
+	 * Metodo que devuelve los comentarios asociados
+	 * a un capitulo de una obra
+	 * @param idO Id de la obra en BD
+	 * @param idC Id del capitulo en BD
+	 * @return Lista con los comentarios
+	 */
+	public ArrayList<Comentario> getComentariosBeans(int idO, int idC) {
+		// TODO Auto-generated method stub
+		 ArrayList<Comentario> lista = new ArrayList<Comentario>();
+		 
+		 try{
+				Class.forName("com.mysql.jdbc.Driver");
+				Connection conexion = DriverManager.getConnection(
+						"jdbc:mysql://localhost:3306/tfg", "root", "root");
+
+				PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT * FROM tfg.comentario "
+						+ " where obra=?  and capitulo=? order by fecha_comentario desc;");
+				st.setInt(1, idO);
+				st.setInt(2, idC);
+				
+ResultSet rs = st.executeQuery();
+				packBeans.Comentario comentario = null;
+				while (rs.next())
+				{
+					comentario = new Comentario();
+					comentario.setAutor(rs.getInt("autor"));
+					comentario.setCapitulo(rs.getInt("capitulo"));
+					comentario.setComentario(rs.getInt("comentario"));
+					comentario.setFecha_comentario(rs.getTimestamp("fecha_comentario"));
+					comentario.setObra(rs.getInt("obra"));
+					comentario.setTexto(rs.getString("texto"));
+					
+					lista.add(comentario);
+				}
+				
+			} catch (SQLException | ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		 
+		return lista;
 	}
 
 }

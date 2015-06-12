@@ -2,6 +2,7 @@ package packServlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,6 +16,7 @@ import org.apache.catalina.connector.Request;
 
 import packBD.GestorBD;
 import packBeans.Capitulo;
+import packBeans.Comentario;
 import packClases.ListaCapitulos;
 import packClases.Obra;
 
@@ -100,12 +102,16 @@ public class VerHistoria extends HttpServlet {
 
 	private void cargarCapitulo(int idO, int idC, HttpServletRequest request) {
 		 ArrayList<Capitulo> lista = GestorBD.getGestorBD().getCapituloBeans(idO);
+		 ArrayList<Comentario> comentarios = GestorBD.getGestorBD().getComentariosBeans(idO,idC);
+			HashMap<Integer, String> autores = GestorBD.getGestorBD().getHasMapAutores();
 		 Obra obra = GestorBD.getGestorBD().getObra(idO);
 		 request.setAttribute("chapterList", lista);
 		 request.setAttribute("chapter", idC);
 		 request.setAttribute("tit", obra.getTitulo());
 		 request.setAttribute("id", idO);
-
+		 request.setAttribute("comentarios", comentarios);
+		 request.setAttribute("autor", autores);
+		
 	}
 
 }

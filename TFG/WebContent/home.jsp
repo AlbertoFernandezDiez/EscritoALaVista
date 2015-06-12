@@ -5,6 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <title><c:out value="${requestScope.tit}"></c:out></title>
 <link rel="stylesheet" href="css/style.css">
 <!-- Imports para BootStrap -->
@@ -19,21 +20,31 @@
 			$("#exportar").toggle(500);
 		});
 	});
-	
-	function sendComment(){
+
+	function sendComment() {
 		var obra = $('#obra').val();
 		var capitulo = $('#capitulo').val();
 		var texto = $('#comentario').val();
-		
-		$.ajax({url:"UC",
-			type:'POST',data:{obra:obra,capitulo:capitulo ,texto:texto},
-			success:function(result){alert('ok');},
-				error:function(request,error){	alert("Error: " + error);}
-			});
-	/*	$.ajax({op:1,url:url,type: 'POST',data:{op:2 ,capitulo: id},success:function(result){updateChapter(result);},
-			error:function(request,error){
+
+		$.ajax({
+			url : "UC",
+			type : 'POST',
+			data : {
+				obra : obra,
+				capitulo : capitulo,
+				texto : texto
+			},
+			success : function(result) {
+				alert('ok');
+			},
+			error : function(request, error) {
 				alert("Error: " + error);
-			}*/
+			}
+		});
+		/*	$.ajax({op:1,url:url,type: 'POST',data:{op:2 ,capitulo: id},success:function(result){updateChapter(result);},
+				error:function(request,error){
+					alert("Error: " + error);
+				}*/
 	}
 </script>
 
@@ -131,14 +142,36 @@
 												cols='100' required='true' class='form-control'
 												placeholder="Escribe aquí tu comentario" spellcheck="true"></textarea>
 										</div>
-										<button type="button" onclick='sendComment()' class="btn btn-default">Comentar</button>
-										
+										<button type="button" onclick='sendComment()'
+											class="btn btn-default">Comentar</button>
+
 									</form>
+									<hr>
+									
 								</c:when>
 								<c:otherwise>
 					Debes identificarte para poder realizar comentarios
 					</c:otherwise>
 							</c:choose>
+							<c:forEach items="${requestScope.comentarios}" var="com">
+										<div class="row custom">
+											<div class="col-sm-4">
+
+												<a href="VerAutor?autor=<c:out value="${ob.autor}"></c:out>"><c:out
+														value="${autor[com.autor]}"></c:out></a>
+											</div>
+											<div class="col-sm-8">
+												<fmt:formatDate value="${com.fecha_comentario}"
+													pattern="dd/MM/yyyy hh-mm" />
+
+											</div>
+											<div class="col-sm-12">
+												<c:out value="${com.texto}"></c:out>
+
+											</div>
+											</div>
+											<br>
+									</c:forEach>
 						</div>
 					</div>
 				</div>

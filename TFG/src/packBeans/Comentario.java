@@ -1,11 +1,12 @@
 package packBeans;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Comentario {
 	private int autor,obra,capitulo,comentario;
 	private String texto;
-	private Date fecha_comentario;
+	private Timestamp fecha_comentario;
 	
 	public Comentario(){}
 
@@ -49,11 +50,11 @@ public class Comentario {
 		this.texto = texto;
 	}
 
-	public Date getFecha_comentario() {
+	public Timestamp getFecha_comentario() {
 		return fecha_comentario;
 	}
 
-	public void setFecha_comentario(Date fecha_comentario) {
+	public void setFecha_comentario(Timestamp fecha_comentario) {
 		this.fecha_comentario = fecha_comentario;
 	}
 	
