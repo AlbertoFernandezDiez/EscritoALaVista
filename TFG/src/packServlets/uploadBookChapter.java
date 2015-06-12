@@ -78,7 +78,8 @@ public class uploadBookChapter extends HttpServlet {
 		String rutaP = request.getParameter("rutaP");
 		String rutaC = request.getParameter("rutaC");
 		String idAutorS = request.getParameter("autor");
-
+Part filePartObra = request.getPart("fileObra");
+Part filePartCapi = request.getPart("fileCapi");
 		if (tituloCap != null && tituloObra != null 
 				&& idSCap != null && idSOb != null
 				&& capitulo != null && resumen != null && idAutorS != null){
@@ -89,14 +90,14 @@ public class uploadBookChapter extends HttpServlet {
 			{ 
 				int id;
 				//Obra nueva
-				if (!rutaP.matches(""))
-					id = GestorBD.getGestorBD().insertarObra(idAutor, tituloObra, resumen,rutaP);
+				if (filePartObra.getSize()==0)
+					id = GestorBD.getGestorBD().insertarObra(idAutor, tituloObra, resumen,null);
 				else
 					id = GestorBD.getGestorBD().insertarObra(idAutor, tituloObra, resumen,loadFile(request,"fileObra"));
 
 				if (idCap == 0){
-					if (!rutaC.matches(""))
-						GestorBD.getGestorBD().insertarCapitulo(id, tituloCap, capitulo, comentario,rutaC);
+					if (filePartCapi.getSize()==0)
+						GestorBD.getGestorBD().insertarCapitulo(id, tituloCap, capitulo, comentario,null);
 					else
 						GestorBD.getGestorBD().insertarCapitulo(id, tituloCap, capitulo, comentario,loadFile(request,"fileCapi"));
 				}
@@ -104,16 +105,18 @@ public class uploadBookChapter extends HttpServlet {
 			else
 			{
 				//Update o inserccion de una obra ya existente
-					
-				if (!rutaP.matches(""))
-				GestorBD.getGestorBD().updateObra(idOb,tituloObra,resumen,rutaP);
+				
+				if (filePartObra.getSize()==0)
+				GestorBD.getGestorBD().updateObra(idOb,tituloObra,resumen,null);
 				else
 					GestorBD.getGestorBD().updateObra(idOb,tituloObra,resumen,loadFile(request,"fileObra"));
 
 				if (idCap != 0)
 				{
-					if(!rutaC.matches(""))
-					GestorBD.getGestorBD().updateChapter(idCap,tituloCap,capitulo,comentario,rutaC);
+					if(filePartCapi.getSize()==0)
+						GestorBD.getGestorBD().updateChapter(idCap,tituloCap,capitulo,comentario,null);
+
+						//					GestorBD.getGestorBD().updateChapter(idCap,tituloCap,capitulo,comentario,rutaC);
 					else
 						GestorBD.getGestorBD().updateChapter(idCap,tituloCap,capitulo,comentario,loadFile(request,"fileCapi"));
 

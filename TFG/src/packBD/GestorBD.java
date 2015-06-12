@@ -287,10 +287,10 @@ public class GestorBD {
 					st.setInt(2, offset);
 				}
 				else{
-				st = (PreparedStatement) conexion.prepareStatement("select * from obra where autor = ? order by fecha_mod asc limit ? offset ?");
-				st.setInt(1, id);
-				st.setInt(2, limit);
-				st.setInt(3, offset);}
+					st = (PreparedStatement) conexion.prepareStatement("select * from obra where autor = ? order by fecha_mod asc limit ? offset ?");
+					st.setInt(1, id);
+					st.setInt(2, limit);
+					st.setInt(3, offset);}
 			}
 			else{
 				if (id == 0){
@@ -298,9 +298,9 @@ public class GestorBD {
 				}
 				else{
 					st = (PreparedStatement) conexion.prepareStatement("select * from obra where autor = ? order by fecha_mod asc");
-				st.setInt(1, id);
+					st.setInt(1, id);
 				}
-				
+
 			}
 
 			ResultSet rs = st.executeQuery();
@@ -394,15 +394,28 @@ public class GestorBD {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+			PreparedStatement st = null;
+			if (portada != null)
+			{
+				st = (PreparedStatement) conexion.prepareStatement("UPDATE `tfg`.`obra` SET "
+						+ " `titulo`=?, `resumen`=?, `fecha_mod`=?, `portada`=? WHERE `id`=?;");
 
-			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("UPDATE `tfg`.`obra` SET "
-					+ " `titulo`=?, `resumen`=?, `fecha_mod`=?, `portada`=? WHERE `id`=?;");
+				st.setString(1, tituloObra);
+				st.setString(2, resumen);
+				st.setTimestamp(3, new java.sql.Timestamp(System.currentTimeMillis()));
+				st.setString(4, portada);
+				st.setInt(5, idOb);
+			}
+			else
+			{
+				st = (PreparedStatement) conexion.prepareStatement("UPDATE `tfg`.`obra` SET "
+						+ " `titulo`=?, `resumen`=?, `fecha_mod`=? WHERE `id`=?;");
 
-			st.setString(1, tituloObra);
-			st.setString(2, resumen);
-			st.setTimestamp(3, new java.sql.Timestamp(System.currentTimeMillis()));
-			st.setString(4, portada);
-			st.setInt(5, idOb);
+				st.setString(1, tituloObra);
+				st.setString(2, resumen);
+				st.setTimestamp(3, new java.sql.Timestamp(System.currentTimeMillis()));
+				st.setInt(4, idOb);
+			}
 
 			st.executeUpdate();
 
@@ -420,16 +433,27 @@ public class GestorBD {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+			PreparedStatement st = null;
+			if (pRuta != null)
+			{
+				st = (PreparedStatement) conexion.prepareStatement("UPDATE `tfg`.`capitulo` SET `nombre`=?,"
+						+ " `texto`=?, `comentarios_autor`=?, `imagen`=? WHERE `id`=?;");
 
-			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("UPDATE `tfg`.`capitulo` SET `nombre`=?,"
-					+ " `texto`=?, `comentarios_autor`=?, `imagen`=? WHERE `id`=?;");
-
-			st.setString(1, tituloCap);
-			st.setString(2, capitulo);
-			st.setString(3, comentario);
-			st.setString(4, pRuta);
-			st.setInt(5, idCap);
-
+				st.setString(1, tituloCap);
+				st.setString(2, capitulo);
+				st.setString(3, comentario);
+				st.setString(4, pRuta);
+				st.setInt(5, idCap);
+			}
+			else
+			{
+				st = (PreparedStatement) conexion.prepareStatement("UPDATE `tfg`.`capitulo` SET `nombre`=?,"
+						+ " `texto`=?, `comentarios_autor`=?  WHERE `id`=?;");
+				st.setString(1, tituloCap);
+				st.setString(2, capitulo);
+				st.setString(3, comentario);
+				st.setInt(4, idCap);
+			}
 			st.executeUpdate();
 
 			st.close();
@@ -512,7 +536,7 @@ public class GestorBD {
 			st.setString(7, ruta);
 			st.setString(8, email);
 			st.executeUpdate();
-			
+
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -558,22 +582,22 @@ public class GestorBD {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/tfg", "root", "root");
-			
+
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT id,password,sal"
 					+ " FROM tfg.autor where nombre = ?;");
 			st.setString(1, username);
-			
+
 			ResultSet rs = st.executeQuery();
-			
+
 			if (rs.next()){
 				String sal = rs.getString("sal");
 				String contra = rs.getString("password");
 				String passw = toSha512(toSha512(password) + sal);
-				
+
 				if (contra.equals(passw))
 					id = rs.getInt("id");
 			}
-			
+
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
