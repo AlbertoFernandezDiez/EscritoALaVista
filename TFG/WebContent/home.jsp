@@ -40,7 +40,7 @@
 					value="EpubCreator">Epub</label> <label class="radio-inline"><input
 					type="radio" name="formato" value="LatexCreator">Latex</label> <label
 					class="radio-inline"><input type="hidden" name="id"
-					value="<c:out value="${requestScope.id}" ></c:out>"></label>	 <input
+					value="<c:out value="${requestScope.id}" ></c:out>"></label> <input
 					type='submit' class="btn btn-default" name='exportar'>
 			</div>
 		</form>
@@ -98,9 +98,34 @@
 						<c:out value="${chap.comentarios_autor }"></c:out>
 					</div>
 				</div>
+				<div id='zonaComentarios'>
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3>
+							Comentarios
+						</h3>
+					</div>
+					<div class="panel-body">
+					<c:choose>
+					<c:when test="${not empty requestScope.userId}">
+					<form id='formcomentarios' class="form-inline" role="form">
+					<div class="form-group">
+				<textarea id="comentario" name="comentario" rows="4" cols='100'	required='true'
+					class='form-control' placeholder="Escribe aquí tu comentario" spellcheck="true"></textarea>
+					</div>
+					<button type="button" class="btn btn-default">Comentar</button>
+					</form>
+					</c:when>
+					<c:otherwise>
+					Debes identificarte para poder realizar comentarios
+					</c:otherwise>
+					</c:choose>
+					</div>
+				</div>
 			</div>
 		</div>
+		
 	</div>
-</div>
+	</div>
 </body>
 </html>
