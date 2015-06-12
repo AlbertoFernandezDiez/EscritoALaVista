@@ -157,7 +157,7 @@
 										<div class="row custom">
 											<div class="col-sm-4">
 
-												<a href="VerAutor?autor=<c:out value="${ob.autor}"></c:out>"><c:out
+												<a href="VerAutor?autor=<c:out value="${com.autor}"></c:out>"><c:out
 														value="${autor[com.autor]}"></c:out></a>
 											</div>
 											<div class="col-sm-8">
