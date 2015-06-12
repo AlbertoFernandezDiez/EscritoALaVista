@@ -53,6 +53,7 @@ public class VerHistoria extends HttpServlet {
 		String user = (String) session.getAttribute("username");
 		int id = 0;
 		
+		
 		try {
 		id = (int) session.getValue("id");
 		}
@@ -71,6 +72,7 @@ public class VerHistoria extends HttpServlet {
 			break;
 		case 1:
 			idC = Integer.parseInt(idCS);
+			
 			cargarCapitulo(idH,idC, request);
 			break;
 		
@@ -78,6 +80,7 @@ public class VerHistoria extends HttpServlet {
 			cargarHistoria(idO, request);
 			break;
 		}
+		
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/home.jsp");
         rd.forward(request, response);
 	}
@@ -102,7 +105,7 @@ public class VerHistoria extends HttpServlet {
 		 request.setAttribute("chapter", idC);
 		 request.setAttribute("tit", obra.getTitulo());
 		 request.setAttribute("id", idO);
-		
+
 	}
 
 }

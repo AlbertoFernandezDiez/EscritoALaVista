@@ -20,6 +20,8 @@
 								href='VerAutor?autor=<c:out value="${requestScope.userId}"></c:out>'><c:out
 										value="${requestScope.userName}"></c:out></a></li>
 							<li><a href="LogOut">Logout</a></li>
+							<input id='user' type='hidden' value='${requestScope.userId}'/>
+							
 						</c:when>
 						<c:otherwise>
 							<li><a href='login.jsp'>IDENTIFICARSE</a></li>

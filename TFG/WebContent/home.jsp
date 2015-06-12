@@ -19,6 +19,23 @@
 			$("#exportar").toggle(500);
 		});
 	});
+	
+	function sendComment(){
+		var id = $('#user').val();
+		var obra = $('#obra').val();
+		var capitulo = $('#capitulo').val();
+		var texto = $('#comentario').val();
+		
+		$.ajax({url:"/uploadComment",
+			type:'POST',data:{id:id,obra:obra,capitulo:capitulo ,texto:texto},
+			success:function(result){alert('ok');},
+				error:function(request,error){	alert("Error: " + error);}
+			});
+	/*	$.ajax({op:1,url:url,type: 'POST',data:{op:2 ,capitulo: id},success:function(result){updateChapter(result);},
+			error:function(request,error){
+				alert("Error: " + error);
+			}*/
+	}
 </script>
 
 </head>
@@ -27,7 +44,10 @@
 
 	<div class='jumbotron'>
 
-
+		<input id='obra' type="hidden"
+			value='<c:out value="${requestScope.id}"></c:out>' /> <input
+			id='capitulo' type="hidden"
+			value='<c:out value="${requestScope.chapter}"></c:out>' />
 		<button type="button" class="btn btn-default" id='formtitle'
 			value='Exportar'>Exportar</button>
 
@@ -99,33 +119,33 @@
 					</div>
 				</div>
 				<div id='zonaComentarios'>
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h3>
-							Comentarios
-						</h3>
-					</div>
-					<div class="panel-body">
-					<c:choose>
-					<c:when test="${not empty requestScope.userId}">
-					<form id='formcomentarios' class="form-inline" role="form">
-					<div class="form-group">
-				<textarea id="comentario" name="comentario" rows="4" cols='100'	required='true'
-					class='form-control' placeholder="Escribe aquí tu comentario" spellcheck="true"></textarea>
-					</div>
-					<button type="button" class="btn btn-default">Comentar</button>
-					</form>
-					</c:when>
-					<c:otherwise>
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<h3>Comentarios</h3>
+						</div>
+						<div class="panel-body">
+							<c:choose>
+								<c:when test="${not empty requestScope.userId}">
+									<form id='formcomentarios' class="form-inline" role="form">
+										<div class="form-group">
+											<textarea id="comentario" name="comentario" rows="4"
+												cols='100' required='true' class='form-control'
+												placeholder="Escribe aquí tu comentario" spellcheck="true"></textarea>
+										</div>
+										<button type="button" onclick='sendComment()' class="btn btn-default">Comentar</button>
+										
+									</form>
+								</c:when>
+								<c:otherwise>
 					Debes identificarte para poder realizar comentarios
 					</c:otherwise>
-					</c:choose>
+							</c:choose>
+						</div>
 					</div>
 				</div>
 			</div>
+
 		</div>
-		
-	</div>
 	</div>
 </body>
 </html>
