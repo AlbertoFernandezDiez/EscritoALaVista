@@ -26,13 +26,12 @@
     <servlet-name>UploadBook</servlet-name>
     <url-pattern>/UB</url-pattern>
   </servlet-mapping>
-  
   <servlet>
-  <servlet-name>UploadComment</servlet-name>
-  <servlet-class>packServlets.UploadComment</servlet-class>
+    <servlet-name>UploadComment</servlet-name>
+    <servlet-class>packServlets.UploadComment</servlet-class>
   </servlet>
   <servlet-mapping>
-  <servlet-name>UploadComment</servlet-name>
-  <url-pattern>/UC</url-pattern>
+    <servlet-name>UploadComment</servlet-name>
+    <url-pattern>/UC</url-pattern>
   </servlet-mapping>
 </web-app>

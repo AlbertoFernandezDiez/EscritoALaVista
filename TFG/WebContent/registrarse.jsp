@@ -7,14 +7,17 @@
 <title>Registrarse</title>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<script src="js/sha512.js"></script>
-<script src="js/validations.js"></script>
+
 
 <!-- Imports para BootStrap -->
 <script src="js/jquery-1.10.2.js"></script>
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/bootstrap-theme.min.css">
 <script src="js/bootstrap.min.js"></script>
+
+<script src="js/sha512.js"></script>
+<script src="js/validations.js"></script>
+
 
 <link rel="stylesheet" href="css/filedrag.css">
 <script src="js/filedrag.js"></script>
@@ -29,21 +32,26 @@
 	<jsp:include page="menu.jsp" />
 	<!-- Modal para mostrar error tipo imagen -->
 	<jsp:include page="fileError.jsp" />
-<!-- Mensaje de aviso de cookies -->
-<jsp:include page="Cookies.html" />
-	
+	<!-- Mensaje de aviso de cookies -->
+	<jsp:include page="Cookies.html" />
+
 	<div class='jumbotron'>
 		<div class="form-group">
 			<form id='registro' method="POST" action="Registrar"
 				enctype="multipart/form-data" role='form'>
+				<div id='comprobacionUsuario' class='form-group'>
+					<label for="usuario">Nombre de usuario :</label> <input
+						id="usuario" name="usuario" class='form-control' type="text"
+						placeholder="usuariodeprueba" required='true' autofocus/>
+						<br><span
+						id='usado' class="alert alert-danger" role="alert">Este nombre de usuario ya esta registrado</span>
+				</div>
 
-				<label for="usuario">Nombre de usuario :</label> <input id="usuario"
-					name="usuario" class='form-control' type="text"
-					placeholder="usuariodeprueba" required='true'><br> <label
-					for="email">Email :</label> <input id="email" name="email"
-					type="email" class='form-control' placeholder="ejemplo@ejemplo.com"
-					required='true'><br> <label for="contrasena1">Contraseña
-					:</label> <input id="contrasena1" class='form-control'
+				<br> <label for="email">Email :</label> <input id="email"
+					name="email" type="email" class='form-control'
+					placeholder="ejemplo@ejemplo.com" required='true'><br>
+				<label for="contrasena1">Contraseña :</label> <input
+					id="contrasena1" class='form-control'
 					pattern="[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{6,}"
 					title="Six or more characters" name="contrasena1" type="password"
 					placeholder="Introduce una contraseña" required='true'><br>
@@ -86,6 +94,6 @@
 		</div>
 	</div>
 	</div>
-	</div>
+	
 </body>
 </html>

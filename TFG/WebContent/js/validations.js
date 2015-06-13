@@ -32,3 +32,42 @@ function loginSubmit(){
 		event.preventDefault();
 
 	});}
+
+function checkUserName(){
+	var nombre = $('#usuario').val();
+	console.log(nombre);
+	if (nombre != '')
+	{
+		$.ajax({
+			url : "CU",
+			type : 'POST',
+			data : {
+				nombre : nombre
+			},
+			success : function(result) {
+				if (result == 'true') {
+					$('#comprobacionUsuario').addClass("has-success"); 
+					$('#usado').hide();
+				} else {
+					$('#usado').show();
+					$('#comprobacionUsuario').addClass("has-error");  
+				}
+			},
+			error : function(request, error) {
+				$("#bad").show(200);
+			}
+		}
+		);
+	}
+}
+
+$(document).ready(function() {
+	$("#usado").hide();
+	
+	$('#usuario').on('blur',checkUserName);
+	$('#usuario').on('focus',function(){
+		$('#comprobacionUsuario').removeClass("has-success");
+		$('#comprobacionUsuario').removeClass("has-error");
+	}
+	);
+});

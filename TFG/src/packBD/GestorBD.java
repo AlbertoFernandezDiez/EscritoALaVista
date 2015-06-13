@@ -696,4 +696,35 @@ public class GestorBD {
 		return lista;
 	}
 
+	/**
+	 * Método que comprueba si el nombre introducido por el usuario existe
+	 * @param nombre El nombre introducido por el usuario
+	 * @return True si el nombre esta sin utilizar
+	 */
+	public boolean comprobarNombre(String nombre) {
+		boolean result = false;
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT count(nombre)"
+					+ " FROM tfg.autor where nombre=?;");
+			st.setString(1, nombre);
+
+
+			ResultSet rs = st.executeQuery();
+
+			if (rs.next())
+				result = rs.getInt(1) == 0;
+
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return result;
+
+	}
+
 }
