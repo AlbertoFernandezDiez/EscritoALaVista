@@ -31,3 +31,6 @@ http://mrbool.com/how-to-create-a-login-form-with-jsp/25685
 
 CAMBIAR DESTINO CON RADIOBUTTON
 http://jsfiddle.net/N9tBx/
+
+MENSAJE DE USO DE COOKIES
+http://www.estudiosurestao.com/blog/mensaje-politica-de-cookies/

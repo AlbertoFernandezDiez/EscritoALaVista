@@ -13,6 +13,12 @@
 <link rel="stylesheet" href="css/bootstrap.min.css">
 <link rel="stylesheet" href="css/bootstrap-theme.min.css">
 <script src="js/bootstrap.min.js"></script>
+
+
+<!-- MENSAJE COOKIES -->
+<script src="js/Cookies.js" type="text/javascript"></script>
+<link rel="stylesheet" href="css/Cookies.css">
+
 <script>
 	$(document).ready(function() {
 		$("#exportar").hide();
@@ -58,6 +64,9 @@
 </head>
 <body>
 	<jsp:include page="menu.jsp" />
+
+<!-- Mensaje de aviso de cookies -->
+<jsp:include page="Cookies.html" />
 
 	<div class='jumbotron'>
 
