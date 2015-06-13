@@ -12,7 +12,7 @@
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 					<li><a href='Index'>INICIO</a></li>
-					<li><a href="#">CATEGORIA</a></li>
+					<!-- <li><a href="#">CATEGORIA</a></li> -->
 					<c:choose>
 						<c:when test="${not empty requestScope.userId}">
 							<li><a href="UploadBook">CREAR HISTORIA</a></li>

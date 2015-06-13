@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
     <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">

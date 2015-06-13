@@ -21,11 +21,16 @@
 <link rel="stylesheet" href="css/bootstrap-theme.min.css">
 <script src="js/bootstrap.min.js"></script>
 
+<!-- MENSAJE COOKIES -->
+<script src="js/Cookies.js" type="text/javascript"></script>
+<link rel="stylesheet" href="css/Cookies.css">
+
 </head>
 <body>
 	<div class="container theme-showcase" role="main">
 
-
+<!-- Mensaje de aviso de cookies -->
+<jsp:include page="Cookies.html" />
 
 		<c:set var="autor" value="${requestScope.autores}" scope="request"></c:set>
 		<jsp:include page="menu.jsp" />

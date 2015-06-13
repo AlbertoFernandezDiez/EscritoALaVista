@@ -19,6 +19,9 @@
 <link rel="stylesheet" href="css/filedrag.css">
 <script src="js/filedrag.js"></script>
 
+<!-- MENSAJE COOKIES -->
+<script src="js/Cookies.js" type="text/javascript"></script>
+<link rel="stylesheet" href="css/Cookies.css">
 
 </head>
 <body>
@@ -26,7 +29,8 @@
 	<jsp:include page="menu.jsp" />
 	<!-- Modal para mostrar error tipo imagen -->
 	<jsp:include page="fileError.jsp" />
-
+<!-- Mensaje de aviso de cookies -->
+<jsp:include page="Cookies.html" />
 	
 	<div class='jumbotron'>
 		<div class="form-group">
