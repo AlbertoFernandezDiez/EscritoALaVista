@@ -19,6 +19,8 @@
 		$("#formtitle").click(function() {
 			$("#exportar").toggle(500);
 		});
+		$("#ok").hide();
+		$("#bad").hide();
 	});
 
 	function sendComment() {
@@ -35,16 +37,21 @@
 				texto : texto
 			},
 			success : function(result) {
-				alert('ok');
+				if (result == 'true') {
+					$("#ok").show(200);
+					$("#bad").hide(200);
+					$('#comentario').val('');
+				} else {
+					$("#ok").hide(200);
+					$("#bad").show(200);
+				}
 			},
 			error : function(request, error) {
-				alert("Error: " + error);
+				$("#ok").hide(200);
+				$("#bad").show(200);
 			}
 		});
-		/*	$.ajax({op:1,url:url,type: 'POST',data:{op:2 ,capitulo: id},success:function(result){updateChapter(result);},
-				error:function(request,error){
-					alert("Error: " + error);
-				}*/
+
 	}
 </script>
 
@@ -146,38 +153,44 @@
 											class="btn btn-default">Comentar</button>
 
 									</form>
-									<hr>
-									
+									<div id='ok' class="alert alert-success" role="alert">
+										<strong>Enhorabuena! </strong> ,tu comentario se ha enviad correctamente
+									</div>
+									<div id='bad' class="alert alert-danger" role="alert">
+										<strong>Ohh!</strong>, a habido un error y tu comentario no se ha podido guardar
+									</div>
+
 								</c:when>
 								<c:otherwise>
 					Debes identificarte para poder realizar comentarios
 					</c:otherwise>
 							</c:choose>
+							<hr>
 							<c:forEach items="${requestScope.comentarios}" var="com">
-										<div class="row custom">
-											<div class="col-sm-4">
+								<div class="row">
+									<div class="col-sm-4">
 
-												<a href="VerAutor?autor=<c:out value="${com.autor}"></c:out>"><c:out
-														value="${autor[com.autor]}"></c:out></a>
-											</div>
-											<div class="col-sm-8">
-												<fmt:formatDate value="${com.fecha_comentario}"
-													pattern="dd/MM/yyyy hh-mm" />
+										<a href="VerAutor?autor=<c:out value="${com.autor}"></c:out>"><c:out
+												value="${autor[com.autor]}"></c:out></a>
+									</div>
+									<div class="col-sm-8">
+										<fmt:formatDate value="${com.fecha_comentario}"
+											pattern="dd/MM/yyyy hh:mm" />
 
-											</div>
-											<div class="col-sm-12">
-												<c:out value="${com.texto}"></c:out>
+									</div>
+									<div class="col-sm-12">
+										<c:out value="${com.texto}"></c:out>
 
-											</div>
-											</div>
-											<br>
-									</c:forEach>
+									</div>
+								</div>
+								<hr>
+							</c:forEach>
 						</div>
 					</div>
 				</div>
 			</div>
-
 		</div>
+	</div>
 	</div>
 </body>
 </html>

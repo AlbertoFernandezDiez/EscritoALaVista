@@ -40,10 +40,8 @@
 	</form>
 </div>
 </div>
-</div>
 	<script>
 			loginSubmit();
 			</script>
-			</div>
 </body>
 </html>

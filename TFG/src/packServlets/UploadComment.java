@@ -57,6 +57,7 @@ public class UploadComment extends HttpServlet {
 		PrintWriter pw = response.getWriter();
 		
 		if (capitulo != 0 && id != 0 && obra != 0){
+			System.out.println("por q");
 			pw.write(String.valueOf(GestorBD.getGestorBD().addComment(id,capitulo,obra,texto)));
 		}
 		else

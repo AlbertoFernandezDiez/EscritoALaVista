@@ -628,26 +628,27 @@ public class GestorBD {
 		// TODO Auto-generated method stub
 		boolean result = false;
 		try{
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection conexion = DriverManager.getConnection(
-				"jdbc:mysql://localhost:3306/tfg", "root", "root");
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
 
-		PreparedStatement st = (PreparedStatement) conexion.prepareStatement("INSERT INTO `tfg`.`comentario` "
-				+ "(`autor`, `obra`, `capitulo`, `texto`,`fecha_comentario`) "
-				+ "VALUES (?, ?, ?, ?, ?);");
-		st.setInt(1, id);
-		st.setInt(2, obra);
-		st.setInt(3, capitulo);
-		st.setString(4, texto);
-		st.setTimestamp(5, new java.sql.Timestamp(System.currentTimeMillis()));
-		// new java.sql.Timestamp(System.currentTimeMillis())
-		
-		result = st.execute();
-		
-	} catch (SQLException | ClassNotFoundException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("INSERT INTO `tfg`.`comentario` "
+					+ "(`autor`, `obra`, `capitulo`, `texto`,`fecha_comentario`) "
+					+ "VALUES (?, ?, ?, ?, ?);");
+			st.setInt(1, id);
+			st.setInt(2, obra);
+			st.setInt(3, capitulo);
+			st.setString(4, texto);
+			st.setTimestamp(5, new java.sql.Timestamp(System.currentTimeMillis()));
+			// new java.sql.Timestamp(System.currentTimeMillis())
+
+			st.execute();
+			result = true;
+
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return result;
 	}
 
@@ -660,38 +661,38 @@ public class GestorBD {
 	 */
 	public ArrayList<Comentario> getComentariosBeans(int idO, int idC) {
 		// TODO Auto-generated method stub
-		 ArrayList<Comentario> lista = new ArrayList<Comentario>();
-		 
-		 try{
-				Class.forName("com.mysql.jdbc.Driver");
-				Connection conexion = DriverManager.getConnection(
-						"jdbc:mysql://localhost:3306/tfg", "root", "root");
+		ArrayList<Comentario> lista = new ArrayList<Comentario>();
 
-				PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT * FROM tfg.comentario "
-						+ " where obra=?  and capitulo=? order by fecha_comentario desc;");
-				st.setInt(1, idO);
-				st.setInt(2, idC);
-				
-ResultSet rs = st.executeQuery();
-				packBeans.Comentario comentario = null;
-				while (rs.next())
-				{
-					comentario = new Comentario();
-					comentario.setAutor(rs.getInt("autor"));
-					comentario.setCapitulo(rs.getInt("capitulo"));
-					comentario.setComentario(rs.getInt("comentario"));
-					comentario.setFecha_comentario(rs.getTimestamp("fecha_comentario"));
-					comentario.setObra(rs.getInt("obra"));
-					comentario.setTexto(rs.getString("texto"));
-					
-					lista.add(comentario);
-				}
-				
-			} catch (SQLException | ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT * FROM tfg.comentario "
+					+ " where obra=?  and capitulo=? order by fecha_comentario desc;");
+			st.setInt(1, idO);
+			st.setInt(2, idC);
+
+			ResultSet rs = st.executeQuery();
+			packBeans.Comentario comentario = null;
+			while (rs.next())
+			{
+				comentario = new Comentario();
+				comentario.setAutor(rs.getInt("autor"));
+				comentario.setCapitulo(rs.getInt("capitulo"));
+				comentario.setComentario(rs.getInt("comentario"));
+				comentario.setFecha_comentario(rs.getTimestamp("fecha_comentario"));
+				comentario.setObra(rs.getInt("obra"));
+				comentario.setTexto(rs.getString("texto"));
+
+				lista.add(comentario);
 			}
-		 
+
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		return lista;
 	}
 

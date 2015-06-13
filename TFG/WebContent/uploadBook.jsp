@@ -91,7 +91,7 @@
 					gestorArchivos('fileCapi');
 				</script>
 				<br> <input
-					type="submit" value="enviar" />
+					type="submit" class='btn btn-default' value="Enviar" />
 			</form>
 		</div>
 	</div>
