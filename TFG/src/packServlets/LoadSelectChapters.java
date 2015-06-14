@@ -16,9 +16,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import packBD.GestorBD;
-import packClases.Capitulo;
-import packClases.ListaCapitulos;
-import packClases.Obra;
 
 /**
  * Servlet implementation class LoadSelectChapters
@@ -103,16 +100,16 @@ HttpSession session = request.getSession();
 	}
 
 	private JSONObject loadSelectorCap(int idC) {
-		Obra obra = GestorBD.getGestorBD().getObra(idC);
+		packBeans.Obra obra = GestorBD.getGestorBD().getObraBeans(idC);
 		JSONObject jsonObra = new JSONObject(); 
 		jsonObra.put("titulo", obra.getTitulo());
 		jsonObra.put("resumen", obra.getResumen());
 		jsonObra.put("imagen", obra.getPortada());
 
 
-		ListaCapitulos listCap = GestorBD.getGestorBD().getCapitulos(idC);
-		Iterator<Capitulo> itC = listCap.getIterator();
-		Capitulo cap = null;
+		ArrayList<packBeans.Capitulo> listCap = GestorBD.getGestorBD().getCapituloBeans(idC);
+		Iterator<packBeans.Capitulo> itC = listCap.iterator();
+		packBeans.Capitulo cap = null;
 		JSONObject jsonCap = null;
 		
 		ArrayList<JSONObject> array = new ArrayList<>();
@@ -128,17 +125,17 @@ HttpSession session = request.getSession();
 	}
 	
 	private JSONObject loadCapitulo(int id) {
-		Capitulo cap = GestorBD.getGestorBD().getCapitulo(id);
+		packBeans.Capitulo cap = GestorBD.getGestorBD().getCapitulosBeans(id);
 
 		JSONObject jsonCapitulo = new JSONObject(); 
 		jsonCapitulo.put("titulo", cap.getNombre());
 		JSONArray array = new JSONArray();	
-		for (String x:cap.getTexto())
+		for (String x:cap.getText())
 			{
 				array.put(x);
 			}
 		jsonCapitulo.put("capitulo", array);
-		jsonCapitulo.put("comentarioA", cap.getComentariosAutor());
+		jsonCapitulo.put("comentarioA", cap.getComentarios_autor());
 		
 		jsonCapitulo.put("imagen", cap.getImagen());
 

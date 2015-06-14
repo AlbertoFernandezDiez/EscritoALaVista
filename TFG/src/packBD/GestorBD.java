@@ -756,4 +756,33 @@ public class GestorBD {
 		return obra;
 	}
 
+	public packBeans.Capitulo getCapitulosBeans(int id) {
+		packBeans.Capitulo cap = null;
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+			
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select * from capitulo where id = ?;");
+			st.setInt(1, id);
+			ResultSet rs = st.executeQuery();
+
+			if(rs.next())
+				cap = new packBeans.Capitulo();
+			cap.setId(rs.getInt("id"));
+			cap.setNombre(rs.getString("nombre"));
+			cap.setObra(rs.getInt("obra"));
+			cap.setComentarios_autor(rs.getString("comentarios_autor"));
+			cap.setText(rs.getString("texto"));
+			cap.setImagen(rs.getString("imagen"));
+			cap.setFecha_comentario(rs.getDate("fecha_comentario"));
+		}
+		catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return cap;
+	}
+	
+
 }

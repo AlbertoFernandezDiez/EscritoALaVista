@@ -17,8 +17,7 @@ import org.apache.catalina.connector.Request;
 import packBD.GestorBD;
 import packBeans.Capitulo;
 import packBeans.Comentario;
-import packClases.ListaCapitulos;
-import packClases.Obra;
+import packBeans.Obra;
 
 /**
  * Servlet implementation class VerHistoria
@@ -104,7 +103,7 @@ public class VerHistoria extends HttpServlet {
 		 ArrayList<Capitulo> lista = GestorBD.getGestorBD().getCapituloBeans(idO);
 		 ArrayList<Comentario> comentarios = GestorBD.getGestorBD().getComentariosBeans(idO,idC);
 			HashMap<Integer, String> autores = GestorBD.getGestorBD().getHasMapAutores();
-		 Obra obra = GestorBD.getGestorBD().getObra(idO);
+		 Obra obra = GestorBD.getGestorBD().getObraBeans(idO);
 		 request.setAttribute("chapterList", lista);
 		 request.setAttribute("chapter", idC);
 		 request.setAttribute("tit", obra.getTitulo());
