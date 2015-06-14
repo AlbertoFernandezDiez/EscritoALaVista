@@ -783,6 +783,39 @@ public class GestorBD {
 		}
 		return cap;
 	}
-	
+
+	public Autor getAutorBeansById(int id) {
+		packBeans.Autor autor = null;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select autor.* from autor"
+					+ " where autor.id = ?");
+			st.setInt(1, id);
+
+			ResultSet rs = st.executeQuery();
+			if (rs.next())	   
+			{
+				autor = new Autor();
+				autor.setId(rs.getInt("id"));
+				autor.setImagen(rs.getString("imagen"));
+				autor.setNacimiento(rs.getDate("nacimiento"));
+				autor.setNombre(rs.getString("nombre"));
+				autor.setPais(rs.getString("pais"));
+				autor.setAbout(rs.getString("about"));
+				autor.setEmail(rs.getString("email"));
+
+			}
+			rs.close();
+			st.close();
+			conexion.close();
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return autor;
+	}
 
 }

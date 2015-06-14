@@ -54,7 +54,7 @@ public class VerAutor extends HttpServlet {
 		int id = 0;
 		if (idS != null){
 			id = Integer.parseInt(idS);
-			packBeans.Autor autor = GestorBD.getGestorBD().getAutorBeans(id);
+			packBeans.Autor autor = GestorBD.getGestorBD().getAutorBeansById(id);
 			request.setAttribute("autor",autor);
 			
 			ArrayList<packBeans.Obra> lista = GestorBD.getGestorBD().getObrasBeans(1000, 0, id);
