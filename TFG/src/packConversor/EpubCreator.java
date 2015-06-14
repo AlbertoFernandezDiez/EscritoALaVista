@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.servlet.ServletConfig;
@@ -45,10 +46,7 @@ import com.adobe.dp.otf.FontLocator;
 import com.sun.jndi.toolkit.url.Uri;
 
 import packBD.GestorBD;
-import packClases.Capitulo;
-import packClases.ListaCapitulos;
-import packClases.Obra;
-import packClases.Usuario;
+
 
 /**
  * Servlet implementation class EpubCreator
@@ -97,9 +95,12 @@ public class EpubCreator extends HttpServlet {
 		}
 
 
-		Obra obra = GestorBD.getGestorBD().getObra(id);
+		/*Obra obra = GestorBD.getGestorBD().getObra(id);
 		ListaCapitulos lista = GestorBD.getGestorBD().getCapitulos(id);
-		Usuario autor = GestorBD.getGestorBD().getAutor(id);
+		Usuario autor = GestorBD.getGestorBD().getAutor(id);*/
+		packBeans.Obra obra = GestorBD.getGestorBD().getObraBeans(id);
+		ArrayList<packBeans.Capitulo> lista = GestorBD.getGestorBD().getCapituloBeans(id);
+		packBeans.Autor autor = GestorBD.getGestorBD().getAutorBeans(id);
 
 		File file = new File(folder,obra.getTitulo() +".epub");
 		if (file.exists())
@@ -136,7 +137,7 @@ public class EpubCreator extends HttpServlet {
 	}
 
 
-	private void createEpub(Obra obra, ListaCapitulos lista, Usuario autor) {
+	private void createEpub(/*Obra*/packBeans.Obra obra, /*ListaCapitulos*/ArrayList<packBeans.Capitulo> lista, /*Usuario*/packBeans.Autor autor) {
 		try{
 			// create new EPUB document
 			Publication epub = new Publication();
@@ -207,8 +208,9 @@ public class EpubCreator extends HttpServlet {
 			portadah5Rule.set("text-align", "center");
 
 
-			Iterator<Capitulo> it = lista.getIterator();
-			Capitulo cap;
+			Iterator<packBeans.Capitulo> it = lista.iterator();//lista.getIterator();
+			//Capitulo cap;
+					packBeans.Capitulo cap;
 
 			OPSResource chapter1;
 			OPSDocument chapter1Doc;
@@ -301,7 +303,7 @@ public class EpubCreator extends HttpServlet {
 
 
 	private void addCapitulo(Publication epub, NCXResource toc,
-			TOCEntry rootTOCEntry, StyleResource style, Capitulo cap, int j) {
+			TOCEntry rootTOCEntry, StyleResource style, /*Capitulo*/ packBeans.Capitulo cap, int j) {
 		OPSResource chapter1;
 		OPSDocument chapter1Doc;
 		TOCEntry chapter1TOCEntry;
@@ -334,7 +336,7 @@ public class EpubCreator extends HttpServlet {
 		if (cap.getImagen() != null)
 			addImage(epub, chapter1Doc, body1, new File(filePath,cap.getImagen()));
 
-		String[] par = cap.getTexto();
+		String[] par = cap.getText();
 		for (int z=0; z < par.length; z++){
 			// add a paragraph
 			paragraph1 = chapter1Doc.createElement("p");

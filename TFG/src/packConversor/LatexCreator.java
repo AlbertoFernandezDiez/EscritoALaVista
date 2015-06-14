@@ -16,10 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import packBD.GestorBD;
-import packClases.Capitulo;
-import packClases.ListaCapitulos;
-import packClases.Obra;
-import packClases.Usuario;
+
 import de.nixosoft.jlr.JLRConverter;
 import de.nixosoft.jlr.JLRGenerator;
 import de.nixosoft.jlr.JLROpener;
@@ -72,10 +69,13 @@ public class LatexCreator extends HttpServlet {
 		}
 		System.out.println(workingDirectory.getAbsolutePath());
 
-		Obra obra = GestorBD.getGestorBD().getObra(id);
+	/*	Obra obra = GestorBD.getGestorBD().getObra(id);
 		ListaCapitulos lista = GestorBD.getGestorBD().getCapitulos(id);
-		Usuario autor = GestorBD.getGestorBD().getAutor(id);
+		Usuario autor = GestorBD.getGestorBD().getAutor(id);*/
 
+		packBeans.Obra obra = GestorBD.getGestorBD().getObraBeans(id);
+				ArrayList<packBeans.Capitulo> lista = GestorBD.getGestorBD().getCapituloBeans(id);
+		packBeans.Autor autor = GestorBD.getGestorBD().getAutorBeans(id);
 
 		File file = new File(folder,obra.getTitulo() +".pdf");
 
@@ -110,8 +110,8 @@ public class LatexCreator extends HttpServlet {
 		pw.close();   
 
 	}
-	private void createPDF(File workingDirectory, Obra obra,
-			ListaCapitulos lista, Usuario autor) {
+	private void createPDF(File workingDirectory, packBeans.Obra obra,
+			/*ListaCapitulos*/ArrayList<packBeans.Capitulo> lista, /*Usuario*/packBeans.Autor autor) {
 		File invoice1 = new File(workingDirectory + File.separator + obra.getTitulo() + ".tex");
 
 		File template = new File(workingDirectory + File.separator+ "invoiceTemplate.tex");
@@ -148,9 +148,9 @@ public class LatexCreator extends HttpServlet {
 			System.err.println(ex.getMessage());
 		}
 	}
-	private ArrayList<ArrayList<String>> loadChapters(ListaCapitulos lista, Usuario autor) {
-		Iterator<Capitulo> it = lista.getIterator();
-		Capitulo aux;
+	private ArrayList<ArrayList<String>> loadChapters(/*ListaCapitulos*/ArrayList<packBeans.Capitulo> lista, /*Usuario*/packBeans.Autor autor) {
+		Iterator</*Capitulo*/packBeans.Capitulo> it = lista.iterator(); //lista.getIterator();
+		/*Capitulo*/ packBeans.Capitulo aux;
 		ArrayList<ArrayList<String>> book = new ArrayList<>();
 		ArrayList<String> capit;
 		while (it.hasNext())
@@ -163,8 +163,8 @@ public class LatexCreator extends HttpServlet {
 			else
 				capit.add(filePath.replace("\\", "/")  + aux.getImagen());
 
-			for(int i = 0; i < aux.getTexto().length; i++)
-				capit.add(aux.getTexto()[i]);
+			for(int i = 0; i < aux.getText().length; i++)
+				capit.add(aux.getText()[i]);
 
 			book.add(capit);
 		}

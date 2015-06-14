@@ -363,7 +363,8 @@ public class GestorBD {
 			Connection conexion = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/tfg", "root", "root");
 
-			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT * FROM tfg.autor where id = ?;");
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select autor.* from autor,obra "
+					+ "where obra.autor = autor.id and obra.id = ?");
 			st.setInt(1, id);
 
 			ResultSet rs = st.executeQuery();
@@ -725,6 +726,34 @@ public class GestorBD {
 
 		return result;
 
+	}
+
+	public packBeans.Obra getObraBeans(int id) {
+		packBeans.Obra obra = null;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select * from obra where id = ?");
+			st.setInt(1, id);
+			ResultSet rs = st.executeQuery();
+
+			if(rs.next())
+			{		obra = new packBeans.Obra();
+			obra.setAutor(rs.getInt("autor"));
+			obra.setFecha_in(rs.getDate("fecha_in"));
+			obra.setFecha_mod(rs.getTimestamp("fecha_mod"));
+			obra.setId(rs.getInt("id"));
+			obra.setPortada(rs.getString("portada"));
+			obra.setResumen(rs.getString("resumen"));
+			obra.setTitulo(rs.getString("titulo"));
+			}
+			
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return obra;
 	}
 
 }

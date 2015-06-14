@@ -24,9 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import packBD.GestorBD;
-import packClases.Capitulo;
-import packClases.ListaCapitulos;
-import packClases.Obra;
+
 
 
 
@@ -128,9 +126,13 @@ public class Itext extends HttpServlet {
 		}
 
 
-		Obra obra = GestorBD.getGestorBD().getObra(id);
+		/*Obra obra = GestorBD.getGestorBD().getObra(id);
 		Usuario autor = GestorBD.getGestorBD().getAutor(id);
-		File file = new File(folder,obra.getTitulo() +".pdf");
+		File file = new File(folder,obra.getTitulo() +".pdf");*/
+		packBeans.Obra obra = GestorBD.getGestorBD().getObraBeans(id);
+		packBeans.Autor autor = GestorBD.getGestorBD().getAutorBeans(id);
+		File file = new File(folder,obra.getTitulo() + ".pdf");
+		
 		if (file.exists())
 		{
 			Timestamp modifydate = new Timestamp(file.lastModified());
@@ -165,8 +167,8 @@ System.out.println(obra.getFecha_mod().toString());
 
 	}
 
-	private void createPDF(HttpServletResponse response, int id, Obra obra,
-			Usuario autor)
+	private void createPDF(HttpServletResponse response, int id, /*Obra*/packBeans.Obra obra,
+			/*Usuario*/packBeans.Autor autor)
 					throws FileNotFoundException, MalformedURLException, IOException {
 		FileOutputStream pdf2;
 		FileOutputStream pdf1;
@@ -208,9 +210,9 @@ System.out.println(obra.getFecha_mod().toString());
 			 * sus correspondientes maracadores
 			 */
 			String[] parrafos;
-			ListaCapitulos lista = GestorBD.getGestorBD().getCapitulos(id);
-			Capitulo aux = null;
-			Iterator<Capitulo> it = lista.getIterator();
+			ArrayList<packBeans.Capitulo> lista = GestorBD.getGestorBD().getCapituloBeans(id);
+			packBeans.Capitulo aux = null;
+			Iterator<packBeans.Capitulo> it = lista.iterator();
 			ArrayList<Chapter> chapterList = new ArrayList<Chapter>();
 			writer.getBoxSize("art");
 			LineSeparator UNDERLINE = new LineSeparator(1, 100, BaseColor.BLUE, Element.ALIGN_CENTER, -2);
@@ -218,7 +220,7 @@ System.out.println(obra.getFecha_mod().toString());
 			int nCapitulo = 1;
 			while (it.hasNext()){
 				aux = it.next();
-				parrafos = aux.getTexto();
+				parrafos = aux.getText();
 				//Creamos el marcador para el siguiente
 				//titulo (el del capitulo)
 				chapter = new Chapter(new Paragraph(this.addTituloC(aux.getNombre())), nCapitulo++);
@@ -378,7 +380,7 @@ System.out.println(obra.getFecha_mod().toString());
 
 
 
-	private File joinPDF(File pdf1, File pdf2, Obra obra,Usuario autor, HttpServletResponse response) throws IOException, DocumentException {
+	private File joinPDF(File pdf1, File pdf2, /*Obra*/packBeans.Obra obra,/*Usuario*/packBeans.Autor autor, HttpServletResponse response) throws IOException, DocumentException {
 		// TODO Auto-generated method stub
 		PdfReader reader ;//= new PdfReader(new RandomAccessFileOrArray(pdf1.getAbsolutePath()), null);
 		String src[] = {pdf1.getAbsolutePath(),pdf2.getAbsolutePath()};

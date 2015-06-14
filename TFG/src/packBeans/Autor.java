@@ -5,7 +5,8 @@ import java.sql.Date;
 public class Autor {
 	
 	private int id;
-	private String pais,nombre,about,imagen,email;
+	private String pais,nombre,imagen,email;
+	private String[] about;
 	public String getEmail() {
 		return email;
 	}
@@ -42,12 +43,12 @@ public class Autor {
 		this.nombre = nombre;
 	}
 
-	public String getAbout() {
+	public String[] getAbout() {
 		return about;
 	}
 
 	public void setAbout(String about) {
-		this.about = about;
+		this.about = about.split("\n");
 	}
 
 	public String getImagen() {
