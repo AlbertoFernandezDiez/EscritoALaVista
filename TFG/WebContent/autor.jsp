@@ -48,8 +48,9 @@
 				<img class="img-rounded perfilImg" alt="Foto de perfil"
 					src="<c:out value="${autor.imagen}"></c:out>">
 				<p class="text-justify">
-					<c:out value="${autor.about}"></c:out>
-				</p>
+				<c:forEach items="${autor.about}" var="par">
+					<p><c:out value="${par}"></c:out></p>
+					</c:forEach>
 			</div>
 		</div>
 

@@ -19,6 +19,7 @@
 							<li><a
 								href='VerAutor?autor=<c:out value="${requestScope.userId}"></c:out>'><c:out
 										value="${requestScope.userName}"></c:out></a></li>
+										<li><a href="CambiarDatos">MODIFICAR DATOS</a></li>
 							<li><a href="LogOut">Logout</a></li>
 							<input id='user' type='hidden' value='${requestScope.userId}'/>
 							

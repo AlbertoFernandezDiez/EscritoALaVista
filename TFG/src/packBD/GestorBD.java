@@ -818,4 +818,50 @@ public class GestorBD {
 		return autor;
 	}
 
+	/**
+	 * Método que permite alterar los datos para un usuario dado su id en BD
+	 * @param id	Su Id en BD
+	 * @param mailS	El nuevo mail
+	 * @param paisS	El pais
+	 * @param aboutS	Infomación sobre el
+	 * @param pRuta	Ruta a su imagen de perfil
+	 */
+	public void updateAutor(int id, String mailS, String paisS, String aboutS,
+			String pRuta) {
+		// TODO Auto-generated method stub
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+			PreparedStatement st = null;
+			if (pRuta != null)
+			{
+				st = (PreparedStatement) conexion.prepareStatement("UPDATE `tfg`.`autor` SET"
+						+ " `pais`=?, `about`=?, `email`=? ,'imagen' = ? WHERE `id`=?;");
+
+				st.setString(1, paisS);
+				st.setString(2, aboutS);
+				st.setString(3, mailS);
+				st.setString(4, pRuta);
+				st.setInt(5, id);
+			}
+			else
+			{
+				st = (PreparedStatement) conexion.prepareStatement("UPDATE `tfg`.`autor` SET"
+						+ " `pais`=?, `about`=?, `email`=? WHERE `id`=?;");
+				st.setString(1, paisS);
+				st.setString(2, aboutS);
+				st.setString(3, mailS);
+				st.setInt(4, id);
+			}
+			st.executeUpdate();
+
+			st.close();
+			conexion.close();
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
+
 }
