@@ -23,6 +23,48 @@
 <script src="js/Cookies.js" type="text/javascript"></script>
 <link rel="stylesheet" href="css/Cookies.css">
 
+<script>
+	$().ready(function() {
+		$('span').hide();
+		$('#cambiar').on('click', function() {
+			var n = $('#contraN').val();
+			var v = $('#contraV').val();
+			//Validamos los campos del formulario
+							$('#fail').hide();
+
+			if ($('#cambioContra')[0].checkValidity()) {
+				
+				var sn = toSHA512(n);
+				var sv = toSHA512(v);
+
+				$.ajax({
+					url : "CC",
+					type : 'POST',
+					data : {
+						old : sv,
+						newC : sn
+					},
+					success : function(result) {
+						if (result == 'true') {
+							$('#ok').show();
+							$('#bad').hide();
+							$('#contraN').val('');
+							$('#contraV').val('');
+						} else {
+							$('#bad').show();
+							$('#ok').hide();
+						}
+					},
+					error : function(request, error) {
+						$("#bad").show(200);
+					}
+				});
+			} else {
+				$('#fail').show();
+			}
+		})
+	})
+</script>
 </head>
 <body>
 	<!-- Menu -->
@@ -33,6 +75,33 @@
 	<jsp:include page="Cookies.html" />
 
 	<div class='jumbotron'>
+
+
+
+		<div class="form-group">
+			<form id='cambioContra'>
+				<h3>Modifica tu contraseña</h3>
+				<label for="contrasena1">Contraseña antigua :</label> <input
+					id="contraV" class='form-control'
+					pattern="[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{6,}"
+					title="Six or more characters" name="contraV" type="password"
+					placeholder="Introduce la vieja contraseña" required='true'><br>
+				<label for="contrasena1">Contraseña nueva :</label> <input
+					id="contraN" class='form-control'
+					pattern="[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{6,}"
+					title="Six or more characters" name="contraN" type="password"
+					placeholder="Introduce la nueva contraseña" required='true'><br>
+
+				<button type="button" id='cambiar' class="btn btn-default">Cambiar</button>
+
+				<span id='ok' class="alert alert-success" role="alert">Contraseña
+					modificada</span> <span id='bad' class="alert alert-danger" role="alert">Error,
+					no se ha podido modificar la contraseña</span> <span id='ok'
+					class="alert alert-success" role="alert">Contraseña
+					modificada</span> <span id='fail' class="alert alert-info" role="alert">Error,
+					no has completado los campos o no tienen más de 6 caracteres</span>
+		</div>
+		</form>
 		<h3>Modifica tus datos personales</h3>
 		<div class="form-group">
 			<form id='registro' method="POST" action="CambiarDatos"
@@ -46,7 +115,10 @@
 					required='true'><br> <label for="about">Habla
 					sobre ti :</label><br>
 				<textarea id="about" name="about" rows="4" cols="50" required='true'
-					class='form-control' spellcheck="true"><c:forEach items="${requestScope.autor.about}" var="par"><c:out value="${par}"></c:out></c:forEach></textarea>
+					class='form-control' spellcheck="true"><c:forEach
+						items="${requestScope.autor.about}" var="par">
+						<c:out value="${par}"></c:out>
+					</c:forEach></textarea>
 				<br>
 				<!-- <input id='file' name='file' type='file' accept='image/*'><br>-->
 				<div>
@@ -61,13 +133,14 @@
 						gestorArchivos('fileselect');
 					</script>
 				</div>
-				<input id='submit' name='submit' type='submit'>
+				<input id='submit' name='submit' type='submit'
+					class="btn btn-default">
 
 				<script>
 					presubmit();
 				</script>
 			</form>
-<c:out value="${requestScope.autor.email}"></c:out>
+			<c:out value="${requestScope.autor.email}"></c:out>
 		</div>
 	</div>
 	</div>

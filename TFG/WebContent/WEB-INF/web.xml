@@ -34,4 +34,13 @@
     <servlet-name>UploadComment</servlet-name>
     <url-pattern>/UC</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>CambiarContrasena</servlet-name>
+    <servlet-class>packServlets.CambiarContrasena</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CambiarContrasena</servlet-name>
+    <url-pattern>/CC</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -1,6 +1,7 @@
 package packServlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -47,10 +48,11 @@ public class CambiarContrasena extends HttpServlet {
 				old = request.getParameter("old");
 				newC = request.getParameter("newC");
 
-			
+			boolean result = GestorBD.getGestorBD().changePassword(id, old,newC);
 			
 				// TODO Auto-generated method stub
-				response.sendRedirect("Index");
+				PrintWriter pw = response.getWriter();
+				pw.write(String.valueOf(result));
 
 			}
 			else

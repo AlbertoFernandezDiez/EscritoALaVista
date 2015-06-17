@@ -863,5 +863,51 @@ public class GestorBD {
 			e.printStackTrace();
 		}		
 	}
+/**
+ * Metodo que cambia la contraseña de un usuario
+ * tras comprobar con la contraseña antigua si
+ * realmente es el usuario
+ * @param id	Identificador del usuario en BD
+ * @param old	Contraseña antigua
+ * @param newC	Contraseña nueva
+ * @return
+ */
+	public boolean changePassword(int id, String old, String newC) {
+		boolean result = false;
+		
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT *"
+					+ " FROM tfg.autor where id = ?;");
+			st.setInt(1, id);
+
+			ResultSet rs = st.executeQuery();
+
+			if (rs.next())
+			{
+				String sal = rs.getString("sal");
+				String contra = rs.getString("password");
+				String passw = toSha512(toSha512(old) + sal);
+
+				if (contra.equals(passw)){
+					 st = (PreparedStatement) conexion.prepareStatement("UPDATE `tfg`.`autor` "
+					 		+ "SET `password`=? WHERE `id`=?;");
+				st.setString(1, toSha512(toSha512(newC) + sal));
+				st.setInt(2, id);
+				st.execute();
+				result = true;
+				}
+			}
+
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
 
 }
