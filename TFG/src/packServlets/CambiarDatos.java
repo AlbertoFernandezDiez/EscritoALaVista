@@ -22,6 +22,8 @@ import packBeans.Autor;
  * Servlet implementation class CambiarDatos
  */
 @WebServlet("/CambiarDatos")
+@javax.servlet.annotation.MultipartConfig
+
 public class CambiarDatos extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -75,6 +77,7 @@ public class CambiarDatos extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		request.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();
 
 		String user = (String) session.getAttribute("username");
@@ -82,24 +85,31 @@ public class CambiarDatos extends HttpServlet {
 
 		try {
 			id = (int) session.getValue("id");
-
-			String mailS = null,aboutS = null, paisS = null;
-
-			mailS = request.getParameter("email");
-			paisS = request.getParameter("pais");
-			aboutS = request.getParameter("about");
-
-			Part filePart = request.getPart("file");
-
-			if (filePart.getSize()==0)
+			if (id != 0)
 			{
-GestorBD.getGestorBD().updateAutor(id,mailS,paisS,aboutS,null);
+				String mailS = null,aboutS = null, paisS = null;
+
+				mailS = request.getParameter("email");
+				paisS = request.getParameter("pais");
+				aboutS = request.getParameter("about");
+
+				Part filePart = request.getPart("file");
+
+				if (filePart.getSize()==0)
+				{
+					GestorBD.getGestorBD().updateAutor(id,mailS,paisS,aboutS,null);
+				}
+				else
+				{
+					GestorBD.getGestorBD().updateAutor(id,mailS,paisS,aboutS,loadFile(request, "file"));
+				}
+				// TODO Auto-generated method stub
+				response.sendRedirect("Index");
+
 			}
 			else
-			{
-				GestorBD.getGestorBD().updateAutor(id,mailS,paisS,aboutS,loadFile(request, "file"));
-			}
-			// TODO Auto-generated method stub
+				response.sendRedirect("Error/NoLogeado.html");
+
 		}catch(NullPointerException e){
 			e.printStackTrace();
 			response.sendRedirect("Error/NoLogeado.html");
@@ -130,7 +140,7 @@ GestorBD.getGestorBD().updateAutor(id,mailS,paisS,aboutS,null);
 		}
 		return filepath;
 	}
-	
+
 	public static String getFileName(Part filePart)
 	{
 		String header = filePart.getHeader("content-disposition");
