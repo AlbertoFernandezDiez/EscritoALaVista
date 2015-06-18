@@ -38,7 +38,7 @@ public class GestorBD {
 		return myGestorBD;
 	}
 
-	public ListaObras getObras()
+/*	public ListaObras getObras()
 	{
 		ListaObras lista = new ListaObras();
 		Obra obra = null;
@@ -78,9 +78,7 @@ public class GestorBD {
 				cap = new Capitulo(rs.getInt("id"), rs.getString("nombre"),
 						rs.getString("texto"), rs.getString("comentarios_autor"),
 						rs.getDate("fecha_comentario"),rs.getString("imagen"));
-				/*cap += rs.getInt("id") + "<br>\n";
-				cap += rs.getString("titulo") + "<br>\n";
-				cap += rs.getString("texto") + "<br>\n";*/
+				
 				lista.addCapitulo(cap);
 			}
 			rs.close();
@@ -161,7 +159,7 @@ public class GestorBD {
 		}
 		return autor;
 	}
-
+*/
 	public int insertarObra(int pAutor, String pTitulo, String pResumen, String pRuta){
 		int id = 0;
 		try {
@@ -909,5 +907,41 @@ public class GestorBD {
 		
 		return result;
 	}
+
+	/**
+	 * Método que comprueba la contraseña dada
+	 * e identificar si el usuario es el 
+	 * administrador
+	 * @param password	La contraseña con SHA-512
+	 * @return True si es el administrador
+	 */
+public boolean checkAdmin(String password) {
+	boolean admin = false;
+	
+	try {
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection conexion = DriverManager.getConnection(
+				"jdbc:mysql://localhost:3306/tfg", "root", "root");
+
+		PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT *"
+				+ " FROM tfg.admin where id = 1;");
+
+		ResultSet rs = st.executeQuery();
+
+		if (rs.next()){
+			String sal = rs.getString("salt");
+			String contra = rs.getString("password");
+			String passw = toSha512(toSha512(password) + sal);
+
+			if (contra.equals(passw))
+				admin = true;		}
+
+	} catch (SQLException | ClassNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	return admin;
+}
 
 }

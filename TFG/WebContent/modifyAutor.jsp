@@ -26,44 +26,8 @@
 <script>
 	$().ready(function() {
 		$('span').hide();
-		$('#cambiar').on('click', function() {
-			var n = $('#contraN').val();
-			var v = $('#contraV').val();
-			//Validamos los campos del formulario
-							$('#fail').hide();
-
-			if ($('#cambioContra')[0].checkValidity()) {
-				
-				var sn = toSHA512(n);
-				var sv = toSHA512(v);
-
-				$.ajax({
-					url : "CC",
-					type : 'POST',
-					data : {
-						old : sv,
-						newC : sn
-					},
-					success : function(result) {
-						if (result == 'true') {
-							$('#ok').show();
-							$('#bad').hide();
-							$('#contraN').val('');
-							$('#contraV').val('');
-						} else {
-							$('#bad').show();
-							$('#ok').hide();
-						}
-					},
-					error : function(request, error) {
-						$("#bad").show(200);
-					}
-				});
-			} else {
-				$('#fail').show();
-			}
-		})
-	})
+		$('#cambiar').on('click', cambiarContrasena);
+	});
 </script>
 </head>
 <body>
