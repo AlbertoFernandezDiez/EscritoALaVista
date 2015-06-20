@@ -21,30 +21,30 @@ import packBeans.Obra;
 @WebServlet({ "/EliminarObra", "/EO" })
 public class EliminarObra extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public EliminarObra() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public EliminarObra() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		
+
 		boolean admin = false; 
 		try{
 			admin =	(boolean)session.getAttribute("admin");
 		}
 		catch (NullPointerException e)
 		{
-e.printStackTrace();
-}
-		
+			e.printStackTrace();
+		}
+
 		if (admin)
 		{
 			ArrayList<Obra> lista = GestorBD.getGestorBD().getObrasBeans(0, 0, 0);
@@ -52,7 +52,7 @@ e.printStackTrace();
 
 			request.setAttribute("obras", lista);
 			request.setAttribute("autores", autores);
-			
+
 			RequestDispatcher rd = getServletContext().getRequestDispatcher("/Gestion/eliminarObra.jsp");
 			rd.forward(request, response);
 		}
@@ -67,6 +67,26 @@ e.printStackTrace();
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		HttpSession session = request.getSession();
+
+		boolean admin = false; 
+		try{
+			admin =	(boolean)session.getAttribute("admin");
+		}
+		catch (NullPointerException e)
+		{
+			e.printStackTrace();
+		}
+
+		if (admin)
+		{
+			int id = Integer.parseInt(request.getParameter("id"));
+			System.out.println(id);
+		}
+		else
+		{}
 	}
 
 }
+
+
