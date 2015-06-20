@@ -26,6 +26,7 @@
 <script>
 	$().ready(function() {
 		$('span').hide();
+		$('span#fileselectinfo').show();
 		$('#cambiar').on('click', cambiarContrasena);
 	});
 </script>
@@ -101,10 +102,9 @@
 					class="btn btn-default">
 
 				<script>
-					presubmit();
+				//	presubmit();
 				</script>
 			</form>
-			<c:out value="${requestScope.autor.email}"></c:out>
 		</div>
 	</div>
 	</div>

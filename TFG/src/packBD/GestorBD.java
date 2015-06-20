@@ -835,7 +835,7 @@ public class GestorBD {
 			if (pRuta != null)
 			{
 				st = (PreparedStatement) conexion.prepareStatement("UPDATE `tfg`.`autor` SET"
-						+ " `pais`=?, `about`=?, `email`=? ,'imagen' = ? WHERE `id`=?;");
+						+ " `pais`=?, `about`=?, `email`=? ,`imagen` = ? WHERE `id`=?;");
 
 				st.setString(1, paisS);
 				st.setString(2, aboutS);
