@@ -38,7 +38,7 @@ public class GestorBD {
 		return myGestorBD;
 	}
 
-/*	public ListaObras getObras()
+	/*	public ListaObras getObras()
 	{
 		ListaObras lista = new ListaObras();
 		Obra obra = null;
@@ -78,7 +78,7 @@ public class GestorBD {
 				cap = new Capitulo(rs.getInt("id"), rs.getString("nombre"),
 						rs.getString("texto"), rs.getString("comentarios_autor"),
 						rs.getDate("fecha_comentario"),rs.getString("imagen"));
-				
+
 				lista.addCapitulo(cap);
 			}
 			rs.close();
@@ -159,7 +159,7 @@ public class GestorBD {
 		}
 		return autor;
 	}
-*/
+	 */
 	public int insertarObra(int pAutor, String pTitulo, String pResumen, String pRuta){
 		int id = 0;
 		try {
@@ -746,7 +746,7 @@ public class GestorBD {
 			obra.setResumen(rs.getString("resumen"));
 			obra.setTitulo(rs.getString("titulo"));
 			}
-			
+
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -760,7 +760,7 @@ public class GestorBD {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/tfg", "root", "root");
-			
+
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select * from capitulo where id = ?;");
 			st.setInt(1, id);
 			ResultSet rs = st.executeQuery();
@@ -861,18 +861,18 @@ public class GestorBD {
 			e.printStackTrace();
 		}		
 	}
-/**
- * Metodo que cambia la contraseña de un usuario
- * tras comprobar con la contraseña antigua si
- * realmente es el usuario
- * @param id	Identificador del usuario en BD
- * @param old	Contraseña antigua
- * @param newC	Contraseña nueva
- * @return
- */
+	/**
+	 * Metodo que cambia la contraseña de un usuario
+	 * tras comprobar con la contraseña antigua si
+	 * realmente es el usuario
+	 * @param id	Identificador del usuario en BD
+	 * @param old	Contraseña antigua
+	 * @param newC	Contraseña nueva
+	 * @return
+	 */
 	public boolean changePassword(int id, String old, String newC) {
 		boolean result = false;
-		
+
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
@@ -891,12 +891,12 @@ public class GestorBD {
 				String passw = toSha512(toSha512(old) + sal);
 
 				if (contra.equals(passw)){
-					 st = (PreparedStatement) conexion.prepareStatement("UPDATE `tfg`.`autor` "
-					 		+ "SET `password`=? WHERE `id`=?;");
-				st.setString(1, toSha512(toSha512(newC) + sal));
-				st.setInt(2, id);
-				st.execute();
-				result = true;
+					st = (PreparedStatement) conexion.prepareStatement("UPDATE `tfg`.`autor` "
+							+ "SET `password`=? WHERE `id`=?;");
+					st.setString(1, toSha512(toSha512(newC) + sal));
+					st.setInt(2, id);
+					st.execute();
+					result = true;
 				}
 			}
 
@@ -904,7 +904,7 @@ public class GestorBD {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return result;
 	}
 
@@ -915,40 +915,40 @@ public class GestorBD {
 	 * @param password	La contraseña con SHA-512
 	 * @return True si es el administrador
 	 */
-public boolean checkAdmin(String password) {
-	boolean admin = false;
-	
-	try {
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection conexion = DriverManager.getConnection(
-				"jdbc:mysql://localhost:3306/tfg", "root", "root");
+	public boolean checkAdmin(String password) {
+		boolean admin = false;
 
-		PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT *"
-				+ " FROM tfg.admin where id = 1;");
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
 
-		ResultSet rs = st.executeQuery();
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT *"
+					+ " FROM tfg.admin where id = 1;");
 
-		if (rs.next()){
-			String sal = rs.getString("salt");
-			String contra = rs.getString("password");
-			String passw = toSha512(toSha512(password) + sal);
+			ResultSet rs = st.executeQuery();
 
-			if (contra.equals(passw))
-				admin = true;		}
+			if (rs.next()){
+				String sal = rs.getString("salt");
+				String contra = rs.getString("password");
+				String passw = toSha512(toSha512(password) + sal);
 
-	} catch (SQLException | ClassNotFoundException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+				if (contra.equals(passw))
+					admin = true;		}
+
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return admin;
 	}
-	
-	return admin;
-}
 
-/**
- * Método que elimina una obra de la BD
- * @param id Id de la obra en BD
- * @return True si se ha eliminado 
- */
+	/**
+	 * Método que elimina una obra de la BD
+	 * @param id Id de la obra en BD
+	 * @return True si se ha eliminado 
+	 */
 	public boolean deleteObra(int id) {
 		// TODO Auto-generated method stub
 		boolean result = false; 
@@ -960,7 +960,7 @@ public boolean checkAdmin(String password) {
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("DELETE FROM `tfg`.`obra` "
 					+ "WHERE `id`=?;");
 			st.setInt(1, id);
-			
+
 			st.execute();
 			result = true;
 
@@ -971,26 +971,63 @@ public boolean checkAdmin(String password) {
 		return result;
 	}
 
-public boolean deleteAutor(int id) {
-	// TODO Auto-generated method stub
-	boolean result = false; 
-	try {
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection conexion = DriverManager.getConnection(
-				"jdbc:mysql://localhost:3306/tfg", "root", "root");
+	public boolean deleteAutor(int id) {
+		// TODO Auto-generated method stub
+		boolean result = false; 
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
 
-		PreparedStatement st = (PreparedStatement) conexion.prepareStatement("DELETE FROM `tfg`.`autor` "
-				+ "WHERE `id`=?;");
-		st.setInt(1, id);
-		
-		st.execute();
-		result = true;
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("DELETE FROM `tfg`.`autor` "
+					+ "WHERE `id`=?;");
+			st.setInt(1, id);
 
-	} catch (SQLException | ClassNotFoundException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+			st.execute();
+			result = true;
+
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
 	}
-	return result;
-}
+
+	public boolean changePasswordAdmin(String old, String newC) {
+		// TODO Auto-generated method stub
+		boolean result = false;
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT *"
+					+ " FROM tfg.autor where id = ?;");
+			st.setInt(1, 1);
+
+			ResultSet rs = st.executeQuery();
+
+			if (rs.next())
+			{
+				String sal = rs.getString("sal");
+				String contra = rs.getString("password");
+				String passw = toSha512(toSha512(old) + sal);
+				int id = rs.getInt("id");
+				if (contra.equals(passw)){
+					st = (PreparedStatement) conexion.prepareStatement("UPDATE `tfg`.`autor` "
+							+ "SET `password`=? WHERE `id`=?;");
+					st.setString(1, toSha512(toSha512(newC) + sal));
+					st.setInt(2, id);
+					st.execute();
+					result = true;
+				}
+			}
+
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 }

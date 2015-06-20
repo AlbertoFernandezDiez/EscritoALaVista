@@ -1,6 +1,7 @@
 package packServlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import packBD.GestorBD;
 
 /**
  * Servlet implementation class CambioContrasena
@@ -55,6 +58,33 @@ public class CambioContrasena extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		request.setCharacterEncoding("UTF-8");
+		HttpSession session = request.getSession();
+		boolean admin = false;
+
+		try {
+		admin = (boolean) session.getAttribute("admin");
+			if (admin)
+			{
+				String old = null, newC = null;
+
+				old = request.getParameter("old");
+				newC = request.getParameter("newC");
+
+			boolean result = GestorBD.getGestorBD().changePasswordAdmin(old,newC);
+			
+				// TODO Auto-generated method stub
+				PrintWriter pw = response.getWriter();
+				pw.write(String.valueOf(result));
+
+			}
+			else
+				response.sendRedirect("Error/NoLogeado.html");
+
+		}catch(NullPointerException e){
+			e.printStackTrace();
+			response.sendRedirect("Error/NoLogeado.html");
+		}
 	}
 
 }
