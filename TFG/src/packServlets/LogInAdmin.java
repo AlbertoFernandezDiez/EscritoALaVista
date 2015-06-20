@@ -28,6 +28,35 @@ public class LogInAdmin extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		HttpSession session = request.getSession();
+		
+		boolean admin = false;
+
+		try{
+			admin =	(boolean)session.getAttribute("admin");
+		}
+		catch (NullPointerException e)
+		{
+			e.printStackTrace();
+		}
+		
+		if (admin)
+		{
+			 request.setAttribute("admin", true);
+			 RequestDispatcher rd = getServletContext().getRequestDispatcher("/Gestion/index.jsp");
+		        rd.forward(request, response);
+		}
+		else
+		{
+			 response.sendRedirect("Error/noEresAdmin.html");
+		}
+
+	}
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */

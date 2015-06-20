@@ -472,10 +472,10 @@ public class GestorBD {
 			Connection conexion = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/tfg", "root", "root");
 
-			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT * FROM tfg.autor ");
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT * FROM tfg.autor;");
 
 			ResultSet rs = st.executeQuery();
-			if (rs.next())	   
+			while (rs.next())	   
 			{
 				autor = new Autor();
 				autor.setId(rs.getInt("id"));
@@ -942,6 +942,55 @@ public boolean checkAdmin(String password) {
 	}
 	
 	return admin;
+}
+
+/**
+ * Método que elimina una obra de la BD
+ * @param id Id de la obra en BD
+ * @return True si se ha eliminado 
+ */
+	public boolean deleteObra(int id) {
+		// TODO Auto-generated method stub
+		boolean result = false; 
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("DELETE FROM `tfg`.`obra` "
+					+ "WHERE `id`=?;");
+			st.setInt(1, id);
+			
+			st.execute();
+			result = true;
+
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+public boolean deleteAutor(int id) {
+	// TODO Auto-generated method stub
+	boolean result = false; 
+	try {
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection conexion = DriverManager.getConnection(
+				"jdbc:mysql://localhost:3306/tfg", "root", "root");
+
+		PreparedStatement st = (PreparedStatement) conexion.prepareStatement("DELETE FROM `tfg`.`autor` "
+				+ "WHERE `id`=?;");
+		st.setInt(1, id);
+		
+		st.execute();
+		result = true;
+
+	} catch (SQLException | ClassNotFoundException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	return result;
 }
 
 }

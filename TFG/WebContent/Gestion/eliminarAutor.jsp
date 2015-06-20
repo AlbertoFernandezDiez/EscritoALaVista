@@ -28,7 +28,7 @@
 	function doActionTrue(res,id) {
 		
 		$.ajax({
-			url : "EO",
+			url : "EU",
 			type : 'POST',
 			data : {
 				id : id
@@ -52,7 +52,7 @@ if (result == true)
 	function clickEliminarObra() {
 		var id = $(this).val();
 		var options = {
-			message : "¿Deseas eliminar la obra?",
+			message : "¿Deseas eliminar el usuario y sus obras?",
 			title : '¿Es cierto?',
 			size : 'sm',
 			callback : function(result) {
@@ -79,28 +79,27 @@ if (result == true)
 
 		<jsp:include page="title.jsp" />
 
-		<c:set var="autor" value="${requestScope.autores}" scope="request"></c:set>
 
 		<div class='jumbotron'>
 			<table class="table table-hover">
 				<thead>
 					<tr>
 						<th>Nombre</th>
-						<th>Autor</th>
-						<th>Fecha Inicio</th>
-						<th>Ultima modificación</th>
+						<th>Pais</th>
+						<th>Nacimiento</th>
+						<th>Email</th>
 						<th></th>
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="aut" items="${requestScope.obras}">
+					<c:forEach var="aut" items="${requestScope.autores}">
 						<tr id='<c:out value="${aut.id}"></c:out>'>
-							<td><c:out value="${aut.titulo}"></c:out></td>
-							<td><c:out value="${autor[aut.autor]}"></c:out></td>
-							<td><fmt:formatDate value="${aut.fecha_in}"
+							<td><c:out value="${aut.nombre}"></c:out></td>
+							<td><c:out value="${aut.pais}"></c:out></td>
+							<td><fmt:formatDate value="${aut.nacimiento}"
 									pattern="dd/MM/yyyy" /> </t>
-							<td><fmt:formatDate value="${aut.fecha_mod}"
-									pattern="dd/MM/yyyy" /></td>
+							<td><c:out value="${aut.email}"></c:out></td>
+
 							<td><button type="button" class='btn btn-default'
 									value='<c:out value="${aut.id}"></c:out>'>Eliminar</button></td>
 						</tr>

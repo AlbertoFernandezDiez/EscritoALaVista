@@ -6,7 +6,11 @@ public class Autor {
 	
 	private int id;
 	private String pais,nombre,imagen,email;
-	private String[] about;
+	private String[] about;	
+	private Date nacimiento;
+
+	public Autor(){}
+
 	public String getEmail() {
 		return email;
 	}
@@ -14,10 +18,6 @@ public class Autor {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	private Date nacimiento;
-
-	public Autor(){}
 
 	public int getId() {
 		return id;
