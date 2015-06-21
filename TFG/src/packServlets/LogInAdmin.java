@@ -33,7 +33,7 @@ public class LogInAdmin extends HttpServlet {
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
-		
+		session.setMaxInactiveInterval(300);
 		boolean admin = false;
 
 		try{
