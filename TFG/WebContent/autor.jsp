@@ -30,6 +30,11 @@
 	<!-- <div class="container theme-showcase" role="main"> -->
 
 	<div class='jumbotron'>
+	
+	<div>
+	<jsp:include page="breadCrumb.jsp" />
+	</div>
+		
 		<div class="panel panel-primary">
 			<div class="panel-heading">
 				<h1 class="panel-title">

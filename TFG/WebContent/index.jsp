@@ -37,6 +37,8 @@
 
 		<div class='jumbotron'>
 
+<jsp:include page="breadCrumb.jsp" />
+
 			<c:forEach items="${requestScope.obras}" var="ob">
 				<div class="row custom">
 					<div class="col-sm-2"></div>

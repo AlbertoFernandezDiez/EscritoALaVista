@@ -41,7 +41,9 @@
 
 	<div class='jumbotron'>
 
-
+	<div>
+	<jsp:include page="breadCrumb.jsp" />
+	</div>
 
 		<div class="form-group">
 			<form id='cambioContra'>

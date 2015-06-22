@@ -42,6 +42,11 @@
 	<!-- <div class="container theme-showcase" role="main"> -->
 
 	<div class='jumbotron'>
+
+	<div>
+	<jsp:include page="breadCrumb.jsp" />
+	</div>
+	
 		<div class="form-group">
 			<form action="uploadBookChapter" method="POST"
 				enctype="multipart/form-data" class="form-group">

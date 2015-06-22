@@ -5,6 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,6 +20,7 @@ import javax.servlet.http.Part;
 
 import packBD.GestorBD;
 import packBeans.Autor;
+import packBeans.BreadCrumb;
 
 /**
  * Servlet implementation class CambiarDatos
@@ -52,7 +56,7 @@ public class CambiarDatos extends HttpServlet {
 			{
 				request.setAttribute("userId",id);
 				request.setAttribute("userName",user);
-
+updateBreadCrumb(request, session);
 				Autor autor = GestorBD.getGestorBD().getAutorBeansById(id);
 				request.setAttribute("autor", autor);
 
@@ -87,6 +91,7 @@ public class CambiarDatos extends HttpServlet {
 			id = (int) session.getValue("id");
 			if (id != 0)
 			{
+				updateBreadCrumb(request,session);
 				String mailS = null,aboutS = null, paisS = null;
 
 				mailS = request.getParameter("email");
@@ -154,4 +159,38 @@ public class CambiarDatos extends HttpServlet {
 		}
 		return null;
 	}
+	
+	private void updateBreadCrumb(HttpServletRequest request,
+			HttpSession session) {
+		Stack<BreadCrumb> breadcrumb = null;
+		BreadCrumb bread = new BreadCrumb();
+		bread.setName("ModificarDatos");
+		String parameters = request.getQueryString();
+		if (parameters == null)
+			parameters ="";
+		bread.setUrl(request.getRequestURL().toString() + '?' + parameters);	
+		breadcrumb = (Stack<BreadCrumb>) session.getAttribute("breadcrumb");
+		if (breadcrumb == null)
+		{			
+			breadcrumb = new Stack<BreadCrumb>();
+		}
+		System.out.println(breadcrumb.size());
+
+		if (breadcrumb.contains(bread))
+		{
+			System.out.println(breadcrumb.indexOf(bread));
+			while(!breadcrumb.peek().equals(bread))
+			{
+				breadcrumb.pop();
+			}
+		}
+		else
+		{
+			breadcrumb.push(bread);
+		}
+		session.setAttribute("breadcrumb", breadcrumb);
+		request.setAttribute("breadcrumb", breadcrumb);
+	}
+	
+	
 }

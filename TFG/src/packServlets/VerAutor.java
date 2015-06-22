@@ -2,6 +2,9 @@ package packServlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import packBD.GestorBD;
+import packBeans.Autor;
+import packBeans.BreadCrumb;
 
 /**
  * Servlet implementation class VerAutor
@@ -55,6 +60,7 @@ public class VerAutor extends HttpServlet {
 		if (idS != null){
 			id = Integer.parseInt(idS);
 			packBeans.Autor autor = GestorBD.getGestorBD().getAutorBeansById(id);
+			updateBreadCrumb(request, session, autor);
 			request.setAttribute("autor",autor);
 			
 			ArrayList<packBeans.Obra> lista = GestorBD.getGestorBD().getObrasBeans(1000, 0, id);
@@ -65,4 +71,35 @@ public class VerAutor extends HttpServlet {
 		}
 	}
 
+	private void updateBreadCrumb(HttpServletRequest request,
+			HttpSession session,Autor autor) {
+		Stack<BreadCrumb> breadcrumb = null;
+		BreadCrumb bread = new BreadCrumb();
+		bread.setName(autor.getNombre());
+		String parameters = request.getQueryString();
+		if (parameters == null)
+			parameters ="";
+		bread.setUrl(request.getRequestURL().toString() + '?' + parameters);	
+		breadcrumb = (Stack<BreadCrumb>) session.getAttribute("breadcrumb");
+		if (breadcrumb == null)
+		{			
+			breadcrumb = new Stack<BreadCrumb>();
+		}
+		System.out.println(breadcrumb.size());
+
+		if (breadcrumb.contains(bread))
+		{
+			System.out.println(breadcrumb.indexOf(bread));
+			while(!breadcrumb.peek().equals(bread))
+			{
+				breadcrumb.pop();
+			}
+		}
+		else
+		{
+			breadcrumb.push(bread);
+		}
+		session.setAttribute("breadcrumb", breadcrumb);
+		request.setAttribute("breadcrumb", breadcrumb);
+	}
 }

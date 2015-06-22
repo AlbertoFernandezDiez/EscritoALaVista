@@ -3,6 +3,9 @@ package packServlets;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import packBD.GestorBD;
+import packBeans.BreadCrumb;
 import packBeans.Obra;
 
 /**
@@ -51,6 +55,8 @@ public class Index extends HttpServlet {
 		}
 		
 		HttpSession session = request.getSession();
+		updateBreadCrumb(request, session);
+	
 		
 		String user = (String) session.getAttribute("username");
 		int id = 0;
@@ -78,6 +84,38 @@ public class Index extends HttpServlet {
 		
 		RequestDispatcher rd = getServletContext().getRequestDispatcher("/index.jsp");
         rd.forward(request, response);
+	}
+
+	private void updateBreadCrumb(HttpServletRequest request,
+			HttpSession session) {
+		Stack<BreadCrumb> breadcrumb = null;
+		BreadCrumb bread = new BreadCrumb();
+		bread.setName("Index");
+		String parameters = request.getQueryString();
+		if (parameters == null)
+			parameters ="";
+		bread.setUrl(request.getRequestURL().toString() + '?' + parameters);		
+		breadcrumb = (Stack<BreadCrumb>) session.getAttribute("breadcrumb");
+		if (breadcrumb == null)
+		{			
+			breadcrumb = new Stack<BreadCrumb>();
+		}
+		System.out.println(breadcrumb.size());
+
+		if (breadcrumb.contains(bread))
+		{
+			
+			while(!breadcrumb.peek().equals(bread))
+			{
+				breadcrumb.pop();
+			}
+		}
+		else
+		{
+			breadcrumb.push(bread);
+		}
+		session.setAttribute("breadcrumb", breadcrumb);
+		request.setAttribute("breadcrumb", breadcrumb);
 	}
 
 }

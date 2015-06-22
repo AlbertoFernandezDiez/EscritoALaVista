@@ -70,6 +70,10 @@
 
 	<div class='jumbotron'>
 
+	<div>
+	<jsp:include page="breadCrumb.jsp" />
+	</div>
+
 		<input id='obra' type="hidden"
 			value='<c:out value="${requestScope.id}"></c:out>' /> <input
 			id='capitulo' type="hidden"
