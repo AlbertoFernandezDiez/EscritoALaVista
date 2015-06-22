@@ -37,3 +37,6 @@ http://www.estudiosurestao.com/blog/mensaje-politica-de-cookies/
 
 BREADCRUM
 http://www.servletsuite.com/servlets/navtag.htm
+
+DROPDOWN PERSONALIZADO
+http://www.benknowscode.com/2013/12/bootstrap-dropdown-button-select-box-control.html

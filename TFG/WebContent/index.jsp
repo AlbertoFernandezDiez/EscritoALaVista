@@ -25,19 +25,37 @@
 <script src="js/Cookies.js" type="text/javascript"></script>
 <link rel="stylesheet" href="css/Cookies.css">
 
+<script>
+$( document).on( 'click', '.dropdown-menu li', function( event ) {
+	 
+	   var $target = $( event.currentTarget );
+	 
+	   $target.closest( '.btn-group' )
+	      .find( '[data-bind="label"]' ).text( $target.text() )
+	         .end()
+	      .children( '.dropdown-toggle' ).dropdown( 'toggle' );
+	$target.href();
+	   return false;
+	 
+	});
+</script>
+
 </head>
 <body>
 	<div class="container theme-showcase" role="main">
 
-<!-- Mensaje de aviso de cookies -->
-<jsp:include page="Cookies.html" />
+		<!-- Mensaje de aviso de cookies -->
+		<jsp:include page="Cookies.html" />
 
 		<c:set var="autor" value="${requestScope.autores}" scope="request"></c:set>
 		<jsp:include page="menu.jsp" />
-
 		<div class='jumbotron'>
 
-<jsp:include page="breadCrumb.jsp" />
+
+			<jsp:include page="breadCrumb.jsp" />
+
+
+
 
 			<c:forEach items="${requestScope.obras}" var="ob">
 				<div class="row custom">
@@ -71,6 +89,7 @@
 
 			</c:forEach>
 		</div>
+
 		<ul class="pagination center">
 			<c:forEach begin="0" end="${requestScope.max}" step="1"
 				varStatus="loop">
@@ -88,7 +107,19 @@
 				</c:choose>
 			</c:forEach>
 		</ul>
-
+		<div class="btn-group btn-input pull-right">
+			<button type="button"
+				class="btn btn-default dropdown-toggle "
+				data-toggle="dropdown">
+				<span data-bind="label">Mostrar:<c:out value="${requestScope.show}"></c:out></span> <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+			
+				<li><a href="http://localhost:8080/TFG/Index?pos=0&show=1">1</a></li>
+				<li><a href="http://localhost:8080/TFG/Index?pos=0&show=3">3</a></li>
+				<li><a href="http://localhost:8080/TFG/Index?pos=0&show=5">5</a></li>
+			</ul>
+		</div>
 	</div>
 	</div>
 </body>
