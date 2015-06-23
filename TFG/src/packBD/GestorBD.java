@@ -38,6 +38,29 @@ public class GestorBD {
 		return myGestorBD;
 	}
 
+	private String toSha512(String contrasena){
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("SHA-512");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		String clave = contrasena;
+		md.update(clave.getBytes());
+		String output = "";
+		byte[] mb = md.digest();
+		for (int i = 0; i < mb.length; i++) {
+			byte temp = mb[i];
+			String s = Integer.toHexString(new Byte(temp));
+			while (s.length() < 2) {
+				s = "0" + s;
+			}
+			s = s.substring(s.length() - 2);
+			output += s;
+		}
+		return output;
+	}
+
 	/*	public ListaObras getObras()
 	{
 		ListaObras lista = new ListaObras();
@@ -160,6 +183,15 @@ public class GestorBD {
 		return autor;
 	}
 	 */
+	
+	/**
+	 * Metodo que inserta una nueva obra en la BD
+	 * @param pAutor	Id del autor en BD
+	 * @param pTitulo	Titulo de la obra
+	 * @param pResumen	Resumen de la obra
+	 * @param pRuta	Ruta de la portada (si tiene)
+	 * @return	Id en BD de la obra
+	 */
 	public int insertarObra(int pAutor, String pTitulo, String pResumen, String pRuta){
 		int id = 0;
 		try {
@@ -191,6 +223,14 @@ public class GestorBD {
 		return id;
 	}
 
+	/**
+	 * Metodo que inserta un nuevo capitulo en BD
+	 * @param pObra	Id de la obra en BD
+	 * @param pTitulo	Titulo del capitulo
+	 * @param pCapitulo	Texto del capitulo
+	 * @param pComentario	Comentario del autor
+	 * @param pRuta	Ruta de la imagen del capitulo (si tiene)
+	 */
 	public void insertarCapitulo(int pObra, String pTitulo, String pCapitulo, String pComentario,String pRuta){
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -211,6 +251,12 @@ public class GestorBD {
 		}
 	}
 
+	/**
+	 * Metodo que devuelve el indice del primer
+	 * capitulo de una obra
+	 * @param idO Id de la obra en BD
+	 * @return
+	 */
 	public int getIndiceCapituloUno(int idO) {
 		int id = 0;
 
@@ -234,6 +280,11 @@ public class GestorBD {
 		return id;
 	}
 
+	/**
+	 * Metodo que devuelve la lista de Capitulos
+	 * @param idO Id de la obra en BD
+	 * @return ArrayList con los capitulos
+	 */
 	public ArrayList<packBeans.Capitulo> getCapituloBeans(int idO) {
 		ArrayList<packBeans.Capitulo> lista = new ArrayList<packBeans.Capitulo>();
 		try {
@@ -268,6 +319,14 @@ public class GestorBD {
 		return lista;
 	}
 
+	/**
+	 * Metodo que devuelve la lista de obras
+	 * @param limit El numero maximo de obras en la lista
+	 * @param offset	El offset para la selección de las obras
+	 * @param id Id en BD del autor de las obras (si es 0
+	 * se devuelven de todos los autores)
+	 * @return ArrayList con las obras
+	 */
 	public ArrayList<packBeans.Obra> getObrasBeans(int limit, int offset, int id){
 		ArrayList<packBeans.Obra> lista = new ArrayList<packBeans.Obra>();
 		packBeans.Obra aux = null;
@@ -327,6 +386,13 @@ public class GestorBD {
 		return lista;
 	}
 
+	/**
+	 * Metodo que indica el numero de paginas que
+	 * hay que generar en caso de mostrarse n obras 
+	 * por pagina
+	 * @param show	Numero de obras a mostrar
+	 * @return	Numero de paginas maximo
+	 */
 	public int getMaxObrasN(int show) {
 		int max = 0;
 		try {
@@ -354,6 +420,11 @@ public class GestorBD {
 		return max;
 	}
 
+	/**
+	 * Metodo que devuelve un autor
+	 * @param id Id del autor en BD
+	 * @return	El autor
+	 */
 	public Autor getAutorBeans(int id) {
 		packBeans.Autor autor = null;
 		try {
@@ -388,6 +459,13 @@ public class GestorBD {
 		return autor;
 	}
 
+	/**
+	 * Metodo que actualiza el contenido de una obra
+	 * @param idOb	Id en BD de la obra
+	 * @param tituloObra	Titulo de la obra
+	 * @param resumen	Resumen de la obra
+	 * @param portada	Ruta de la portada (si se quiere modificar)
+	 */
 	public void updateObra(int idOb, String tituloObra, String resumen,String portada) {
 		// TODO Auto-generated method stub
 		try {
@@ -427,6 +505,14 @@ public class GestorBD {
 		}
 	}
 
+	/**
+	 * Metodo que actualiza un capitulo
+	 * @param idCap	Id del capitulo en BD
+	 * @param tituloCap	Titulo del capitulo
+	 * @param capitulo	Texto del capitulo
+	 * @param comentario	Comentario del autor
+	 * @param pRuta	Ruta de la imagen del capitulo (si se quiere cambiar)
+	 */
 	public void updateChapter(int idCap, String tituloCap, String capitulo,
 			String comentario, String pRuta) {
 		try {
@@ -464,6 +550,10 @@ public class GestorBD {
 		}		
 	}
 
+	/**
+	 * Metodo que devuelv la lista de autores
+	 * @return ArrayList con todos los autores
+	 */
 	public ArrayList<Autor> getAutoresBeans() {
 		ArrayList<packBeans.Autor> lista = new ArrayList<packBeans.Autor>();
 		packBeans.Autor autor = null;
@@ -497,6 +587,11 @@ public class GestorBD {
 		return lista;
 	}
 
+	/**
+	 * Metodo que devuelve un HashMap con los autores
+	 * conn su id como clave
+	 * @return	HashMap de autores
+	 */
 	public HashMap<Integer, String> getHasMapAutores() {
 		HashMap<Integer, String> autores = null;
 		try {
@@ -551,29 +646,6 @@ public class GestorBD {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	private String toSha512(String contrasena){
-		MessageDigest md = null;
-		try {
-			md = MessageDigest.getInstance("SHA-512");
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-		String clave = contrasena;
-		md.update(clave.getBytes());
-		String output = "";
-		byte[] mb = md.digest();
-		for (int i = 0; i < mb.length; i++) {
-			byte temp = mb[i];
-			String s = Integer.toHexString(new Byte(temp));
-			while (s.length() < 2) {
-				s = "0" + s;
-			}
-			s = s.substring(s.length() - 2);
-			output += s;
-		}
-		return output;
 	}
 
 	/**
@@ -726,6 +798,11 @@ public class GestorBD {
 
 	}
 
+	/**
+	 * Metodo que devuelve una obra
+	 * @param id	Id de la obra en BD
+	 * @return	La obra
+	 */
 	public packBeans.Obra getObraBeans(int id) {
 		packBeans.Obra obra = null;
 		try {
@@ -754,6 +831,11 @@ public class GestorBD {
 		return obra;
 	}
 
+	/**
+	 * Metodo que devuelve un capitulo
+	 * @param id	Id del capitulo en BD
+	 * @return	El capitulo
+	 */
 	public packBeans.Capitulo getCapitulosBeans(int id) {
 		packBeans.Capitulo cap = null;
 		try{
@@ -782,6 +864,11 @@ public class GestorBD {
 		return cap;
 	}
 
+	/**
+	 * Metodo que devuelve un autor
+	 * @param id Id del autor en BD
+	 * @return	El autor
+	 */
 	public Autor getAutorBeansById(int id) {
 		packBeans.Autor autor = null;
 		try {
@@ -971,6 +1058,11 @@ public class GestorBD {
 		return result;
 	}
 
+	/**
+	 * Metood que elimina un  autor, sus obras y comentarios de BD
+	 * @param id Id del autor en BD
+	 * @return	True si se ha eliminado correctamente
+	 */
 	public boolean deleteAutor(int id) {
 		// TODO Auto-generated method stub
 		boolean result = false; 
@@ -993,6 +1085,12 @@ public class GestorBD {
 		return result;
 	}
 
+	/**
+	 * Metodo que modifica la contraseña de administrador
+	 * @param old	Contraseña antigua (con SHA512 aplicado)
+	 * @param newC	Contraseña nueva (con SHA512 aplicado)
+	 * @return True si se ha cambiado correctamente
+	 */
 	public boolean changePasswordAdmin(String old, String newC) {
 		// TODO Auto-generated method stub
 		boolean result = false;
