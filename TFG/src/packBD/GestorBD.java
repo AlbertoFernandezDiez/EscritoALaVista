@@ -25,7 +25,8 @@ import packClases.Usuario;
 public class GestorBD {
 	private static GestorBD myGestorBD = null;
 	private Connection conexion = null;
-
+private String userBD = "root", passBD = "root";
+	
 	private GestorBD(){
 
 	}
@@ -68,7 +69,7 @@ public class GestorBD {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select * from obra");
 			ResultSet rs = st.executeQuery();
 
@@ -90,7 +91,7 @@ public class GestorBD {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 			Capitulo cap = null;
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select * from capitulo where obra = ? order by id;");
 			//Statement st = conexion.createStatement();
@@ -119,7 +120,7 @@ public class GestorBD {
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 			Capitulo cap = null;
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select * from capitulo where id = ?;");
 			st.setInt(1, pCapitulo);
@@ -143,7 +144,7 @@ public class GestorBD {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select * from obra where id = ?");
 			st.setInt(1, pObra);
 			ResultSet rs = st.executeQuery();
@@ -165,7 +166,7 @@ public class GestorBD {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select autor.* from autor,obra "
 					+ "where obra.autor = autor.id and obra.id = ?");
 			st.setInt(1, pAutor);
@@ -197,7 +198,7 @@ public class GestorBD {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("INSERT INTO `obra` (`autor`, `titulo`, `resumen`, "
 					+ "`fecha_in` , `fecha_mod`,`portada`) VALUES ( ?, ?, ?, ?, ?,?)");
 			st.setInt(1, pAutor);
@@ -235,7 +236,7 @@ public class GestorBD {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("INSERT INTO `capitulo` (`obra`, `nombre`, `texto`,"
 					+ " `comentarios_autor`, `fecha_comentario`,`imagen`) VALUES (?, ?, ?, ?, ?,?)");
 			st.setInt(1, pObra);
@@ -263,7 +264,7 @@ public class GestorBD {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT id FROM capitulo WHERE obra = ? ORDER BY id ASC LIMIT 1");
 			st.setInt(1, idO);
 			ResultSet rs = st.executeQuery();
@@ -290,7 +291,7 @@ public class GestorBD {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 			packBeans.Capitulo cap = null;
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select * from capitulo where obra = ? order by id asc;");
 			//Statement st = conexion.createStatement();
@@ -334,7 +335,7 @@ public class GestorBD {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 
 			PreparedStatement st;
 			if (limit != 0)
@@ -398,7 +399,7 @@ public class GestorBD {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT count(*)/? FROM tfg.obra;");
 			st.setInt(1, show);
@@ -430,7 +431,7 @@ public class GestorBD {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select autor.* from autor,obra "
 					+ "where obra.autor = autor.id and obra.id = ?");
@@ -471,7 +472,7 @@ public class GestorBD {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 			PreparedStatement st = null;
 			if (portada != null)
 			{
@@ -518,7 +519,7 @@ public class GestorBD {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 			PreparedStatement st = null;
 			if (pRuta != null)
 			{
@@ -560,7 +561,7 @@ public class GestorBD {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT * FROM tfg.autor;");
 
@@ -597,7 +598,7 @@ public class GestorBD {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select id, nombre from autor;");
 			ResultSet rs = st.executeQuery();
 			autores = new HashMap<>();
@@ -628,7 +629,7 @@ public class GestorBD {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 			String sal = toSha512(String.valueOf(System.currentTimeMillis()));
 			String contra = toSha512(toSha512(password) + sal);
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("INSERT INTO `tfg`.`autor` (`pais`, `nacimiento`, `nombre`, `password`, `sal`, `about`, `imagen`, `email`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
@@ -663,7 +664,7 @@ public class GestorBD {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT id,password,sal"
 					+ " FROM tfg.autor where nombre = ?;");
@@ -701,7 +702,7 @@ public class GestorBD {
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("INSERT INTO `tfg`.`comentario` "
 					+ "(`autor`, `obra`, `capitulo`, `texto`,`fecha_comentario`) "
@@ -737,7 +738,7 @@ public class GestorBD {
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT * FROM tfg.comentario "
 					+ " where obra=?  and capitulo=? order by fecha_comentario desc;");
@@ -777,7 +778,7 @@ public class GestorBD {
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT count(nombre)"
 					+ " FROM tfg.autor where nombre=?;");
@@ -808,7 +809,7 @@ public class GestorBD {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select * from obra where id = ?");
 			st.setInt(1, id);
 			ResultSet rs = st.executeQuery();
@@ -841,7 +842,7 @@ public class GestorBD {
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select * from capitulo where id = ?;");
 			st.setInt(1, id);
@@ -874,7 +875,7 @@ public class GestorBD {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select autor.* from autor"
 					+ " where autor.id = ?");
@@ -917,7 +918,7 @@ public class GestorBD {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 			PreparedStatement st = null;
 			if (pRuta != null)
 			{
@@ -963,7 +964,7 @@ public class GestorBD {
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT *"
 					+ " FROM tfg.autor where id = ?;");
@@ -1008,7 +1009,7 @@ public class GestorBD {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT *"
 					+ " FROM tfg.admin where id = 1;");
@@ -1042,7 +1043,7 @@ public class GestorBD {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("DELETE FROM `tfg`.`obra` "
 					+ "WHERE `id`=?;");
@@ -1069,7 +1070,7 @@ public class GestorBD {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("DELETE FROM `tfg`.`autor` "
 					+ "WHERE `id`=?;");
@@ -1097,7 +1098,7 @@ public class GestorBD {
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/tfg", "root", "root");
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT *"
 					+ " FROM tfg.autor where id = ?;");
