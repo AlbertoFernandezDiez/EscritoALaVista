@@ -16,11 +16,7 @@ import com.mysql.jdbc.PreparedStatement;
 
 import packBeans.Autor;
 import packBeans.Comentario;
-import packClases.Capitulo;
-import packClases.ListaCapitulos;
-import packClases.ListaObras;
-import packClases.Obra;
-import packClases.Usuario;
+
 
 public class GestorBD {
 	private static GestorBD myGestorBD = null;

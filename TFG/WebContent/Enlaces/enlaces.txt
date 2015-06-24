@@ -40,3 +40,6 @@ http://www.servletsuite.com/servlets/navtag.htm
 
 DROPDOWN PERSONALIZADO
 http://www.benknowscode.com/2013/12/bootstrap-dropdown-button-select-box-control.html
+
+APACHE CORDOVA - TUTORIAL
+https://ccoenraets.github.io/cordova-tutorial/setup-files.html

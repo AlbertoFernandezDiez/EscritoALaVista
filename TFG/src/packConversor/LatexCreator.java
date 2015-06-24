@@ -141,6 +141,10 @@ public class LatexCreator extends HttpServlet {
 			if (!pdfGen.generate(invoice1, desktop, workingDirectory)) { 
 				System.out.println(pdfGen.getErrorMessage());
 			}
+			
+			if (!pdfGen.generate(invoice1, desktop, workingDirectory)) { 
+				System.out.println(pdfGen.getErrorMessage());
+			}
 
 
 

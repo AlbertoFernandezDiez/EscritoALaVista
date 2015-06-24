@@ -1,13 +1,3 @@
-/*function loadChapters(id,capitulo){
-	var url = $("#url").val();
-	url = url + "LoadSelectChapters" ;
-
-	$.ajax({url:url,type: 'POST',data:{obra: id,capitulo: capitulo},success:function(result){updateChapterSelect(result);},
-		error:function(request,error){
-			alert("Error: " + error);
-		}
-	});
-}*/
 
 function loadChapterSel(id){
 	var sel = $("#selCap");
@@ -67,7 +57,7 @@ function updateChapterSelect(result){
 	$('#rutaP').val(result.imagen);
 	
 	
-	$chapter.html("<option name=default value=0>Nueva Obra</option>");
+	$chapter.html("<option name=default value=0>Nuevo Capitulo</option>");
 
 if (result.capitulos){
 	$.each(result.capitulos, function (i, item) {

@@ -1,10 +1,3 @@
-
-<%@page import="packClases.Capitulo"%>
-<%@page import="packClases.ListaCapitulos"%>
-<%@page import="packClases.Obra"%>
-<%@page import="java.util.Iterator"%>
-<%@page import="packClases.ListaObras"%>
-<%@page import="packBD.GestorBD"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -82,7 +75,7 @@
 				</script>
 				<br> <label
 					for="titCap">Titulo Capitulo :</label> <input type="text"
-					class='form-control' id="titCap" name="titCap" spellcheck="true">
+					class='form-control' id="titCap" name="titCap" maxlength='50' spellcheck="true">
 				<br> <label for="capitulo">Capitulo :</label>
 				<textarea rows="5" class='form-control' cols="20" id="capitulo"
 					name="capitulo" spellcheck="true"></textarea>

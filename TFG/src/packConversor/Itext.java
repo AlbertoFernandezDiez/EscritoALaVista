@@ -26,21 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 import packBD.GestorBD;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-import packClases.Usuario;
-
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chapter;

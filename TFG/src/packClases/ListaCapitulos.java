@@ -1,3 +1,4 @@
+/*
 package packClases;
 
 import java.util.Iterator;
@@ -24,3 +25,4 @@ public class ListaCapitulos {
 		return lista.iterator();
 	}
 }
+*/

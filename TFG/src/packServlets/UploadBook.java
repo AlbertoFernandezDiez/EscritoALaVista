@@ -14,7 +14,6 @@ import javax.servlet.http.HttpSession;
 
 import packBD.GestorBD;
 import packBeans.BreadCrumb;
-import packBeans.Obra;
 
 /**
  * Servlet implementation class UploadBook
