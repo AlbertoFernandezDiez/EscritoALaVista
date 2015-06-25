@@ -62,11 +62,11 @@ function checkUserName(){
 }
 
 function checkTitulo(){
-	var nombre = $('#titOb').val();
-	var selObra = $('#selectObra').val();
+	var nombre = $.trim($('#titOb').val());
+	var selObra =$.trim($('#selectObra option:selected').text());
 	console.log(selObra);
 	console.log(nombre);
-	if (nombre != '' && selObra == 0)
+	if (nombre != '' && nombre != selObra /*&& selObra == 0*/)
 	{
 		$.ajax({
 			url : "CT",
