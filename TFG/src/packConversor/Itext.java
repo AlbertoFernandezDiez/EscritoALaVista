@@ -26,6 +26,8 @@ import javax.servlet.http.HttpServletResponse;
 import packBD.GestorBD;
 
 
+import packTestConversor.FilePath;
+
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chapter;
@@ -94,10 +96,9 @@ public class Itext extends HttpServlet {
 		// Get the file location where it would be stored.
 		filePath =getServletContext().getInitParameter("file-upload"); 
 		folder = new File(filePath,"/output/Itext");
-
 	}
 
-	protected void doGet(
+	public void doGet(
 			HttpServletRequest request, HttpServletResponse response)
 					throws ServletException, IOException {
 		String idS = request.getParameter("id");

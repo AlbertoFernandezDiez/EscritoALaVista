@@ -1125,4 +1125,36 @@ private String userBD = "root", passBD = "root";
 		return result;
 	}
 
+	/**
+	 * Metodo que comprueba si el titulo
+	 * ya esta en BD
+	 * @param nombre El titulo de la obra
+	 * @return True si se no esta usado
+	 */
+	public boolean comprobarTitulo(String nombre) {
+		boolean result = false;
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
+
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT count(titulo)"
+					+ " FROM tfg.obra where titulo=?;");
+			st.setString(1, nombre);
+
+
+			ResultSet rs = st.executeQuery();
+
+			if (rs.next())
+				result = rs.getInt(1) == 0;
+
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return result;
+
+	}
+
 }

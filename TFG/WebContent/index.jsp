@@ -1,8 +1,3 @@
-<%@page import="packBD.GestorBD"%>
-<%@page import="packClases.ListaObras"%>
-<%@page import="packClases.Obra"%>
-<%@page import="java.util.Iterator"%>
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 

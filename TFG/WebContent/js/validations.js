@@ -61,6 +61,37 @@ function checkUserName(){
 	}
 }
 
+function checkTitulo(){
+	var nombre = $('#titOb').val();
+	var selObra = $('#selectObra').val();
+	console.log(selObra);
+	console.log(nombre);
+	if (nombre != '' && selObra == 0)
+	{
+		$.ajax({
+			url : "CT",
+			type : 'POST',
+			data : {
+				nombre : nombre
+			},
+			success : function(result) {
+				console.log(result);
+				if (result == 'true') {
+					$('#comprobacionTitulo').addClass("has-success"); 
+					$('#usado').hide();
+				} else {
+					$('#usado').show();
+					$('#comprobacionTitulo').addClass("has-error");  
+				}
+			},
+			error : function(request, error) {
+				$("#bad").show(200);
+			}
+		}
+		);
+	}
+}
+
 function cambiarContrasena() {
 	var n = $('#contraN').val();
 	var v = $('#contraV').val();
