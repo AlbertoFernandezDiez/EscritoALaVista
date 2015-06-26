@@ -26,6 +26,13 @@
 <script src="js/Cookies.js" type="text/javascript"></script>
 <link rel="stylesheet" href="css/Cookies.css">
 
+<script>
+ var correcto = true; $(document).ready(function() {
+$("#usado").hide(); $('#usuario').on('blur',checkUserName);
+$('#usuario').on('focus',function(){
+$('#comprobacionUsuario').removeClass("has-success");
+$('#comprobacionUsuario').removeClass("has-error"); } ); });
+ </script>
 </head>
 <body>
 	<!-- Menu -->
@@ -42,9 +49,9 @@
 				<div id='comprobacionUsuario' class='form-group'>
 					<label for="usuario">Nombre de usuario :</label> <input
 						id="usuario" name="usuario" class='form-control' type="text"
-						placeholder="usuariodeprueba" required='true' autofocus/>
-						<br><span
-						id='usado' class="alert alert-danger" role="alert">Este nombre de usuario ya esta registrado</span>
+						placeholder="usuariodeprueba" required='true' autofocus /> <br>
+					<span id='usado' class="alert alert-danger" role="alert">Este
+						nombre de usuario ya esta registrado</span>
 				</div>
 
 				<br> <label for="email">Email :</label> <input id="email"
@@ -94,6 +101,6 @@
 		</div>
 	</div>
 	</div>
-	
+
 </body>
 </html>

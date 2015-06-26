@@ -97,7 +97,7 @@ if (result == true)
 							<td><c:out value="${aut.nombre}"></c:out></td>
 							<td><c:out value="${aut.pais}"></c:out></td>
 							<td><fmt:formatDate value="${aut.nacimiento}"
-									pattern="dd/MM/yyyy" /> </t>
+									pattern="dd/MM/yyyy" /> </td>
 							<td><c:out value="${aut.email}"></c:out></td>
 
 							<td><button type="button" class='btn btn-default'
@@ -121,6 +121,7 @@ if (result == true)
 				<button type="button" data-dismiss="modal" class="btn">Cancel</button>
 			</div>
 		</div>
+	</div>
 	</div>
 </body>
 </html>

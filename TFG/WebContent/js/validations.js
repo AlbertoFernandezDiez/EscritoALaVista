@@ -11,14 +11,14 @@ function presubmit(){
 	$( "#registro" ).submit(function( event ) {
 		var $contra1 = $("#contrasena1");
 		var $contra2 = $("#contrasena2");
-		if ($contra1.val() == $contra2.val()) {
+		if ($contra1.val() == $contra2.val() && registro) {
 			$("#contra").val(toSHA512($contra1.val()));
 			$contra1.remove();
 			$contra2.remove();
 			return;
 		}
 		else{}
-		$( "span" ).text( "Not valid!" ).show().fadeOut( 1000 );
+		$( "span" ).text( "Las contraseñas no son iguales o el nombre ya esta siendo usado" ).show().fadeOut( 2000 );
 		event.preventDefault();
 	});}
 
@@ -48,9 +48,11 @@ function checkUserName(){
 				if (result == 'true') {
 					$('#comprobacionUsuario').addClass("has-success"); 
 					$('#usado').hide();
+					correcto = true;
 				} else {
 					$('#usado').show();
 					$('#comprobacionUsuario').addClass("has-error");  
+					correcto = false;
 				}
 			},
 			error : function(request, error) {
@@ -79,9 +81,11 @@ function checkTitulo(){
 				if (result == 'true') {
 					$('#comprobacionTitulo').addClass("has-success"); 
 					$('#usado').hide();
+					correcto = true;
 				} else {
 					$('#usado').show();
 					$('#comprobacionTitulo').addClass("has-error");  
+					correcto = false;
 				}
 			},
 			error : function(request, error) {
@@ -90,6 +94,12 @@ function checkTitulo(){
 		}
 		);
 	}
+	else
+		{
+		correcto = true;
+		$('#comprobacionTitulo').addClass("has-success"); 
+		$('#usado').hide();
+		}
 }
 
 function cambiarContrasena() {
@@ -168,7 +178,7 @@ function cambiarContrasenaAdmin() {
 	}
 }
 
-$(document).ready(function() {
+/*$(document).ready(function() {
 	$("#usado").hide();
 	
 	$('#usuario').on('blur',checkUserName);
@@ -177,4 +187,16 @@ $(document).ready(function() {
 		$('#comprobacionUsuario').removeClass("has-error");
 	}
 	);
-});
+});*/
+
+function presubmitBook (){
+$( "#obra" ).submit(function( event ) {
+	
+	if (correcto) {
+		
+		return;
+	}
+	else{}
+	$( "span" ).text( "El titulo no es valido!" ).show().fadeOut( 2000 );
+	event.preventDefault();
+});}

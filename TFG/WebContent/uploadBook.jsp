@@ -26,6 +26,8 @@
 <title>Upload Book</title>
 
 <script>
+var correcto = false;
+
 $().ready(function(){
 $("#usado").hide();
 	
@@ -33,6 +35,8 @@ $("#usado").hide();
 	$('#titOb').on('focus',function(){
 		$('#comprobacionTitulo').removeClass("has-success");
 		$('#comprobacionTitulo').removeClass("has-error");
+		
+		presubmitBook();
 });
 });
 </script>
@@ -56,7 +60,7 @@ $("#usado").hide();
 
 		<div class="form-group">
 			<form action="uploadBookChapter" method="POST"
-				enctype="multipart/form-data" class="form-group">
+				enctype="multipart/form-data" class="form-group" id='obra'>
 
 				<input type='hidden' name='autor' class='form-control' id='autor'
 					value='<c:out value="${requestScope.autor}"></c:out>'> <select

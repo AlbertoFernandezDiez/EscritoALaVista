@@ -98,7 +98,7 @@ if (result == true)
 							<td><c:out value="${aut.titulo}"></c:out></td>
 							<td><c:out value="${autor[aut.autor]}"></c:out></td>
 							<td><fmt:formatDate value="${aut.fecha_in}"
-									pattern="dd/MM/yyyy" /> </t>
+									pattern="dd/MM/yyyy" /> </td>
 							<td><fmt:formatDate value="${aut.fecha_mod}"
 									pattern="dd/MM/yyyy" /></td>
 							<td><button type="button" class='btn btn-default'
@@ -122,6 +122,7 @@ if (result == true)
 				<button type="button" data-dismiss="modal" class="btn">Cancel</button>
 			</div>
 		</div>
+	</div>
 	</div>
 </body>
 </html>
