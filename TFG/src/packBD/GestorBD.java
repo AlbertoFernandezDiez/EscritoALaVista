@@ -21,8 +21,8 @@ import packBeans.Comentario;
 public class GestorBD {
 	private static GestorBD myGestorBD = null;
 	private Connection conexion = null;
-private String userBD = "root", passBD = "root";
-	
+	private String userBD = "root", passBD = "root";
+
 	private GestorBD(){
 
 	}
@@ -180,7 +180,7 @@ private String userBD = "root", passBD = "root";
 		return autor;
 	}
 	 */
-	
+
 	/**
 	 * Metodo que inserta una nueva obra en la BD
 	 * @param pAutor	Id del autor en BD
@@ -212,6 +212,10 @@ private String userBD = "root", passBD = "root";
 			ResultSet rs = st.executeQuery();
 			rs.first();
 			id = rs.getInt("id");
+
+			rs.close();
+			st.close();
+			conexion.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -227,8 +231,10 @@ private String userBD = "root", passBD = "root";
 	 * @param pCapitulo	Texto del capitulo
 	 * @param pComentario	Comentario del autor
 	 * @param pRuta	Ruta de la imagen del capitulo (si tiene)
+	 * @return Indice en BD del capitulo insertado, 0 si no se ha insertado
 	 */
-	public void insertarCapitulo(int pObra, String pTitulo, String pCapitulo, String pComentario,String pRuta){
+	public int insertarCapitulo(int pObra, String pTitulo, String pCapitulo, String pComentario,String pRuta){
+		int result = 0;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
@@ -242,10 +248,28 @@ private String userBD = "root", passBD = "root";
 			st.setDate(5, new Date(System.currentTimeMillis()));
 			st.setString(6, pRuta);
 			st.execute();
+
+			st = (PreparedStatement) conexion.prepareStatement("SELECT id FROM capitulo where"
+					+ " obra = ?, nombre = ?, texto = ?, comentarios_autor = ?, imagen = ?");
+			st.setInt(1, pObra);
+			st.setString(2, pTitulo);
+			st.setString(3, pCapitulo);
+			st.setString(4, pComentario);
+			st.setString(5, pRuta);
+
+			ResultSet rs = st.executeQuery();
+
+			if (rs.next())
+				result = rs.getInt("id");
+
+			rs.close();
+			st.close();
+			conexion.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return result;
 	}
 
 	/**
@@ -270,6 +294,9 @@ private String userBD = "root", passBD = "root";
 				id = rs.getInt("id");
 			}
 
+			rs.close();
+			st.close();
+			conexion.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -602,6 +629,10 @@ private String userBD = "root", passBD = "root";
 			{		
 				autores.put(rs.getInt("id"), rs.getString("nombre"));
 			}
+
+			rs.close();
+			st.close();
+			conexion.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -618,17 +649,20 @@ private String userBD = "root", passBD = "root";
 	 * @param nac	Fecha de nacimiento
 	 * @param about	Sobre el usuario
 	 * @param ruta	Ruta de la imagen del perfil
+	 * @return Id del autor en BD, si no se ha introducido 0
 	 */
-	public void addUser(String nombre, String email, String password,
+	public int addUser(String nombre, String email, String password,
 			String pais, Date nac, String about, String ruta) {
 		// TODO Auto-generated method stub
+		int result = 0;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conexion = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 			String sal = toSha512(String.valueOf(System.currentTimeMillis()));
 			String contra = toSha512(toSha512(password) + sal);
-			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("INSERT INTO `tfg`.`autor` (`pais`, `nacimiento`, `nombre`, `password`, `sal`, `about`, `imagen`, `email`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("INSERT INTO `tfg`.`autor`"
+					+ " (`pais`, `nacimiento`, `nombre`, `password`, `sal`, `about`, `imagen`, `email`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
 			st.setString(1, pais);
 			st.setDate(2, nac);
 			st.setString(3, nombre);
@@ -639,10 +673,30 @@ private String userBD = "root", passBD = "root";
 			st.setString(8, email);
 			st.executeUpdate();
 
+
+			st = (PreparedStatement) conexion.prepareStatement("SELECT id FROM autor where pais = ?,"
+					+ " nacimiento = ?, nombre = ?, password = ?, sal = ?, about = ?, imagen = ?, email = ?;");
+			st.setString(1, pais);
+			st.setDate(2, nac);
+			st.setString(3, nombre);
+			st.setString(4, contra);
+			st.setString(5, sal);
+			st.setString(6, about);
+			st.setString(7, ruta);
+			st.setString(8, email);
+			ResultSet rs = st.executeQuery();
+
+			if (rs.next())
+				result = rs.getInt("id");	
+
+			rs.close();
+			st.close();
+			conexion.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return result;
 	}
 
 	/**
@@ -907,9 +961,11 @@ private String userBD = "root", passBD = "root";
 	 * @param paisS	El pais
 	 * @param aboutS	Infomación sobre el
 	 * @param pRuta	Ruta a su imagen de perfil
+	 * @return True si se ha acatulizado correctamente
 	 */
-	public void updateAutor(int id, String mailS, String paisS, String aboutS,
+	public boolean updateAutor(int id, String mailS, String paisS, String aboutS,
 			String pRuta) {
+		boolean update = false; 
 		// TODO Auto-generated method stub
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -937,13 +993,14 @@ private String userBD = "root", passBD = "root";
 				st.setInt(4, id);
 			}
 			st.executeUpdate();
-
+			update = true;
 			st.close();
 			conexion.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
+		return update;
 	}
 	/**
 	 * Metodo que cambia la contraseña de un usuario
@@ -952,7 +1009,8 @@ private String userBD = "root", passBD = "root";
 	 * @param id	Identificador del usuario en BD
 	 * @param old	Contraseña antigua
 	 * @param newC	Contraseña nueva
-	 * @return
+	 * @return True si se ha cambiado la contraseña
+	 *  correctamente
 	 */
 	public boolean changePassword(int id, String old, String newC) {
 		boolean result = false;
