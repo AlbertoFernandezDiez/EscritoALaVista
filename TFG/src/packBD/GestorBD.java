@@ -250,7 +250,7 @@ public class GestorBD {
 			st.execute();
 
 			st = (PreparedStatement) conexion.prepareStatement("SELECT id FROM capitulo where"
-					+ " obra = ?, nombre = ?, texto = ?, comentarios_autor = ?, imagen = ?");
+					+ " obra = ? and nombre = ? and texto = ? and comentarios_autor = ? and imagen = ?");
 			st.setInt(1, pObra);
 			st.setString(2, pTitulo);
 			st.setString(3, pCapitulo);
@@ -276,7 +276,8 @@ public class GestorBD {
 	 * Metodo que devuelve el indice del primer
 	 * capitulo de una obra
 	 * @param idO Id de la obra en BD
-	 * @return
+	 * @return El id en BD del primer capitulo
+	 * de la obra, 0 si no lo encuentra
 	 */
 	public int getIndiceCapituloUno(int idO) {
 		int id = 0;
@@ -445,9 +446,10 @@ public class GestorBD {
 	}
 
 	/**
-	 * Metodo que devuelve un autor
-	 * @param id Id del autor en BD
-	 * @return	El autor
+	 * Metodo que devuelve un autor 
+	 * dado el Id de BD de una de sus obras
+	 * @param id Id de una obra en BD
+	 * @return	El autor de la obra
 	 */
 	public Autor getAutorBeans(int id) {
 		packBeans.Autor autor = null;
@@ -674,8 +676,8 @@ public class GestorBD {
 			st.executeUpdate();
 
 
-			st = (PreparedStatement) conexion.prepareStatement("SELECT id FROM autor where pais = ?,"
-					+ " nacimiento = ?, nombre = ?, password = ?, sal = ?, about = ?, imagen = ?, email = ?;");
+			st = (PreparedStatement) conexion.prepareStatement("SELECT id FROM autor where pais = ? and"
+					+ " nacimiento = ? and nombre = ? and password = ? and sal = ? and about = ? and imagen = ? and email = ?;");
 			st.setString(1, pais);
 			st.setDate(2, nac);
 			st.setString(3, nombre);
@@ -684,6 +686,7 @@ public class GestorBD {
 			st.setString(6, about);
 			st.setString(7, ruta);
 			st.setString(8, email);
+			
 			ResultSet rs = st.executeQuery();
 
 			if (rs.next())
