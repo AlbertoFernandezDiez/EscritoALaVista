@@ -8,15 +8,13 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import packBD.GestorBD;
 import packBeans.Obra;
 
 public class TestEpubCreator {
-
+	
 	@Before
 	public void setUp() throws Exception {
 	}
