@@ -83,8 +83,7 @@
 					sobre ti :</label><br>
 				<textarea id="about" name="about" rows="4" cols="50" required='true'
 					class='form-control' spellcheck="true"><c:forEach
-						items="${requestScope.autor.about}" var="par">
-						<c:out value="${par}"></c:out>
+						items="${requestScope.autor.about}" var="par"><c:out value="${par}"></c:out>
 					</c:forEach></textarea>
 				<br>
 				<!-- <input id='file' name='file' type='file' accept='image/*'><br>-->
