@@ -50,8 +50,9 @@
 					Nacimiento:
 					<c:out value="${autor.nacimiento}"></c:out>
 				</h2>
+				<c:if test="${not empty autor.imagen}">
 				<img class="img-rounded perfilImg" alt="Foto de perfil"
-					src="<c:out value="${autor.imagen}"></c:out>">
+					src="<c:out value="${autor.imagen}"></c:out>"></c:if>
 				<p class="text-justify">
 				<c:forEach items="${autor.about}" var="par">
 					<p><c:out value="${par}"></c:out></p>
@@ -84,8 +85,8 @@
 									value="${autor.nombre}"></c:out></a>
 						</div>
 						<div class="col-sm-2">
-							<img alt='Imagen de perfil'
-								src='<c:out value="${ob.portada}"></c:out>'>
+						<c:if test="${not empty ob.portada }"><img alt='Imagen de perfil'
+								src='<c:out value="${ob.portada}"></c:out>'></c:if>							
 						</div>
 						<div class="col-sm-10">
 							<p class="text-justify">

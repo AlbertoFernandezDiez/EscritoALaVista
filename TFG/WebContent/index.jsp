@@ -71,8 +71,9 @@ $( document).on( 'click', '.dropdown-menu li', function( event ) {
 								value="${autor[ob.autor]}"></c:out></a>
 					</div>
 					<div class="col-sm-2">
-						<img alt='Imagen de perfil'
-							src='<c:out value="${ob.portada}"></c:out>'>
+					<c:if test="${not empty ob.portada}"><img alt='Imagen de perfil'
+							src='<c:out value="${ob.portada}"></c:out>'></c:if>
+						
 					</div>
 					<div class="col-sm-10">
 						<p class="text-justify">
