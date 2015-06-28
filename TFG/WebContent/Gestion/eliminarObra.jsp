@@ -34,7 +34,7 @@
 				id : id
 			},
 			success : function(result) {
-if (result == true)
+if (result == 'true')
 	$('tr#' + id).remove();
 			},
 			error : function(request, error) {
