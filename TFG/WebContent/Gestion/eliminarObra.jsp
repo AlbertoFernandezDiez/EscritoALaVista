@@ -18,15 +18,13 @@
 <script src="js/Cookies.js" type="text/javascript"></script>
 <link rel="stylesheet" href="css/Cookies.css">
 
-<!-- EMODAL -->
-<script src="js/eModal.min.js"></script>
+
 
 <title>EliminarObra</title>
 
 <script>
+	function doActionTrue(id) {
 
-	function doActionTrue(res,id) {
-		
 		$.ajax({
 			url : "EO",
 			type : 'POST',
@@ -34,15 +32,15 @@
 				id : id
 			},
 			success : function(result) {
-if (result == 'true')
-	$('tr#' + id).remove();
+				if (result == 'true')
+					$('tr#' + id).remove();
 			},
 			error : function(request, error) {
 
 			}
 		});
 		//Eliminamos la linea
-		
+
 	}
 
 	function doActionFalse() {
@@ -51,19 +49,13 @@ if (result == 'true')
 
 	function clickEliminarObra() {
 		var id = $(this).val();
-		var options = {
-			message : "¿Deseas eliminar la obra?",
-			title : '¿Es cierto?',
-			size : 'sm',
-			callback : function(result) {
-				result ? doActionTrue(result,id) : doActionFalse();
-			},
-			label : "Aceptar" // use the possitive lable as key
-		//...
-		};
-
-		eModal.confirm(options);
-		//  callback: function(result) { result ? doActionTrue(result) :    doActionFalse(); },
+		
+		$('#confirm').modal({
+			backdrop : 'static',
+			keyboard : false
+		}).one('click', '#delete', function(e) {
+			doActionTrue(id);
+		});
 
 		return false;
 	}
@@ -78,6 +70,26 @@ if (result == 'true')
 	<div class="container theme-showcase" role="main">
 
 		<jsp:include page="title.jsp" />
+
+		<div class="modal fade" id="confirm" role="dialog">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">¿Estas seguro?</h4>
+					</div>
+					<div class="modal-body">
+						<p>¿Quieres eliminar la Obra?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" data-dismiss="modal" class="btn btn-primary"
+							id="delete">Eliminar</button>
+						<button type="button" data-dismiss="modal" class="btn">Cancelar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 
 		<c:set var="autor" value="${requestScope.autores}" scope="request"></c:set>
 
@@ -98,7 +110,7 @@ if (result == 'true')
 							<td><c:out value="${aut.titulo}"></c:out></td>
 							<td><c:out value="${autor[aut.autor]}"></c:out></td>
 							<td><fmt:formatDate value="${aut.fecha_in}"
-									pattern="dd/MM/yyyy" /> </td>
+									pattern="dd/MM/yyyy" /></td>
 							<td><fmt:formatDate value="${aut.fecha_mod}"
 									pattern="dd/MM/yyyy" /></td>
 							<td><button type="button" class='btn btn-default'
@@ -108,7 +120,7 @@ if (result == 'true')
 				</tbody>
 			</table>
 			<script>
-				$('.btn').on('click', clickEliminarObra);
+				$('.btn-default').on('click', clickEliminarObra);
 			</script>
 
 		</div>

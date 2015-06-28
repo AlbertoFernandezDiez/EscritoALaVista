@@ -18,15 +18,13 @@
 <script src="js/Cookies.js" type="text/javascript"></script>
 <link rel="stylesheet" href="css/Cookies.css">
 
-<!-- EMODAL -->
-<script src="js/eModal.min.js"></script>
+
 
 <title>EliminarObra</title>
 
 <script>
+	function doActionTrue(id) {
 
-	function doActionTrue(res,id) {
-		
 		$.ajax({
 			url : "EU",
 			type : 'POST',
@@ -34,37 +32,26 @@
 				id : id
 			},
 			success : function(result) {
-				console.log(id + '---' + result);
-if (result == 'true')
-	$('tr#' + id).remove();
+				if (result == 'true')
+					$('tr#' + id).remove();
 			},
 			error : function(request, error) {
 
 			}
 		});
 		//Eliminamos la linea
-		
-	}
-
-	function doActionFalse() {
 
 	}
 
 	function clickEliminarObra() {
 		var id = $(this).val();
-		var options = {
-			message : "¿Deseas eliminar el usuario y sus obras?",
-			title : '¿Es cierto?',
-			size : 'sm',
-			callback : function(result) {
-				result ? doActionTrue(result,id) : doActionFalse();
-			},
-			label : "Aceptar" // use the possitive lable as key
-		//...
-		};
 
-		eModal.confirm(options);
-		//  callback: function(result) { result ? doActionTrue(result) :    doActionFalse(); },
+		$('#confirm').modal({
+			backdrop : 'static',
+			keyboard : false
+		}).one('click', '#delete', function(e) {
+			doActionTrue(id);
+		});
 
 		return false;
 	}
@@ -76,10 +63,30 @@ if (result == 'true')
 	<jsp:include page="../Cookies.html" />
 	<!-- <div class="container theme-showcase" role="main"> -->
 
+
+
 	<div class="container theme-showcase" role="main">
 
 		<jsp:include page="title.jsp" />
 
+		<div class="modal fade" id="confirm" role="dialog">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">¿Estas seguro?</h4>
+					</div>
+					<div class="modal-body">
+						<p>¿Quieres eliminar el Autor?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" data-dismiss="modal" class="btn btn-primary"
+							id="delete">Eliminar</button>
+						<button type="button" data-dismiss="modal" class="btn">Cancelar</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<div class='jumbotron'>
 			<table class="table table-hover">
@@ -98,7 +105,7 @@ if (result == 'true')
 							<td><c:out value="${aut.nombre}"></c:out></td>
 							<td><c:out value="${aut.pais}"></c:out></td>
 							<td><fmt:formatDate value="${aut.nacimiento}"
-									pattern="dd/MM/yyyy" /> </td>
+									pattern="dd/MM/yyyy" /></td>
 							<td><c:out value="${aut.email}"></c:out></td>
 
 							<td><button type="button" class='btn btn-default'
@@ -108,21 +115,13 @@ if (result == 'true')
 				</tbody>
 			</table>
 			<script>
-				$('.btn').on('click', clickEliminarObra);
+				$('.btn-default').on('click', clickEliminarObra);
 			</script>
 
 		</div>
 	</div>
-	<div id="confirm" class="modal hide fade" role="dialog">
-		<div class="modal-content">
-			<div class="modal-body">Delete?</div>
-			<div class="modal-footer">
-				<button type="button" data-dismiss="modal" class="btn btn-primary"
-					id="delete">Delete</button>
-				<button type="button" data-dismiss="modal" class="btn">Cancel</button>
-			</div>
-		</div>
-	</div>
+
+
 	</div>
 </body>
 </html>
