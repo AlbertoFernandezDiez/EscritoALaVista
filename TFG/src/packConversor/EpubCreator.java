@@ -225,7 +225,9 @@ public class EpubCreator extends HttpServlet {
 
 			// link our stylesheet
 			chapter1Doc.addStyleResource(style);
-			File image = new File(filePath,obra.getPortada());
+			File image = null;
+			if (obra.getPortada() != null)
+			image = new File(filePath,obra.getPortada());
 			// chapter XHTML body element
 			body1 = chapter1Doc.getBody();
 
@@ -241,10 +243,7 @@ public class EpubCreator extends HttpServlet {
 
 
 
-			/*	DataSource dataSource = new ResourceDataSource(EpubCreator.class,
-			          image.getAbsolutePath());*/
-			System.out.println(image.getName());
-
+		
 
 			// addImage(epub, chapter1Doc, body1, image);
 
@@ -350,6 +349,7 @@ public class EpubCreator extends HttpServlet {
 
 	private void addImage(Publication epub, OPSDocument chapter1Doc,
 			Element body1, File image) {
+		if (image !=  null){
 		DataSource dataSource =  new ImgFileDataSource(image.getAbsolutePath());
 		BitmapImageResource imageResource = epub.createBitmapImageResource(
 				"OPS/images/" + image.getName(), "image/jpeg", dataSource);
@@ -357,14 +357,16 @@ public class EpubCreator extends HttpServlet {
 		Element container = chapter1Doc.createElement("p");
 		container.setClassName("container");
 		body1.add(container);
+		
 		ImageElement bitmap = chapter1Doc.createImageElement("img");
 		bitmap.setClassName("bitmap");
 		bitmap.setImageResource(imageResource);
-		container.add(bitmap);
+		container.add(bitmap);}
 	}
 
 	private void addTitle(Publication epub, OPSDocument chapter1Doc,
 			Element body1, File image) {
+		if (image != null){
 		DataSource dataSource =  new ImgFileDataSource(image.getAbsolutePath());
 		BitmapImageResource imageResource = epub.createBitmapImageResource(
 				"OPS/images/" + image.getName(), "image/jpeg", dataSource);
@@ -372,10 +374,11 @@ public class EpubCreator extends HttpServlet {
 		Element container = chapter1Doc.createElement("p");
 		container.setClassName("container");
 		body1.add(container);
+		
 		ImageElement bitmap = chapter1Doc.createImageElement("img");
 		bitmap.setClassName("bitmaptitle");
 		bitmap.setImageResource(imageResource);
-		container.add(bitmap);
+		container.add(bitmap);}
 	}
 
 }
