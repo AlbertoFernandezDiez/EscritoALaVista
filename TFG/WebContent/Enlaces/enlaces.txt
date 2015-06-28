@@ -1,3 +1,9 @@
+LATEX JLR
+http://blog.jovicazoric.com/2013/09/24/create-a-pdf-document-using-latex-and-java/
+
+APACHE VELOCITY (PLANTILLA LATEX)
+http://velocity.apache.org/engine/devel/translations/user-guide_es.html
+
 EPUB GEN
 https://code.google.com/p/epub-tools/wiki/EPUBGen
 
