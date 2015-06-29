@@ -43,13 +43,28 @@
 				texto : texto
 			},
 			success : function(result) {
-				if (result == 'true') {
+
+				if (result == 'false') {
+					$("#ok").hide(200);
+					$("#bad").show(200);
+				} else {
 					$("#ok").show(200);
 					$("#bad").hide(200);
 					$('#comentario').val('');
-				} else {
-					$("#ok").hide(200);
-					$("#bad").show(200);
+					$('#comentarios hr').remove();
+					$('#comentarios .row').remove();
+					console.log(result);
+					var jSonArray = $.parseJSON(result);
+
+					
+					for(var json in jSonArray)
+						{
+												
+						$('#comentarios').append('<div class="row"><div class="col-sm-4"><a href="VerAutor?autor=' + jSonArray[json].autor +'">' + jSonArray[json].nombre + '</a></div><div class="col-sm-8">' + jSonArray[json].fechaComentario +'</div><div class="col-sm-12">' + jSonArray[json].texto + '</div></div><hr>');
+						
+				
+						
+						}
 				}
 			},
 			error : function(request, error) {
@@ -65,14 +80,14 @@
 <body>
 	<jsp:include page="menu.jsp" />
 
-<!-- Mensaje de aviso de cookies -->
-<jsp:include page="Cookies.html" />
+	<!-- Mensaje de aviso de cookies -->
+	<jsp:include page="Cookies.html" />
 
 	<div class='jumbotron'>
 
-	<div>
-	<jsp:include page="breadCrumb.jsp" />
-	</div>
+		<div>
+			<jsp:include page="breadCrumb.jsp" />
+		</div>
 
 		<input id='obra' type="hidden"
 			value='<c:out value="${requestScope.id}"></c:out>' /> <input
@@ -167,10 +182,12 @@
 
 									</form>
 									<div id='ok' class="alert alert-success" role="alert">
-										<strong>Enhorabuena! </strong> ,tu comentario se ha enviad correctamente
+										<strong>Enhorabuena! </strong> ,tu comentario se ha enviad
+										correctamente
 									</div>
 									<div id='bad' class="alert alert-danger" role="alert">
-										<strong>Ohh!</strong>, a habido un error y tu comentario no se ha podido guardar
+										<strong>Ohh!</strong>, a habido un error y tu comentario no se
+										ha podido guardar
 									</div>
 
 								</c:when>
@@ -178,26 +195,28 @@
 					Debes identificarte para poder realizar comentarios
 					</c:otherwise>
 							</c:choose>
-							<hr>
-							<c:forEach items="${requestScope.comentarios}" var="com">
-								<div class="row">
-									<div class="col-sm-4">
-
-										<a href="VerAutor?autor=<c:out value="${com.autor}"></c:out>"><c:out
-												value="${autor[com.autor]}"></c:out></a>
-									</div>
-									<div class="col-sm-8">
-										<fmt:formatDate value="${com.fecha_comentario}"
-											pattern="dd/MM/yyyy hh:mm" />
-
-									</div>
-									<div class="col-sm-12">
-										<c:out value="${com.texto}"></c:out>
-
-									</div>
-								</div>
+							<div id='comentarios'>
 								<hr>
-							</c:forEach>
+								<c:forEach items="${requestScope.comentarios}" var="com">
+									<div class="row">
+										<div class="col-sm-4">
+
+											<a href="VerAutor?autor=<c:out value="${com.autor}"></c:out>"><c:out
+													value="${autor[com.autor]}"></c:out></a>
+										</div>
+										<div class="col-sm-8">
+											<fmt:formatDate value="${com.fecha_comentario}"
+												pattern="dd/MM/yyyy hh:mm" />
+
+										</div>
+										<div class="col-sm-12">
+											<c:out value="${com.texto}"></c:out>
+
+										</div>
+									</div>
+									<hr>
+								</c:forEach>
+							</div>
 						</div>
 					</div>
 				</div>
