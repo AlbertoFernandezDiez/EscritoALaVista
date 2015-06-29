@@ -47,5 +47,8 @@ http://www.servletsuite.com/servlets/navtag.htm
 DROPDOWN PERSONALIZADO
 http://www.benknowscode.com/2013/12/bootstrap-dropdown-button-select-box-control.html
 
+SEND EMAIL WIHT JAVA
+http://examples.javacodegeeks.com/core-java/send-email-with-gmail-in-java-example/
+
 APACHE CORDOVA - TUTORIAL
 https://ccoenraets.github.io/cordova-tutorial/setup-files.html
