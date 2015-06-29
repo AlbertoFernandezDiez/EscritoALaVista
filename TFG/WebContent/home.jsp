@@ -82,7 +82,7 @@
 
 	<!-- Mensaje de aviso de cookies -->
 	<jsp:include page="Cookies.html" />
-
+	
 	<div class='jumbotron'>
 
 		<div>
@@ -182,11 +182,11 @@
 
 									</form>
 									<div id='ok' class="alert alert-success" role="alert">
-										<strong>Enhorabuena! </strong> ,tu comentario se ha enviad
+										<strong>Enhorabuena! </strong> ,tu comentario se ha enviado
 										correctamente
 									</div>
 									<div id='bad' class="alert alert-danger" role="alert">
-										<strong>Ohh!</strong>, a habido un error y tu comentario no se
+										<strong>Ohh!</strong>, ha habido un error y tu comentario no se
 										ha podido guardar
 									</div>
 
