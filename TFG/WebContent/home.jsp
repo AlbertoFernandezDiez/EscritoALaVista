@@ -27,6 +27,7 @@
 		});
 		$("#ok").hide();
 		$("#bad").hide();
+		$('#seguir').on('change', seguirHistoria);
 	});
 
 	function sendComment() {
@@ -56,15 +57,19 @@
 					console.log(result);
 					var jSonArray = $.parseJSON(result);
 
-					
-					for(var json in jSonArray)
-						{
-												
-						$('#comentarios').append('<div class="row"><div class="col-sm-4"><a href="VerAutor?autor=' + jSonArray[json].autor +'">' + jSonArray[json].nombre + '</a></div><div class="col-sm-8">' + jSonArray[json].fechaComentario +'</div><div class="col-sm-12">' + jSonArray[json].texto + '</div></div><hr>');
-						
-				
-						
-						}
+					for ( var json in jSonArray) {
+
+						$('#comentarios').append(
+								'<div class="row"><div class="col-sm-4"><a href="VerAutor?autor='
+										+ jSonArray[json].autor + '">'
+										+ jSonArray[json].nombre
+										+ '</a></div><div class="col-sm-8">'
+										+ jSonArray[json].fechaComentario
+										+ '</div><div class="col-sm-12">'
+										+ jSonArray[json].texto
+										+ '</div></div><hr>');
+
+					}
 				}
 			},
 			error : function(request, error) {
@@ -74,6 +79,35 @@
 		});
 
 	}
+
+	function seguirHistoria() {
+		var obra = $('#obra').val();
+		var checked = $('#seguir').is(':checked');
+		console.log(checked);
+	
+		$.ajax({
+			url : "SH",
+			type : 'POST',
+			data : {
+				obra : obra,
+				checked : checked,
+			},
+			success : function(result) {
+
+				if (result == 'false') {
+					$("#ok").hide(200);
+					$("#bad").show(200);
+				} else {
+					$("#ok").show(200);
+					$("#bad").hide(200);
+				}
+			},
+			error : function(request, error) {
+				$("#ok").hide(200);
+				$("#bad").show(200);
+			}
+		});
+	}
 </script>
 
 </head>
@@ -82,7 +116,7 @@
 
 	<!-- Mensaje de aviso de cookies -->
 	<jsp:include page="Cookies.html" />
-	
+
 	<div class='jumbotron'>
 
 		<div>
@@ -95,6 +129,15 @@
 			value='<c:out value="${requestScope.chapter}"></c:out>' />
 		<button type="button" class="btn btn-default" id='formtitle'
 			value='Exportar'>Exportar</button>
+
+		<div class="checkbox pull-right">
+			<label> <input type="checkbox" id='seguir' value="Seguir"
+				<c:if test="${empty requestScope.userId}">disabled</c:if>
+				<c:if test="${requestScope.checked}">checked</c:if> /> Seguir
+			</label>
+		</div>
+
+
 
 		<form id='exportar' name='exportar' class="form-inline" method='GET'
 			role="form" action='Itext'>
@@ -186,8 +229,8 @@
 										correctamente
 									</div>
 									<div id='bad' class="alert alert-danger" role="alert">
-										<strong>Ohh!</strong>, ha habido un error y tu comentario no se
-										ha podido guardar
+										<strong>Ohh!</strong>, ha habido un error y tu comentario no
+										se ha podido guardar
 									</div>
 
 								</c:when>

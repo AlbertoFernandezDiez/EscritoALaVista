@@ -73,16 +73,16 @@ public class VerHistoria extends HttpServlet {
 
 		switch (idO) {
 		case 0:
-			cargarHistoria(idH, request);
+			cargarHistoria(idH,id, request);
 			break;
 		case 1:
 			idC = Integer.parseInt(idCS);
 
-			cargarCapitulo(idH,idC, request);
+			cargarCapitulo(idH,idC, id, request);
 			break;
 
 		default:
-			cargarHistoria(idO, request);
+			cargarHistoria(idO,id, request);
 			break;
 		}
 
@@ -90,12 +90,12 @@ public class VerHistoria extends HttpServlet {
 		rd.forward(request, response);
 	}
 
-	private void cargarHistoria(int idO, HttpServletRequest request) {
+	private void cargarHistoria(int idO,int id, HttpServletRequest request) {
 		int idC = GestorBD.getGestorBD().getIndiceCapituloUno(idO);
 
 		if (idC != 0)
 		{
-			cargarCapitulo(idO, idC, request);
+			cargarCapitulo(idO, idC, id, request);
 		}
 		else{
 
@@ -103,7 +103,7 @@ public class VerHistoria extends HttpServlet {
 
 	}
 
-	private void cargarCapitulo(int idO, int idC, HttpServletRequest request) {
+	private void cargarCapitulo(int idO, int idC, int id, HttpServletRequest request) {
 		ArrayList<Capitulo> lista = GestorBD.getGestorBD().getCapituloBeans(idO);
 		ArrayList<Comentario> comentarios = GestorBD.getGestorBD().getComentariosBeans(idO,idC);
 		HashMap<Integer, String> autores = GestorBD.getGestorBD().getHasMapAutores();
@@ -115,6 +115,10 @@ public class VerHistoria extends HttpServlet {
 		request.setAttribute("comentarios", comentarios);
 		request.setAttribute("autor", autores);
 
+		if (GestorBD.getGestorBD().getObraAutorChecked(idO,id) && id != 0)
+		{
+		request.setAttribute("checked", true);
+		}
 		updateBreadCrumb(request, request.getSession(), obra);
 
 	}

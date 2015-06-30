@@ -686,7 +686,7 @@ public class GestorBD {
 			st.setString(6, about);
 			st.setString(7, ruta);
 			st.setString(8, email);
-			
+
 			ResultSet rs = st.executeQuery();
 
 			if (rs.next())
@@ -1216,6 +1216,107 @@ public class GestorBD {
 
 		return result;
 
+	}
+
+	/**
+	 * Método que dice si un autor esta
+	 * suscrito a una obra
+	 * @param idO	id de la obra en BD
+	 * @param id	id del autor en BD
+	 * @return	true si la sigue, si no false
+	 */
+	public boolean getObraAutorChecked(int idO, int id) {
+		// TODO Auto-generated method stub
+		boolean result = false;
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
+
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT * FROM tfg.seguimiento where"
+					+ " idUsuario = ? and idObra = ?;");
+			st.setInt(1, id);
+			st.setInt(2, idO);
+
+			ResultSet rs = st.executeQuery();
+
+			if (rs.next())
+				result = true;
+
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return result;	
+	}
+
+	/**
+	 * Metodo que añade a la lista
+	 * de seguimiento una obra y un
+	 * autor
+	 * @param id	id del autor en BD
+	 * @param obra	id de la obra en BD
+	 * @return True si no ha habido fallos
+	 */
+	public boolean AddSeguimiento(int id, int obra) {
+		// TODO Auto-generated method stub
+		boolean result = false;
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
+
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("INSERT INTO `tfg`.`seguimiento`"
+					+ " (`idUsuario`, `idObra`) VALUES (?, ?);");
+
+			st.setInt(1, id);
+			st.setInt(2, obra);
+
+			st.execute();
+
+				result = true;
+
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return result;	
+	}
+
+	/**
+	 *  Metodo que quita de la lista
+	 * de seguimiento una obra y un
+	 * autor
+	 * @param id	id del autor en BD
+	 * @param obra	id de la obra en BD
+	 * @return True si no ha habido fallos
+	 */
+	public boolean QuitSeguimiento(int id, int obra) {
+		// TODO Auto-generated method stub
+		boolean result = false;
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
+
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("DELETE FROM `tfg`.`seguimiento`"
+					+ " WHERE `idUsuario`= ? and`idObra`= ?;");
+
+			st.setInt(1, id);
+			st.setInt(2, obra);
+
+			st.execute();
+
+				result = true;
+
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return result;	
 	}
 
 }
