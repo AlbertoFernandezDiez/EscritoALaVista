@@ -152,7 +152,8 @@ public class uploadBookChapter extends HttpServlet {
 		// TODO Auto-generated method stub
 		ArrayList<Autor> lista = GestorBD.getGestorBD().getSuscriptores(id);
 		
-		;
+		if (lista.size() == 0)
+			return;
 		
 		final String username = "afalbertofd47@gmail.com";
 		final String password = "4wApEfE8";

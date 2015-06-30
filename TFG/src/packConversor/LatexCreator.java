@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import packBD.GestorBD;
-
 import de.nixosoft.jlr.JLRConverter;
 import de.nixosoft.jlr.JLRGenerator;
 import de.nixosoft.jlr.JLROpener;
@@ -173,7 +172,7 @@ public class LatexCreator extends HttpServlet {
 				capit.add(filePath.replace("\\", "/")  + aux.getImagen());
 
 			for(int i = 0; i < aux.getText().length; i++)
-				capit.add(aux.getText()[i]);
+				capit.add(scapeCharacters(aux.getText()[i]));
 
 			book.add(capit);
 		}
@@ -184,10 +183,40 @@ public class LatexCreator extends HttpServlet {
 		else
 			capit.add(filePath.replace("\\", "/")  + autor.getImagen());
 		for(int i = 0; i < autor.getAbout().length; i++)
-			capit.add(autor.getAbout()[i]);
+			capit.add(scapeCharacters(autor.getAbout()[i]));
 
 		book.add(capit);
 		return book;
+	}
+	
+	/**
+	 * Metodo que 'escapa' los carácteres
+	 * especiales de Latex
+	 * @param texto	El texto a escapar
+	 * @return	El texto escapado
+	 */
+	private String scapeCharacters(String texto) {
+		// TODO Auto-generated method stub
+		/*texto = texto.replaceAll("#", "\\#");
+		texto = texto.replaceAll("$", "\\$");
+		texto = texto.replaceAll("%", "\\%");
+		texto = texto.replaceAll("&", "\\&");
+		//texto.replaceAll("\\", "\\"+"textbackslash\\{\\}");
+		//texto = texto.replaceAll("^", "\\"+"textasciicircum{}");
+		texto = texto.replaceAll("_", "\\_");
+		System.out.println(texto);
+		texto = texto.replaceAll("\\{", "\\"+"{");
+		texto = texto.replaceAll("\\}",  "\\"+"}");
+		texto = texto.replaceAll("~", "\\"+"textasciitilde{}");*/
+		texto = texto.replaceAll("\\\\", "\\\\textbackslash\\{\\}");
+		texto = texto.replace("_", "\\_");
+		texto = texto.replace("$", "\\$");
+		texto = texto.replaceAll("\\%", "\\\\%");
+		texto = texto.replaceAll("\\&", "\\\\&");
+		texto = texto.replaceAll("\\#", "\\\\#");
+		texto = texto.replaceAll("\\{", "\\\\{");
+		texto = texto.replaceAll("\\}",  "\\\\}");
+		return texto;
 	}
 
 }
