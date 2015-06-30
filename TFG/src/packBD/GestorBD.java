@@ -1319,4 +1319,40 @@ public class GestorBD {
 		return result;	
 	}
 
+	public ArrayList<Autor> getSuscriptores(int id) {
+		ArrayList<packBeans.Autor> lista = new ArrayList<packBeans.Autor>();
+		packBeans.Autor autor = null;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
+
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT autor.* FROM tfg.seguimiento, tfg.autor "
+					+ "where seguimiento.idUsuario = autor.id and seguimiento.idObra = ?;");
+
+			st.setInt(1, id);
+			
+			ResultSet rs = st.executeQuery();
+			while (rs.next())	   
+			{
+				autor = new Autor();
+				autor.setId(rs.getInt("id"));
+				autor.setImagen(rs.getString("imagen"));
+				autor.setNacimiento(rs.getDate("nacimiento"));
+				autor.setNombre(rs.getString("nombre"));
+				autor.setPais(rs.getString("pais"));
+				autor.setAbout(rs.getString("about"));
+				autor.setEmail(rs.getString("email"));
+				lista.add(autor);
+			}
+			rs.close();
+			st.close();
+			conexion.close();
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lista;
+	}
+
 }

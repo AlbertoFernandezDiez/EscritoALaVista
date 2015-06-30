@@ -7,10 +7,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -38,6 +47,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import com.adobe.dp.epub.util.Base64.InputStream;
 
 import packBD.GestorBD;
+import packBeans.Autor;
 
 /**
  * Servlet implementation class uploadBookChapter
@@ -126,7 +136,10 @@ public class uploadBookChapter extends HttpServlet {
 						GestorBD.getGestorBD().insertarCapitulo(idOb, tituloCap, capitulo, comentario,loadFile(request,"fileCapi"));
 				}
 			}
+			//Mandamos un email a los usuario suscritos a la historia
+			mandarEmailSeguimiento(idOb,tituloObra);
 		}
+
 
 
 		response.sendRedirect("Index");
@@ -134,6 +147,55 @@ public class uploadBookChapter extends HttpServlet {
 
 
 	}
+
+	private void mandarEmailSeguimiento(int id, String tituloObra) {
+		// TODO Auto-generated method stub
+		ArrayList<Autor> lista = GestorBD.getGestorBD().getSuscriptores(id);
+		
+		;
+		
+		final String username = "afalbertofd47@gmail.com";
+		final String password = "4wApEfE8";
+		
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");
+
+		Session session = Session.getInstance(props,
+				new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		});
+
+		try {
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress("afalbertofd47@gmail.com"));
+		
+			for (int i = 0; i < lista.size(); i++)
+			{
+				message.setRecipients(Message.RecipientType.TO,
+						InternetAddress.parse(lista.get(i).getEmail()));
+			}
+				
+			message.setSubject("Actualización de la obra" + tituloObra);
+			message.setText("Hola!\n" +
+					"La obra " + tituloObra + " ,de la que eres seguido se ha actualizado.");
+
+			Transport.send(message);
+
+
+		} catch (MessagingException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		
+	}
+	
+	
 
 	private String loadFile(HttpServletRequest request, String fileID) throws IOException,
 	ServletException, FileNotFoundException {

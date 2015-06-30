@@ -115,7 +115,7 @@ public class LatexCreator extends HttpServlet {
 		File invoice1 = new File(workingDirectory + File.separator + obra.getTitulo() + ".tex");
 
 		File template = new File(workingDirectory + File.separator+ "invoiceTemplate.tex");
-
+System.out.println(template.getAbsolutePath());
 		File tempDir = new File(workingDirectory.getAbsolutePath() + File.separator + "temp");
 		if (!tempDir.isDirectory()) {
 			tempDir.mkdir();
