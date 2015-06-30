@@ -8,6 +8,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <title><c:out value="${requestScope.tit}"></c:out></title>
 <link rel="stylesheet" href="css/style.css">
+
 <!-- Imports para BootStrap -->
 <script src="js/jquery-1.10.2.js"></script>
 <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -139,7 +140,7 @@
 
 
 
-		<form id='exportar' name='exportar' class="form-inline" method='GET'
+		<form id='exportar' name='exportar' class="form" method='GET'
 			role="form" action='Itext'>
 			<div class="form-group">
 				<label class="radio-inline"><input type="radio"
@@ -149,13 +150,30 @@
 					type="radio" name="formato" value="LatexCreator">Latex</label> <label
 					class="radio-inline"><input type="hidden" name="id"
 					value="<c:out value="${requestScope.id}" ></c:out>"></label> <input
-					type='submit' class="btn btn-default" name='exportar'>
+					type='submit' class="btn btn-default" name='exportar' value='Exportar'>
 			</div>
+			 <fieldset>
+			<h4>Selecciona el tamaño</h4>
+			<div class="form-group" id='setTamano'>
+				<label class="radio-inline"><input type="radio"
+					name="tamano" value="small" checked="checked">Pequeño</label> <label
+					class="radio-inline"><input type="radio" name="tamano"
+					value="big">Grande</label> 
+			</div>
+			</fieldset>
 		</form>
 
 		<script>
 			$("input[name=formato]:radio").change(function() {
 				$("#exportar").attr('action', $(this).val());
+				if ($(this).val()=="EpubCreator")
+					{
+					$('#setTamano').hide(500);
+					}
+				else
+					{
+					$('#setTamano').show(500);
+					}
 			});
 		</script>
 		<div class="row">

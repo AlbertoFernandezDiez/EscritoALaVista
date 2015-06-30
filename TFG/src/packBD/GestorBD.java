@@ -1319,6 +1319,12 @@ public class GestorBD {
 		return result;	
 	}
 
+	/**
+	 * Metodo que devuelve una lista
+	 * con los usuarios suscritos a una obra
+	 * @param id	Id en BD de la obra
+	 * @return	La lista de usuarios suscritos
+	 */
 	public ArrayList<Autor> getSuscriptores(int id) {
 		ArrayList<packBeans.Autor> lista = new ArrayList<packBeans.Autor>();
 		packBeans.Autor autor = null;

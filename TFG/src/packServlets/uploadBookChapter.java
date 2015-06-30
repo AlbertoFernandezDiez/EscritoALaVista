@@ -183,7 +183,7 @@ public class uploadBookChapter extends HttpServlet {
 				
 			message.setSubject("Actualización de la obra" + tituloObra);
 			message.setText("Hola!\n" +
-					"La obra " + tituloObra + " ,de la que eres seguido se ha actualizado.");
+					"La obra " + tituloObra + " , de la que eres seguidor se ha actualizado.\n\n Disfrutala");
 
 			Transport.send(message);
 

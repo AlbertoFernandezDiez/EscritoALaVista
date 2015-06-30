@@ -89,6 +89,8 @@ public class Itext extends HttpServlet {
 		new Rectangle(50, 50, 708, 974)};
 
 	private static int type = 0;
+	
+	private String tamano;
 
 
 	public void init( ){
@@ -101,8 +103,15 @@ public class Itext extends HttpServlet {
 			HttpServletRequest request, HttpServletResponse response)
 					throws ServletException, IOException {
 		String idS = request.getParameter("id");
+		tamano = request.getParameter("tamano");
+		
+		if (tamano.equals("big"))
+		{
+			type = 1;
+		}
+		
+		
 		int id = 0;
-		System.out.println(idS);
 		try{
 			id = Integer.parseInt(idS);
 		}
@@ -111,21 +120,17 @@ public class Itext extends HttpServlet {
 		}
 
 
-		/*Obra obra = GestorBD.getGestorBD().getObra(id);
-		Usuario autor = GestorBD.getGestorBD().getAutor(id);
-		File file = new File(folder,obra.getTitulo() +".pdf");*/
+		
 		packBeans.Obra obra = GestorBD.getGestorBD().getObraBeans(id);
 		packBeans.Autor autor = GestorBD.getGestorBD().getAutorBeans(id);
-		File file = new File(folder,obra.getTitulo() + ".pdf");
+		File file = new File(folder,obra.getTitulo() + "-" + tamano + ".pdf");
 		
 		if (file.exists())
 		{
 			Timestamp modifydate = new Timestamp(file.lastModified());
-System.out.println(modifydate.toString());
-System.out.println(obra.getFecha_mod().toString());
+
 			if (obra.getFecha_mod().compareTo(modifydate) > 0)
 			{
-				System.out.println("entra");
 				file.delete();
 				createPDF(response, id, obra, autor);
 
@@ -152,8 +157,8 @@ System.out.println(obra.getFecha_mod().toString());
 
 	}
 
-	private void createPDF(HttpServletResponse response, int id, /*Obra*/packBeans.Obra obra,
-			/*Usuario*/packBeans.Autor autor)
+	private void createPDF(HttpServletResponse response, int id, packBeans.Obra obra,
+			packBeans.Autor autor)
 					throws FileNotFoundException, MalformedURLException, IOException {
 		FileOutputStream pdf2;
 		FileOutputStream pdf1;
@@ -165,7 +170,7 @@ System.out.println(obra.getFecha_mod().toString());
 			Document document = new Document(pageSize[type], 50, 50, 50, 50);
 			pageHeight = document.getPageSize().getTop();
 			pageWidth = document.getPageSize().getRight();
-			file2 = new File(folder,obra.getTitulo() + "2.pdf");
+			file2 = new File(folder,obra.getTitulo() + "-" + tamano + "2.pdf");
 			pdf2 = new FileOutputStream(file2);
 			PdfWriter writer = PdfWriter.getInstance(document, pdf2);
 			new Rectangle(50, 50, 550, 750);
@@ -266,7 +271,7 @@ System.out.println(obra.getFecha_mod().toString());
 
 			Document d = new Document(pageSize[type], 50, 50, 50, 50);
 			// add index page.
-			file1 = new File(folder, obra.getTitulo()+"1.pdf");
+			file1 = new File(folder, obra.getTitulo()+ "-" + tamano + "1.pdf");
 			pdf1 = new FileOutputStream(file1);
 
 			PdfWriter w = PdfWriter.getInstance(d, pdf1);
@@ -365,13 +370,13 @@ System.out.println(obra.getFecha_mod().toString());
 
 
 
-	private File joinPDF(File pdf1, File pdf2, /*Obra*/packBeans.Obra obra,/*Usuario*/packBeans.Autor autor, HttpServletResponse response) throws IOException, DocumentException {
+	private File joinPDF(File pdf1, File pdf2, packBeans.Obra obra,packBeans.Autor autor, HttpServletResponse response) throws IOException, DocumentException {
 		// TODO Auto-generated method stub
-		PdfReader reader ;//= new PdfReader(new RandomAccessFileOrArray(pdf1.getAbsolutePath()), null);
+		PdfReader reader ;
 		String src[] = {pdf1.getAbsolutePath(),pdf2.getAbsolutePath()};
 		Document document = new Document(PageSize.A4, 50, 50, 50, 50);
 
-		File file = new File(folder, obra.getTitulo()+".pdf");
+		File file = new File(folder, obra.getTitulo()+"-" + tamano + ".pdf");
 		FileOutputStream pdf = new FileOutputStream(file);
 
 		PdfCopy copy = new PdfCopy(document, pdf);
