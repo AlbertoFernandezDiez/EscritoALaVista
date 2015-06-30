@@ -29,6 +29,7 @@ public class LatexCreator extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private String filePath;
 	private File folder,latexFolder;
+	private String tipo;
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -53,7 +54,7 @@ public class LatexCreator extends HttpServlet {
 
 		String idS = request.getParameter("id");
 		int id = 0;
-
+		tipo = request.getParameter("tipo");
 		try{
 			id = Integer.parseInt(idS);
 		}
@@ -77,7 +78,7 @@ public class LatexCreator extends HttpServlet {
 				ArrayList<packBeans.Capitulo> lista = GestorBD.getGestorBD().getCapituloBeans(id);
 		packBeans.Autor autor = GestorBD.getGestorBD().getAutorBeans(id);
 
-		File file = new File(folder,obra.getTitulo() +".pdf");
+		File file = new File(folder,obra.getTitulo() + "-" + tipo +".pdf");
 
 		if (file.exists())
 		{
@@ -112,14 +113,18 @@ public class LatexCreator extends HttpServlet {
 	}
 	private void createPDF(File workingDirectory, packBeans.Obra obra,
 			/*ListaCapitulos*/ArrayList<packBeans.Capitulo> lista, /*Usuario*/packBeans.Autor autor) {
-		File invoice1 = new File(workingDirectory + File.separator + obra.getTitulo() + ".tex");
-
-		File template = new File(workingDirectory + File.separator+ "invoiceTemplate.tex");
-System.out.println(template.getAbsolutePath());
 		File tempDir = new File(workingDirectory.getAbsolutePath() + File.separator + "temp");
 		if (!tempDir.isDirectory()) {
 			tempDir.mkdir();
 		}
+		//File invoice1 = new File(workingDirectory + File.separator + obra.getTitulo() + ".tex");
+		File invoice1 = new File(tempDir + File.separator + obra.getTitulo() + "-" + tipo + ".tex");
+
+		File template = new File(workingDirectory + File.separator+ "invoiceTemplate.tex");
+	/*	File tempDir = new File(workingDirectory.getAbsolutePath() + File.separator + "temp");
+		if (!tempDir.isDirectory()) {
+			tempDir.mkdir();
+		}*/
 		try {
 			JLRConverter converter = new JLRConverter(workingDirectory);
 

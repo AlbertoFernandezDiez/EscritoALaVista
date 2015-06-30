@@ -23,6 +23,7 @@
 <script>
 	$(document).ready(function() {
 		$("#exportar").hide();
+		$("#setTipo").hide();
 		$("#formtitle").click(function() {
 			$("#exportar").toggle(500);
 		});
@@ -85,7 +86,7 @@
 		var obra = $('#obra').val();
 		var checked = $('#seguir').is(':checked');
 		console.log(checked);
-	
+
 		$.ajax({
 			url : "SH",
 			type : 'POST',
@@ -150,30 +151,45 @@
 					type="radio" name="formato" value="LatexCreator">Latex</label> <label
 					class="radio-inline"><input type="hidden" name="id"
 					value="<c:out value="${requestScope.id}" ></c:out>"></label> <input
-					type='submit' class="btn btn-default" name='exportar' value='Exportar'>
+					type='submit' class="btn btn-default" name='exportar'
+					value='Exportar'>
 			</div>
-			 <fieldset>
-			<h4>Selecciona el tamaño</h4>
 			<div class="form-group" id='setTamano'>
+				<h4>Selecciona el tamaño</h4>
 				<label class="radio-inline"><input type="radio"
 					name="tamano" value="small" checked="checked">Pequeño</label> <label
 					class="radio-inline"><input type="radio" name="tamano"
-					value="big">Grande</label> 
+					value="big">Grande</label>
 			</div>
-			</fieldset>
+
+			<div class="form-group" id='setTipo'>
+				<h4>Selecciona el formato</h4>
+				<label class="radio-inline"><input type="radio" name="tipo"
+					value="book" checked="checked">Libro</label> <label
+					class="radio-inline"><input type="radio" name="tipo"
+					value="report">Informe</label>
+			</div>
 		</form>
 
 		<script>
 			$("input[name=formato]:radio").change(function() {
 				$("#exportar").attr('action', $(this).val());
-				if ($(this).val()=="EpubCreator")
-					{
+				if ($(this).val() == "EpubCreator") {
 					$('#setTamano').hide(500);
-					}
-				else
-					{
+					$('#setTipo').hide(500);
+				} 
+				if ($(this).val() == "LatexCreator") {
+					$('#setTamano').hide(500);
+					$('#setTipo').show(500);
+				} else {
+					$('#setTipo').hide(500);
+				}
+				if ($(this).val() == "Itext") {
 					$('#setTamano').show(500);
-					}
+					$('#setTipo').hide(500);
+				} else {
+					$('#setTamano').hide(500);
+				}
 			});
 		</script>
 		<div class="row">
