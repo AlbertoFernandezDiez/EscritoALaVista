@@ -132,6 +132,7 @@ public class LatexCreator extends HttpServlet {
 			converter.replace("author", "yo");
 			converter.replace("portada", filePath.replace("\\", "/") + obra.getPortada());
 			converter.replace("book", book);
+			converter.replace("type", tipo);
 
 			if (!converter.parse(template, invoice1)) {
 				System.out.println(converter.getErrorMessage());
