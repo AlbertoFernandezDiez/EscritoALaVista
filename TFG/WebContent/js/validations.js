@@ -18,7 +18,7 @@ function presubmit(){
 			return;
 		}
 		else{}
-		$( "span" ).text( "Las contraseñas no son iguales o el nombre ya esta siendo usado" ).show().fadeOut( 2000 );
+		$( "#errorContr" ).show(500);
 		event.preventDefault();
 	});}
 
@@ -178,16 +178,7 @@ function cambiarContrasenaAdmin() {
 	}
 }
 
-/*$(document).ready(function() {
-	$("#usado").hide();
-	
-	$('#usuario').on('blur',checkUserName);
-	$('#usuario').on('focus',function(){
-		$('#comprobacionUsuario').removeClass("has-success");
-		$('#comprobacionUsuario').removeClass("has-error");
-	}
-	);
-});*/
+
 
 function presubmitBook (){
 $( "#obra" ).submit(function( event ) {

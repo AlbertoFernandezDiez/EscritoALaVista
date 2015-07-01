@@ -63,6 +63,7 @@ public class uploadBookChapter extends HttpServlet {
 	private int maxFileSize = 1024 * 1024 * 3;//3M
 	private int maxMemSize = 1024 * 1024 * 3;
 	private File file ;
+	public String username,password;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -72,6 +73,16 @@ public class uploadBookChapter extends HttpServlet {
 		// TODO Auto-generated constructor stub
 	}
 
+	public void init( ){
+		// Get the file location where it would be stored.
+
+		username =getServletContext().getInitParameter("username"); 
+		password = getServletContext().getInitParameter("password"); 
+		
+
+	}
+
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -155,8 +166,9 @@ public class uploadBookChapter extends HttpServlet {
 		if (lista.size() == 0)
 			return;
 		
-		final String username = "afalbertofd47@gmail.com";
+	/*	username = "afalbertofd47@gmail.com";
 		final String password = "4wApEfE8";
+		*/
 		
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");

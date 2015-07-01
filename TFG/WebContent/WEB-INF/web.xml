@@ -8,9 +8,26 @@
     <description>Location to store uploaded file</description>
     <param-name>file-upload</param-name>
     <param-value>
-       C:\Users\Alberto\git\TFG\TFG\WebContent\
+       E:\workspace\TFG\TFG\WebContent\
      </param-value>
   </context-param>
+  
+   <context-param>
+    <description>Username for the mail</description>
+    <param-name>username</param-name>
+    <param-value>
+      afalbertofd47@gmail.com
+     </param-value>
+  </context-param>
+  
+   <context-param>
+    <description>Password for the mail</description>
+    <param-name>password</param-name>
+    <param-value>
+       4wApEfE8
+     </param-value>
+  </context-param>
+  
   <context-param>
     <description>Server url</description>
     <param-name>server-url</param-name>

@@ -27,12 +27,17 @@
 <link rel="stylesheet" href="css/Cookies.css">
 
 <script>
- var correcto = true; $(document).ready(function() {
-$("#usado").hide(); $('#usuario').on('blur',checkUserName);
-$('#usuario').on('focus',function(){
-$('#comprobacionUsuario').removeClass("has-success");
-$('#comprobacionUsuario').removeClass("has-error"); } ); });
- </script>
+	var correcto = true;
+	$(document).ready(function() {
+		$("#usado").hide();
+		$("#errorContr").hide();
+		$('#usuario').on('blur', checkUserName);
+		$('#usuario').on('focus', function() {
+			$('#comprobacionUsuario').removeClass("has-success");
+			$('#comprobacionUsuario').removeClass("has-error");
+		});
+	});
+</script>
 </head>
 <body>
 	<!-- Menu -->
@@ -92,11 +97,13 @@ $('#comprobacionUsuario').removeClass("has-error"); } ); });
 					</script>
 				</div>
 				<input id='submit' name='submit' type='submit'>
-
 				<script>
 					presubmit();
 				</script>
-			</form>
+			</form><br>
+			<div>
+			<span id='errorContr' class="alert alert-danger" role="alert">Las contraseñas no coinciden</span>
+			</div>
 
 		</div>
 	</div>
