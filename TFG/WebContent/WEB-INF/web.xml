@@ -16,7 +16,7 @@
     <description>Username for the mail</description>
     <param-name>username</param-name>
     <param-value>
-      afalbertofd47@gmail.com
+     email
      </param-value>
   </context-param>
   
@@ -24,7 +24,7 @@
     <description>Password for the mail</description>
     <param-name>password</param-name>
     <param-value>
-       4wApEfE8
+       contrasena
      </param-value>
   </context-param>
   
