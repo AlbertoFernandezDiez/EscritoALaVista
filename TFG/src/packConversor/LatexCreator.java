@@ -28,7 +28,7 @@ public class LatexCreator extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private String filePath;
 	private File folder,latexFolder;
-	private String tipo;
+	private String tipo, libro;
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -54,6 +54,9 @@ public class LatexCreator extends HttpServlet {
 		String idS = request.getParameter("id");
 		int id = 0;
 		tipo = request.getParameter("tipo");
+		libro = request.getParameter("libro");
+		if (libro == null)
+			libro ="";
 		try{
 			id = Integer.parseInt(idS);
 		}
@@ -76,9 +79,16 @@ public class LatexCreator extends HttpServlet {
 		packBeans.Obra obra = GestorBD.getGestorBD().getObraBeans(id);
 				ArrayList<packBeans.Capitulo> lista = GestorBD.getGestorBD().getCapituloBeans(id);
 		packBeans.Autor autor = GestorBD.getGestorBD().getAutorBeans(id);
-
-		File file = new File(folder,obra.getTitulo() + "-" + tipo +".pdf");
-
+			
+		File file = null;
+		if (libro.equals("true")){
+		file = new File(folder,obra.getTitulo() + "-" + tipo +"-booklet.pdf");
+			}
+			else
+			{
+				file = new File(folder,obra.getTitulo() + "-" + tipo +".pdf");
+			}
+			
 		if (file.exists())
 		{
 			Timestamp modifydate = new Timestamp(file.lastModified());
@@ -129,7 +139,7 @@ public class LatexCreator extends HttpServlet {
 
 			ArrayList<ArrayList<String>> book = loadChapters(lista,autor);
 			converter.replace("title", obra.getTitulo());
-			converter.replace("author", "yo");
+			converter.replace("author", autor.getNombre());
 			converter.replace("portada", filePath.replace("\\", "/") + obra.getPortada());
 			converter.replace("book", book);
 			converter.replace("type", tipo);
@@ -151,8 +161,23 @@ public class LatexCreator extends HttpServlet {
 				System.out.println(pdfGen.getErrorMessage());
 			}
 
+			File template2 = new File(workingDirectory + File.separator+ "bookletTemplate.tex");
 
-
+			File invoice2 = new File(tempDir + File.separator + obra.getTitulo() + "-" + tipo + "-booklet.tex");
+			File pdfFile = new File(desktop.getAbsoluteFile() + File.separator + obra.getTitulo() + "-" + tipo + ".pdf");
+			converter.replace("output",pdfFile.getAbsolutePath().replace('\\', '/'));
+			
+			
+			if (!converter.parse(template2, invoice2)) {
+				System.out.println(converter.getErrorMessage());
+			}
+			
+			if (!pdfGen.generate(invoice2, desktop, workingDirectory)) { 
+				System.out.println(pdfGen.getErrorMessage());
+			}
+			if (!pdfGen.generate(invoice1, desktop, workingDirectory)) { 
+				System.out.println(pdfGen.getErrorMessage());
+			}
 		} catch (IOException ex) {
 			System.err.println(ex.getMessage());
 		}
@@ -198,17 +223,7 @@ public class LatexCreator extends HttpServlet {
 	 */
 	private String scapeCharacters(String texto) {
 		// TODO Auto-generated method stub
-		/*texto = texto.replaceAll("#", "\\#");
-		texto = texto.replaceAll("$", "\\$");
-		texto = texto.replaceAll("%", "\\%");
-		texto = texto.replaceAll("&", "\\&");
-		//texto.replaceAll("\\", "\\"+"textbackslash\\{\\}");
-		//texto = texto.replaceAll("^", "\\"+"textasciicircum{}");
-		texto = texto.replaceAll("_", "\\_");
-		System.out.println(texto);
-		texto = texto.replaceAll("\\{", "\\"+"{");
-		texto = texto.replaceAll("\\}",  "\\"+"}");
-		texto = texto.replaceAll("~", "\\"+"textasciitilde{}");*/
+		
 		texto = texto.replaceAll("\\\\", "\\\\textbackslash\\{\\}");
 		texto = texto.replace("_", "\\_");
 		texto = texto.replace("$", "\\$");

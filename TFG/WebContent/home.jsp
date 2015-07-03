@@ -168,6 +168,7 @@
 					value="book" checked="checked">Libro</label> <label
 					class="radio-inline"><input type="radio" name="tipo"
 					value="report">Informe</label>
+						<label> <input type="checkbox" name='libro' id='libro' value="true"/>Formato libro</label>
 			</div>
 		</form>
 
