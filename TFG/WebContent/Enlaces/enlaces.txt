@@ -52,3 +52,6 @@ http://examples.javacodegeeks.com/core-java/send-email-with-gmail-in-java-exampl
 
 APACHE CORDOVA - TUTORIAL
 https://ccoenraets.github.io/cordova-tutorial/setup-files.html
+
+SING IN GOOGLE
+https://developers.google.com/identity/sign-in/web/
