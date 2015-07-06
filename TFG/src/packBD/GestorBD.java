@@ -16,6 +16,7 @@ import com.mysql.jdbc.PreparedStatement;
 
 import packBeans.Autor;
 import packBeans.Comentario;
+import packBeans.Obra;
 
 
 public class GestorBD {
@@ -365,19 +366,19 @@ public class GestorBD {
 			if (limit != 0)
 			{
 				if (id == 0){
-					st = (PreparedStatement) conexion.prepareStatement("select * from obra order by fecha_mod asc limit ? offset ?");
+					st = (PreparedStatement) conexion.prepareStatement("select * from obra where active = 1 order by fecha_mod asc limit ? offset ?");
 					st.setInt(1, limit);
 					st.setInt(2, offset);
 				}
 				else{
-					st = (PreparedStatement) conexion.prepareStatement("select * from obra where autor = ? order by fecha_mod asc limit ? offset ?");
+					st = (PreparedStatement) conexion.prepareStatement("select * from obra where active = 1 and autor = ? order by fecha_mod asc limit ? offset ?");
 					st.setInt(1, id);
 					st.setInt(2, limit);
 					st.setInt(3, offset);}
 			}
 			else{
 				if (id == 0){
-					st = (PreparedStatement) conexion.prepareStatement("select * from obra order by fecha_mod asc");
+					st = (PreparedStatement) conexion.prepareStatement("select * from obra where active = 1 order by fecha_mod asc");
 				}
 				else{
 					st = (PreparedStatement) conexion.prepareStatement("select * from obra where autor = ? order by fecha_mod asc");
@@ -397,6 +398,7 @@ public class GestorBD {
 				aux.setPortada(rs.getString("portada"));
 				aux.setResumen(rs.getString("resumen"));
 				aux.setTitulo(rs.getString("titulo"));
+				aux.setActive(rs.getInt("active"));
 
 
 				lista.add(aux);
@@ -601,6 +603,7 @@ public class GestorBD {
 				autor.setPais(rs.getString("pais"));
 				autor.setAbout(rs.getString("about"));
 				autor.setEmail(rs.getString("email"));
+				autor.setActive(rs.getInt("active"));
 				lista.add(autor);
 			}
 			rs.close();
@@ -1350,6 +1353,192 @@ public class GestorBD {
 				autor.setAbout(rs.getString("about"));
 				autor.setEmail(rs.getString("email"));
 				lista.add(autor);
+			}
+			rs.close();
+			st.close();
+			conexion.close();
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lista;
+	}
+
+	/**
+	 * Metodo que cambia la visibilidad de un Autor
+	 * @param id	Id del autor en BD
+	 * @param opcion	Nuevo valor del atributo de visibilidad
+	 * 0 oculto, 1 visible
+	 * @return
+	 */
+	public boolean modificarVisibilidadAutor(int id, int opcion) {
+		boolean result = false;
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
+
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("UPDATE `tfg`.`autor` SET `active`= ? WHERE `id`= ? ;");
+
+			st.setInt(1, opcion);
+			st.setInt(2, id);
+
+			st.execute();
+
+				result = true;
+
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return result;	
+	}
+
+	/**
+	 * Metodo que cambia la visibilidad de una Obra
+	 * @param id	Id de la obra en BD
+	 * @param opcion	Nuevo valor del atributo de visibilidad
+	 * 0 oculto, 1 visible
+	 * @return
+	 */
+	public boolean modificarVisibilidadObra(int id, int opcion) {
+		boolean result = false;
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
+
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("UPDATE `tfg`.`obra` SET `active`= ? WHERE `id`= ? ;");
+
+			st.setInt(1, opcion);
+			st.setInt(2, id);
+
+			st.execute();
+
+				result = true;
+
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return result;	
+	}
+
+	public ArrayList<Obra> getObrasBeansAll() {
+		ArrayList<packBeans.Obra> lista = new ArrayList<packBeans.Obra>();
+		packBeans.Obra aux = null;
+
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
+
+			PreparedStatement st;
+		
+					st = (PreparedStatement) conexion.prepareStatement("select * from obra order by fecha_mod asc");
+				
+
+			ResultSet rs = st.executeQuery();
+			while (rs.next())	   
+			{
+				aux = new packBeans.Obra();
+				aux.setAutor(rs.getInt("autor"));
+				aux.setFecha_in(rs.getDate("fecha_in"));
+				aux.setFecha_mod(rs.getTimestamp("fecha_mod"));
+				aux.setId(rs.getInt("id"));
+				aux.setPortada(rs.getString("portada"));
+				aux.setResumen(rs.getString("resumen"));
+				aux.setTitulo(rs.getString("titulo"));
+				aux.setActive(rs.getInt("active"));
+
+
+				lista.add(aux);
+			}
+			rs.close();
+			st.close();
+			conexion.close();
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lista;
+	}
+
+	/**
+	 * Método que devuelve la lista de 
+	 * autores deshabilitados
+	 * @return ArrayList de autores
+	 */
+	public ArrayList<Autor> getAutoresBeansDeshabilitados() {
+		ArrayList<packBeans.Autor> lista = new ArrayList<packBeans.Autor>();
+		packBeans.Autor autor = null;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
+
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT * FROM tfg.autor where active = 0;");
+
+			ResultSet rs = st.executeQuery();
+			while (rs.next())	   
+			{
+				autor = new Autor();
+				autor.setId(rs.getInt("id"));
+				autor.setImagen(rs.getString("imagen"));
+				autor.setNacimiento(rs.getDate("nacimiento"));
+				autor.setNombre(rs.getString("nombre"));
+				autor.setPais(rs.getString("pais"));
+				autor.setAbout(rs.getString("about"));
+				autor.setEmail(rs.getString("email"));
+				autor.setActive(rs.getInt("active"));
+				lista.add(autor);
+			}
+			rs.close();
+			st.close();
+			conexion.close();
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return lista;
+	}
+
+	/**
+	 * Metodo que devuelve una lista
+	 * con todas las obras deshabilitadas
+	 * @return Arraylist de obras
+	 */
+	public ArrayList<Obra> getObrasBeansDeshabilitadas() {
+		ArrayList<packBeans.Obra> lista = new ArrayList<packBeans.Obra>();
+		packBeans.Obra aux = null;
+
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
+
+			PreparedStatement st;
+		
+					st = (PreparedStatement) conexion.prepareStatement("select * from obra where active = 0 order by fecha_mod asc");
+				
+
+			ResultSet rs = st.executeQuery();
+			while (rs.next())	   
+			{
+				aux = new packBeans.Obra();
+				aux.setAutor(rs.getInt("autor"));
+				aux.setFecha_in(rs.getDate("fecha_in"));
+				aux.setFecha_mod(rs.getTimestamp("fecha_mod"));
+				aux.setId(rs.getInt("id"));
+				aux.setPortada(rs.getString("portada"));
+				aux.setResumen(rs.getString("resumen"));
+				aux.setTitulo(rs.getString("titulo"));
+				aux.setActive(rs.getInt("active"));
+
+
+				lista.add(aux);
 			}
 			rs.close();
 			st.close();
