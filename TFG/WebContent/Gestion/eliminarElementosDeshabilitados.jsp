@@ -23,7 +23,7 @@
 <title>Eliminar Elementos Deshabilitados</title>
 
 <script>
-	function doActionTrue(id) {
+	function eliminarAutor(id) {
 
 		$.ajax({
 			url : "EU",
@@ -50,37 +50,23 @@
 			backdrop : 'static',
 			keyboard : false
 		}).one('click', '#delete', function(e) {
-			doActionTrue(id);
+			eliminarAutor(id);
 		});
 
 		return false;
 	}
 
-	function clickHabilitarAutor() {
-		var id = $(this).val();
+	function eliminarObra(id) {
 
-		$('#confirmHabilitar').modal({
-			backdrop : 'static',
-			keyboard : false
-		}).one('click', '#delete', function(e) {
-			habilitarAutor(id);
-		});
-
-		return false;
-	}
-
-	function habilitarAutor(id) {
 		$.ajax({
-			url : "HDOA",
+			url : "EO",
 			type : 'POST',
 			data : {
-				id : id,
-				tipo : 0,
-				opcion : 1
+				id : id
 			},
 			success : function(result) {
 				if (result == 'true')
-					location.reload();
+					$('tr#' + id).remove();
 			},
 			error : function(request, error) {
 
@@ -88,37 +74,28 @@
 		});
 	}
 
-	function clickDeshabilitarAutor() {
+	function clickEliminarObra() {
 		var id = $(this).val();
 
-		$('#confirmDeshabilitar').modal({
+		$('#confirm').modal({
 			backdrop : 'static',
 			keyboard : false
 		}).one('click', '#delete', function(e) {
-			deshabilitarAutor(id);
-
+			eliminarObra(id);
 		});
+
 		return false;
 	}
 
-	function deshabilitarAutor(id) {
-		$.ajax({
-			url : "HDOA",
-			type : 'POST',
-			data : {
-				id : id,
-				tipo : 0,
-				opcion : 0
-			},
-			success : function(result) {
-				if (result == 'true')
-					location.reload();
-			},
-			error : function(request, error) {
-
-			}
+	$(document).ready(function() {
+		$('table').hide();
+		$('#botonAutor').on('click', function() {
+			$('#autores').toggle(500);
 		});
-	}
+		$('#botonObra').on('click', function() {
+			$('#obras').toggle(500);
+		});
+	});
 </script>
 
 </head>
@@ -152,7 +129,7 @@
 			</div>
 		</div>
 
-		<div class="modal fade" id="confirmHabilitar" role="dialog">
+		<div class="modal fade" id="confirmObra" role="dialog">
 			<div class="modal-dialog modal-sm">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -160,7 +137,7 @@
 						<h4 class="modal-title">¿Estas seguro?</h4>
 					</div>
 					<div class="modal-body">
-						<p>¿Quieres habilitar el Autor?</p>
+						<p>¿Quieres eliminar la Obra ?</p>
 					</div>
 					<div class="modal-footer">
 						<button type="button" data-dismiss="modal" class="btn btn-primary"
@@ -171,7 +148,7 @@
 			</div>
 		</div>
 
-		<div class="modal fade" id="confirmDeshabilitar" role="dialog">
+		<div class="modal fade" id="confirmAutor" role="dialog">
 			<div class="modal-dialog modal-sm">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -179,7 +156,7 @@
 						<h4 class="modal-title">¿Estas seguro?</h4>
 					</div>
 					<div class="modal-body">
-						<p>¿Quieres deshabilitar el Autor?</p>
+						<p>¿Quieres eliminar el Autor?</p>
 					</div>
 					<div class="modal-footer">
 						<button type="button" data-dismiss="modal" class="btn btn-primary"
@@ -191,7 +168,12 @@
 		</div>
 
 		<div class='jumbotron'>
-			<table class="table table-hover">
+			<div id='botonAutor'>
+				<h3>
+					Autores Deshabilitados <span class="glyphicon glyphicon-plus"></span>
+				</h3>
+			</div>
+			<table class="table table-hover" id='autores'>
 				<thead>
 					<tr>
 						<th>Nombre</th>
@@ -210,35 +192,52 @@
 									pattern="dd/MM/yyyy" /></td>
 							<td><c:out value="${aut.email}"></c:out></td>
 
-							<td><c:choose>
-									<c:when test="${aut.active == 1}">
-										<button type="button"
-											class='btn btn-danger deshabilitar active'
-											value='<c:out value="${aut.id}"></c:out>'>Deshabilitar</button>
-										<button type="button"
-											class='btn btn-success habilitar disabled'
-											value='<c:out value="${aut.id}"></c:out>'>Habilitar</button>
-									</c:when>
-									<c:when test="${aut.active == 0}">
-										<button type="button"
-											class='btn btn-danger deshabilitar disabled'
-											value='<c:out value="${aut.id}"></c:out>'>Deshabilitar</button>
-										<button type="button" class='btn btn-success habilitar active'
-											value='<c:out value="${aut.id}"></c:out>'>Habilitar</button>
-
-									</c:when>
-								</c:choose> <!-- 	<button type="button" class='btn btn-default eliminar'
-									value='<c:out value="${aut.id}"></c:out>'>Eliminar</button>--></td>
+							<td><button type="button"
+									class='btn btn-danger eliminarAutor'
+									value='<c:out value="${aut.id}"></c:out>'>Eliminar</button></td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
 			<script>
-				$('.eliminar').on('click', clickEliminarAutor);
-				$('.habilitar').on('click', clickHabilitarAutor);
-				$('.deshabilitar').on('click', clickDeshabilitarAutor);
+				$('.eliminarAutor').on('click', clickEliminarAutor);
 			</script>
-			<c:out value="${aut.active}"></c:out>
+			<c:set var="autor" value="${requestScope.autoresHash}" scope="request"></c:set>
+
+			<div id='botonObra'>
+				<h3>
+					Obras Deshabilitadas <span class="glyphicon glyphicon-plus"></span>
+				</h3>
+			</div>
+			<table class="table table-hover" id='obras'>
+				<thead>
+					<tr>
+						<th>Nombre</th>
+						<th>Autor</th>
+						<th>Fecha Inicio</th>
+						<th>Ultima modificación</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach var="aut" items="${requestScope.obras}">
+						<tr id='<c:out value="${aut.id}"></c:out>'>
+							<td><c:out value="${aut.titulo}"></c:out></td>
+							<td><c:out value="${autor[aut.autor]}"></c:out></td>
+							<td><fmt:formatDate value="${aut.fecha_in}"
+									pattern="dd/MM/yyyy" /></td>
+							<td><fmt:formatDate value="${aut.fecha_mod}"
+									pattern="dd/MM/yyyy" /></td>
+							<td><button type="button"
+									class='btn btn-danger eliminarObra'
+									value='<c:out value="${aut.id}"></c:out>'>Eliminar</button></td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+			<script>
+				$('.eliminarObra').on('click', clickEliminarObra);
+			</script>
 		</div>
 	</div>
 

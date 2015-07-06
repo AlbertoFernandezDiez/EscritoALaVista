@@ -20,44 +20,73 @@
 
 
 
-<title>EliminarObra</title>
+<title>Gestionar Obras</title>
 
 <script>
-	function doActionTrue(id) {
+	function clickHabilitarObra() {
+		var id = $(this).val();
 
+		$('#confirmHabilitar').modal({
+			backdrop : 'static',
+			keyboard : false
+		}).one('click', '#delete', function(e) {
+			habilitarObra(id);
+		});
+
+		return false;
+	}
+
+	function habilitarObra(id) {
 		$.ajax({
-			url : "EO",
+			url : "HDOA",
 			type : 'POST',
 			data : {
-				id : id
+				id : id,
+				tipo : 1,
+				opcion : 1
 			},
 			success : function(result) {
 				if (result == 'true')
-					$('tr#' + id).remove();
+					location.reload();
 			},
 			error : function(request, error) {
 
 			}
 		});
-		//Eliminamos la linea
-
 	}
 
-	function doActionFalse() {
-
-	}
-
-	function clickEliminarObra() {
+	function clickDeshabilitarObra() {
 		var id = $(this).val();
-		
-		$('#confirm').modal({
+
+		$('#confirmDeshabilitar').modal({
 			backdrop : 'static',
 			keyboard : false
 		}).one('click', '#delete', function(e) {
-			doActionTrue(id);
-		});
+			deshabilitarObra(id);
 
+		});
 		return false;
+	}
+
+	function deshabilitarObra(id) {
+		console.log('he entrado');
+		$.ajax({
+			url : "HDOA",
+			type : 'POST',
+			data : {
+				id : id,
+				tipo : 1,
+				opcion : 0
+			},
+			success : function(result) {
+				console.log(result);
+				if (result == 'true')
+					location.reload();
+			},
+			error : function(request, error) {
+
+			}
+		});
 	}
 </script>
 
@@ -90,6 +119,43 @@
 			</div>
 		</div>
 
+		<div class="modal fade" id="confirmHabilitar" role="dialog">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">¿Estas seguro?</h4>
+					</div>
+					<div class="modal-body">
+						<p>¿Quieres habilitar la Obra?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" data-dismiss="modal" class="btn btn-primary"
+							id="delete">Habilitar</button>
+						<button type="button" data-dismiss="modal" class="btn">Cancelar</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="confirmDeshabilitar" role="dialog">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">¿Estas seguro?</h4>
+					</div>
+					<div class="modal-body">
+						<p>¿Quieres deshabilitar la Obra?</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" data-dismiss="modal" class="btn btn-primary"
+							id="delete">Desabilitar</button>
+						<button type="button" data-dismiss="modal" class="btn">Cancelar</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<c:set var="autor" value="${requestScope.autores}" scope="request"></c:set>
 
@@ -113,14 +179,30 @@
 									pattern="dd/MM/yyyy" /></td>
 							<td><fmt:formatDate value="${aut.fecha_mod}"
 									pattern="dd/MM/yyyy" /></td>
-							<td><button type="button" class='btn btn-default'
-									value='<c:out value="${aut.id}"></c:out>'>Eliminar</button></td>
+							<td><c:choose>
+									<c:when test="${aut.active == 1}">
+										<button type="button" class='btn btn-danger deshabilitar active'
+											value='<c:out value="${aut.id}"></c:out>'>Deshabilitar</button>
+											<button type="button" class='btn btn-success habilitar disabled'
+											value='<c:out value="${aut.id}"></c:out>'>Habilitar</button>
+									</c:when>
+									<c:when test="${aut.active == 0}">
+									<button type="button" class='btn btn-danger deshabilitar disabled'
+											value='<c:out value="${aut.id}"></c:out>'>Deshabilitar</button>
+										<button type="button" class='btn btn-success habilitar active'
+											value='<c:out value="${aut.id}"></c:out>'>Habilitar</button>
+									</c:when>
+								</c:choose>
+								<!-- <button type="button" class='btn btn-default eliminar'
+									value='<c:out value="${aut.id}"></c:out>'>Eliminar</button>--></td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
 			<script>
-				$('.btn-default').on('click', clickEliminarObra);
+				$('.eliminar').on('click', clickEliminarObra);
+				$('.habilitar').on('click', clickHabilitarObra);
+				$('.deshabilitar').on('click',clickDeshabilitarObra);
 			</script>
 
 		</div>
