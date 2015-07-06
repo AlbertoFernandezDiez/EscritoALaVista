@@ -1550,4 +1550,29 @@ public class GestorBD {
 		return lista;
 	}
 
+	/**
+	 * Método que elimina un capitulo de la BD
+	 * @param id Id del capitulo en BD
+	 * @return True si se ha eliminado correctamente
+	 */
+	public boolean deleteCapitulo(int id) {
+		boolean result = false; 
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
+
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("DELETE FROM `tfg`.`capitulo` WHERE `id`= ? ;");
+			st.setInt(1, id);
+
+			st.execute();
+			result = true;
+
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 }
