@@ -63,7 +63,7 @@ rd.forward(request, response);
 		}
 		else
 		{
-			System.out.println("No eres Admin");
+			response.sendRedirect("Error/noEresAdmin.html");
 		}
 	}
 

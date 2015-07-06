@@ -36,13 +36,13 @@ public class HabilitarDeshabilitarObraAutor extends HttpServlet {
 
 		boolean admin = false;
 		try{
-		admin = (boolean)session.getAttribute("admin");
+			admin = (boolean)session.getAttribute("admin");
 		}
 		catch(NullPointerException e)
 		{
 			e.printStackTrace();
 		}
-		
+
 		if (admin)
 		{
 			// El id en BD a deshabilitar/habilitar
@@ -75,6 +75,9 @@ public class HabilitarDeshabilitarObraAutor extends HttpServlet {
 			PrintWriter pw = response.getWriter();
 			pw.write(String.valueOf(resultado));
 		}
+		else
+			response.sendRedirect("Error/noEresAdmin.html");
+
 	}
 
 }
