@@ -34,7 +34,16 @@ public class HabilitarDeshabilitarObraAutor extends HttpServlet {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
 
-		if ((boolean)session.getAttribute("admin"))
+		boolean admin = false;
+		try{
+		admin = (boolean)session.getAttribute("admin");
+		}
+		catch(NullPointerException e)
+		{
+			e.printStackTrace();
+		}
+		
+		if (admin)
 		{
 			// El id en BD a deshabilitar/habilitar
 			String idS = request.getParameter("id");
