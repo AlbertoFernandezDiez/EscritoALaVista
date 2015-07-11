@@ -36,6 +36,7 @@ public class GestorBD {
 		return myGestorBD;
 	}
 
+	
 	private String toSha512(String contrasena){
 		MessageDigest md = null;
 		try {
