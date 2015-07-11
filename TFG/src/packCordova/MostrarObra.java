@@ -1,5 +1,6 @@
 package packCordova;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
@@ -26,15 +27,20 @@ import packBeans.Obra;
 @WebServlet("/api/MostrarObra")
 public class MostrarObra extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public MostrarObra() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	private String filePath;   
 
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public MostrarObra() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public void init( ){
+		// Get the file location where it would be stored.
+		filePath =getServletContext().getInitParameter("file-upload"); 
+	}
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -42,7 +48,7 @@ public class MostrarObra extends HttpServlet {
 		// TODO Auto-generated method stub
 		String url = request.getParameter("url"),idOS = request.getParameter("id");
 		int idO = 0;
-		
+
 		try{
 			idO = Integer.parseInt(idOS);
 		}
@@ -50,42 +56,49 @@ public class MostrarObra extends HttpServlet {
 		{
 			e.printStackTrace();
 		}
-		
-		if(idO != 0){
-		Obra obra = GestorBD.getGestorBD().getObraBeans(idO);
-		HashMap<Integer, String> map = GestorBD.getGestorBD().getHasMapAutores();
-		ArrayList<Capitulo> lista = GestorBD.getGestorBD().getCapituloBeans(idO);
-		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyy");
 
-		JSONArray array = new JSONArray();
-		JSONObject json2,json1 = new JSONObject();
-		
-		json1 = new JSONObject();
-		json1.put("url", url);
-		json1.put("titulo", obra.getTitulo());
-		json1.put("id", obra.getId());
-		json1.put("imagen", obra.getPortada());
-		json1.put("autor", map.get(obra.getAutor()));
-		json1.put("autorId",obra.getAutor());
-		json1.put("resumen", obra.getResumen());
-		json1.put("fechamod", format.format(new Date(obra.getFecha_mod().getTime())) );
-		json1.put("fechain", format.format(obra.getFecha_in()));
-		
-		
-		for (Capitulo cap : lista){
-			json2 = new JSONObject();
-			json2.put("idCap", String.valueOf(cap.getId()));
-			json2.put("nombre",cap.getNombre());
-			array.put(json2);
-		}
-		
-		json1.put("capitulos", array);
-		
-		System.out.println("pedido");
-		response.setContentType("application/json");
-		response.setHeader("Access-Control-Allow-Origin", "*");
-		PrintWriter pw = response.getWriter();
-		pw.write(json1.toString());
+		if(idO != 0){
+			Obra obra = GestorBD.getGestorBD().getObraBeans(idO);
+			HashMap<Integer, String> map = GestorBD.getGestorBD().getHasMapAutores();
+			ArrayList<Capitulo> lista = GestorBD.getGestorBD().getCapituloBeans(idO);
+			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyy");
+
+			JSONArray array = new JSONArray();
+			JSONObject json2,json1 = new JSONObject();
+
+			String img = "";
+
+			if(obra.getPortada() != null){
+				File imgFile = new File(filePath,obra.getPortada());
+				img = Encoder.getMyEncoder().encodeInBase64(imgFile);
+			}
+
+			json1 = new JSONObject();
+			json1.put("url", url);
+			json1.put("titulo", obra.getTitulo());
+			json1.put("id", obra.getId());
+			json1.put("imagen", img);
+			json1.put("autor", map.get(obra.getAutor()));
+			json1.put("autorId",obra.getAutor());
+			json1.put("resumen", obra.getResumen());
+			json1.put("fechamod", format.format(new Date(obra.getFecha_mod().getTime())) );
+			json1.put("fechain", format.format(obra.getFecha_in()));
+
+
+			for (Capitulo cap : lista){
+				json2 = new JSONObject();
+				json2.put("idCap", String.valueOf(cap.getId()));
+				json2.put("nombre",cap.getNombre());
+				array.put(json2);
+			}
+
+			json1.put("capitulos", array);
+
+			System.out.println("pedido");
+			response.setContentType("application/json");
+			response.setHeader("Access-Control-Allow-Origin", "*");
+			PrintWriter pw = response.getWriter();
+			pw.write(json1.toString());
 		}
 	}
 

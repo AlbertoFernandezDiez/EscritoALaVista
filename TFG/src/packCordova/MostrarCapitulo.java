@@ -1,5 +1,6 @@
 package packCordova;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
@@ -24,7 +25,8 @@ import packBeans.Comentario;
 @WebServlet("/api/MostrarCapitulo")
 public class MostrarCapitulo extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+private String filePath;
+	
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -33,6 +35,11 @@ public class MostrarCapitulo extends HttpServlet {
 		// TODO Auto-generated constructor stub
 	}
 
+	public void init( ){
+		// Get the file location where it would be stored.
+		filePath =getServletContext().getInitParameter("file-upload"); 
+	}
+	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -55,13 +62,21 @@ public class MostrarCapitulo extends HttpServlet {
 			Capitulo cap = GestorBD.getGestorBD().getCapitulosBeans(idC);
 			ArrayList<Comentario> listaArrayList = GestorBD.getGestorBD().getComentariosBeans(cap.getObra(), cap.getId());
 			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyy");
+			
+			String img = "";
+			
+			if(cap.getImagen() != null){			
+			File imgFile = new File(filePath,cap.getImagen());
+			img = Encoder.getMyEncoder().encodeInBase64(imgFile);
+			}
+			
 			if (cap != null)
 			{
 				json = new JSONObject();
 				json.put("comentarioAutor", cap.getComentarios_autor());
 				json.put("fechaComentario", format.format(cap.getFecha_comentario()));
 				json.put("id", cap.getId());
-				json.put("imagen", cap.getImagen());
+				json.put("imagen", img);
 				json.put("titulo", cap.getNombre());
 				json.put("obra", cap.getObra());
 				json.put("url", url);

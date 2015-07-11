@@ -1,5 +1,6 @@
 package packCordova;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
@@ -22,7 +23,8 @@ import packBeans.Autor;
 @WebServlet("/api/MostrarAutor")
 public class MostrarAutor extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+    private String filePath;   
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -31,6 +33,11 @@ public class MostrarAutor extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
+    public void init( ){
+		// Get the file location where it would be stored.
+		filePath =getServletContext().getInitParameter("file-upload"); 
+	}
+    
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -55,13 +62,20 @@ public class MostrarAutor extends HttpServlet {
 				JSONObject json = new JSONObject();
 				JSONArray array = new JSONArray();
 			
+				String img ="";
+				
+				if (autor.getImagen() != null){
+				File imgFile = new File(filePath ,autor.getImagen());
+				img = Encoder.getMyEncoder().encodeInBase64(imgFile);
+				}
+				
 				for (String aux : autor.getAbout()){
 					array.put(new JSONObject().put("text", aux));
 				}
 				json.put("url", url);
 				json.put("nombre", autor.getNombre());
 				json.put("pais", autor.getPais());
-				json.put("imagen", autor.getImagen());
+				json.put("imagen",img );
 				json.put("nacimiento", format.format(autor.getNacimiento()));
 				json.put("about", array);
 				
@@ -73,5 +87,6 @@ public class MostrarAutor extends HttpServlet {
 		}
 		}
 	}
-
+	
+	
 }
