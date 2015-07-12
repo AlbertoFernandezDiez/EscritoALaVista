@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +19,7 @@ import org.json.JSONObject;
 
 import packBD.GestorBD;
 import packBeans.Autor;
+import packBeans.Obra;
 
 /**
  * Servlet implementation class MostrarAutor
@@ -78,6 +82,25 @@ public class MostrarAutor extends HttpServlet {
 				json.put("imagen",img );
 				json.put("nacimiento", format.format(autor.getNacimiento()));
 				json.put("about", array);
+				
+				
+				ArrayList<Obra> lista = GestorBD.getGestorBD().getObrasBeans(0, 0, id);
+				array = new JSONArray();
+				JSONObject json1;
+
+				for (Obra obra : lista){
+					json1 = new JSONObject();
+					json1.put("titulo", obra.getTitulo());
+					json1.put("id", obra.getId());
+					json1.put("autor", autor.getNombre());
+					json1.put("autorId",obra.getAutor());
+					json1.put("resumen", obra.getResumen());
+					json1.put("fechamod", format.format(new Date(obra.getFecha_mod().getTime())) );
+					json1.put("fechain", format.format(obra.getFecha_in()));
+					array.put(json1);
+				}
+				json.put("obras", array);
+
 				
 				System.out.println("pedido");
 				response.setContentType("application/json");
