@@ -18,6 +18,7 @@ public class Comentario {
 		this.autor = autor;
 	}
 
+	
 	public int getObra() {
 		return obra;
 	}

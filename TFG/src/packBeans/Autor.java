@@ -3,8 +3,8 @@ package packBeans;
 import java.sql.Date;
 
 public class Autor {
-	
-	private int id;
+
+	private int id, active;
 	private String pais,nombre,imagen,email;
 	private String[] about;	
 	private Date nacimiento;
@@ -67,7 +67,13 @@ public class Autor {
 		this.nacimiento = nacimiento;
 	}
 
+	public void setActive(int pActive){
+		this.active = pActive;
+	}
 
+	public int getActive(){
+		return this.active;
+	}
 
 
 }

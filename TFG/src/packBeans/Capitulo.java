@@ -19,6 +19,7 @@ public class Capitulo implements Serializable {
 		this.id = id;
 	}
 
+	
 	public int getObra() {
 		return obra;
 	}

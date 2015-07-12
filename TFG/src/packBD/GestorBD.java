@@ -28,6 +28,7 @@ public class GestorBD {
 
 	}
 
+	
 	public static GestorBD getGestorBD()
 	{
 		if (myGestorBD == null){

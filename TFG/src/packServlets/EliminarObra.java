@@ -56,7 +56,7 @@ public class EliminarObra extends HttpServlet {
 
 		if (admin)
 		{
-			ArrayList<Obra> lista = GestorBD.getGestorBD().getObrasBeans(0, 0, 0);
+			ArrayList<Obra> lista = GestorBD.getGestorBD().getObrasBeansAll();
 			HashMap<Integer, String> autores = GestorBD.getGestorBD().getHasMapAutores();
 
 			request.setAttribute("obras", lista);
@@ -86,10 +86,9 @@ request.setAttribute("admin", true);
 		{
 			e.printStackTrace();
 		}
-
+		int id = Integer.parseInt(request.getParameter("id"));
 		if (admin)
 		{
-			int id = Integer.parseInt(request.getParameter("id"));
 			Obra obra = GestorBD.getGestorBD().getObraBeans(id);
 			ArrayList<Capitulo> lista = GestorBD.getGestorBD().getCapituloBeans(id);
 			boolean result = false;
@@ -115,7 +114,40 @@ request.setAttribute("admin", true);
 		}
 		else
 		{
-			response.sendRedirect("/Error/noEresAdmin.html");
+			int idUsuario = 0;
+			try
+			{
+				idUsuario = (int) session.getAttribute("id");
+				}
+			catch(NullPointerException e){
+				e.printStackTrace();
+			}
+			Obra obra = GestorBD.getGestorBD().getObraBeans(id);
+			if (idUsuario != 0 && idUsuario == obra.getAutor()){
+				ArrayList<Capitulo> lista = GestorBD.getGestorBD().getCapituloBeans(id);
+				boolean result = false;
+				File img = null;
+				try{
+				for (Capitulo cap : lista){
+					
+					img = new File(filePath,cap.getImagen());
+					img.delete();
+				}
+				img = new File(filePath,obra.getPortada());
+				img.delete();
+				
+				}
+				catch(NullPointerException e)
+				{
+					e.printStackTrace();
+				}
+				result = GestorBD.getGestorBD().deleteObra(id);
+				
+				PrintWriter pw = response.getWriter();
+				pw.print(String.valueOf(result));
+			}
+			else
+			response.sendRedirect("Error/noEresAdmin.html");
 		}
 	}
 

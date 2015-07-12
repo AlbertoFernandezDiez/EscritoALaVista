@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 
 
 public class Obra {
-	private int id,autor;
+	private int id,autor, active;
 	private String titulo,resumen,portada;
 	private Date fecha_in;
 	private Timestamp fecha_mod;
@@ -20,6 +20,7 @@ public class Obra {
 		this.id = id;
 	}
 
+	
 	public int getAutor() {
 		return autor;
 	}
@@ -66,6 +67,14 @@ public class Obra {
 
 	public void setFecha_mod(Timestamp fecha_mod) {
 		this.fecha_mod = fecha_mod;
+	}
+
+	public int getActive() {
+		return active;
+	}
+
+	public void setActive(int active) {
+		this.active = active;
 	}
 	
 	
