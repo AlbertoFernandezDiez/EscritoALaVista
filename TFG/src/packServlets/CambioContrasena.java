@@ -73,7 +73,7 @@ public class CambioContrasena extends HttpServlet {
 				old = request.getParameter("old");
 				newC = request.getParameter("newC");
 
-			boolean result = GestorBD.getGestorBD().changePasswordAdmin(old,newC);
+			boolean result = GestorBD.getGestorBD().changePasswordAdmin("admin",old,newC);
 			
 				// TODO Auto-generated method stub
 				PrintWriter pw = response.getWriter();

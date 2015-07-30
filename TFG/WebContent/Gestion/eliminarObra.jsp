@@ -200,7 +200,7 @@
 				</tbody>
 			</table>
 			<script>
-				$('.eliminar').on('click', clickEliminarObra);
+				//$('.eliminar').on('click', clickEliminarObra);
 				$('.habilitar').on('click', clickHabilitarObra);
 				$('.deshabilitar').on('click',clickDeshabilitarObra);
 			</script>

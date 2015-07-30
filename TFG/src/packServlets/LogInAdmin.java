@@ -66,7 +66,7 @@ public class LogInAdmin extends HttpServlet {
 		HttpSession session = request.getSession();
 		String password = request.getParameter("contrasena");
 		
-		if (GestorBD.getGestorBD().checkAdmin(password)){
+		if (GestorBD.getGestorBD().checkAdmin("admin",password)){
 			 session.setAttribute("admin", true);
 			 request.setAttribute("admin", true);
 			 RequestDispatcher rd = getServletContext().getRequestDispatcher("/Gestion/index.jsp");

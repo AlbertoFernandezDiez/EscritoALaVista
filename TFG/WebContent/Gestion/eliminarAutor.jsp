@@ -203,7 +203,7 @@
 				</tbody>
 			</table>
 			<script>
-				$('.eliminar').on('click', clickEliminarAutor);
+		//		$('.eliminar').on('click', clickEliminarAutor);
 				$('.habilitar').on('click', clickHabilitarAutor);
 				$('.deshabilitar').on('click', clickDeshabilitarAutor);
 			</script>

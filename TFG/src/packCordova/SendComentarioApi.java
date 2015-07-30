@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONObject;
+
+import com.sun.org.apache.bcel.internal.generic.NEW;
+
 import packBD.GestorBD;
 
 /**
@@ -43,13 +47,14 @@ public class SendComentarioApi extends HttpServlet {
 		try{
 			idO = Integer.parseInt(idOS);
 			idC = Integer.parseInt(idCS);
+			id = Integer.parseInt(loggedID);
 		}catch(NumberFormatException e){}
 		
 		boolean resultado = false;
 		
-		try{
+		/*try{
 			id = UsuariosLoggeados.getMyUsuariosLogeados().getUsuario(loggedID);
-		}catch(NullPointerException e){}
+		}catch(NullPointerException e){}*/
 		
 		if (id != 0){
 			resultado = GestorBD.getGestorBD().addComment(id, idC, idO, comentario);
@@ -59,7 +64,7 @@ public class SendComentarioApi extends HttpServlet {
 		response.setContentType("application/text");
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		PrintWriter pw = response.getWriter();
-		pw.write(String.valueOf(resultado));
+		pw.write(String.valueOf(new JSONObject().put("ok",resultado)));
 	}
 
 }

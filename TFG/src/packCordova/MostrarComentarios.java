@@ -42,7 +42,7 @@ public class MostrarComentarios extends HttpServlet {
 		// TODO Auto-generated method stub
 		String idCS = request.getParameter("idC");
 		String idOS = request.getParameter("idO");
-		String url = request.getParameter("url");
+		//String url = request.getParameter("url");
 		int idO = 0, idC = 0;
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyy hh:mm");
 
@@ -78,7 +78,7 @@ public class MostrarComentarios extends HttpServlet {
 			}
 			
 			jsonf.put("comentarios", array);
-			jsonf.put("url", url);
+			//jsonf.put("url", url);
 
 			
 		}

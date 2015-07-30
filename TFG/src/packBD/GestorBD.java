@@ -28,7 +28,7 @@ public class GestorBD {
 
 	}
 
-	
+
 	public static GestorBD getGestorBD()
 	{
 		if (myGestorBD == null){
@@ -37,7 +37,7 @@ public class GestorBD {
 		return myGestorBD;
 	}
 
-	
+
 	private String toSha512(String contrasena){
 		MessageDigest md = null;
 		try {
@@ -253,12 +253,10 @@ public class GestorBD {
 			st.execute();
 
 			st = (PreparedStatement) conexion.prepareStatement("SELECT id FROM capitulo where"
-					+ " obra = ? and nombre = ? and texto = ? and comentarios_autor = ? and imagen = ?");
+					+ " obra = ? and nombre = ? and texto = ?");
 			st.setInt(1, pObra);
 			st.setString(2, pTitulo);
 			st.setString(3, pCapitulo);
-			st.setString(4, pComentario);
-			st.setString(5, pRuta);
 
 			ResultSet rs = st.executeQuery();
 
@@ -477,6 +475,7 @@ public class GestorBD {
 				autor.setPais(rs.getString("pais"));
 				autor.setAbout(rs.getString("about"));
 				autor.setEmail(rs.getString("email"));
+				autor.setActive(rs.getInt("active"));
 
 			}
 			rs.close();
@@ -860,7 +859,7 @@ public class GestorBD {
 	/**
 	 * Metodo que devuelve una obra
 	 * @param id	Id de la obra en BD
-	 * @return	La obra
+	 * @return	La obra, si no existe null
 	 */
 	public packBeans.Obra getObraBeans(int id) {
 		packBeans.Obra obra = null;
@@ -873,14 +872,16 @@ public class GestorBD {
 			ResultSet rs = st.executeQuery();
 
 			if(rs.next())
-			{		obra = new packBeans.Obra();
-			obra.setAutor(rs.getInt("autor"));
-			obra.setFecha_in(rs.getDate("fecha_in"));
-			obra.setFecha_mod(rs.getTimestamp("fecha_mod"));
-			obra.setId(rs.getInt("id"));
-			obra.setPortada(rs.getString("portada"));
-			obra.setResumen(rs.getString("resumen"));
-			obra.setTitulo(rs.getString("titulo"));
+			{		
+				obra = new packBeans.Obra();
+				obra.setAutor(rs.getInt("autor"));
+				obra.setFecha_in(rs.getDate("fecha_in"));
+				obra.setFecha_mod(rs.getTimestamp("fecha_mod"));
+				obra.setId(rs.getInt("id"));
+				obra.setPortada(rs.getString("portada"));
+				obra.setResumen(rs.getString("resumen"));
+				obra.setTitulo(rs.getString("titulo"));
+				obra.setActive(rs.getInt("active"));
 			}
 
 		} catch (SQLException | ClassNotFoundException e) {
@@ -893,7 +894,7 @@ public class GestorBD {
 	/**
 	 * Metodo que devuelve un capitulo
 	 * @param id	Id del capitulo en BD
-	 * @return	El capitulo
+	 * @return	El capitulo, si no existe null
 	 */
 	public packBeans.Capitulo getCapitulosBeans(int id) {
 		packBeans.Capitulo cap = null;
@@ -907,14 +908,16 @@ public class GestorBD {
 			ResultSet rs = st.executeQuery();
 
 			if(rs.next())
+			{	
 				cap = new packBeans.Capitulo();
-			cap.setId(rs.getInt("id"));
-			cap.setNombre(rs.getString("nombre"));
-			cap.setObra(rs.getInt("obra"));
-			cap.setComentarios_autor(rs.getString("comentarios_autor"));
-			cap.setText(rs.getString("texto"));
-			cap.setImagen(rs.getString("imagen"));
-			cap.setFecha_comentario(rs.getDate("fecha_comentario"));
+				cap.setId(rs.getInt("id"));
+				cap.setNombre(rs.getString("nombre"));
+				cap.setObra(rs.getInt("obra"));
+				cap.setComentarios_autor(rs.getString("comentarios_autor"));
+				cap.setText(rs.getString("texto"));
+				cap.setImagen(rs.getString("imagen"));
+				cap.setFecha_comentario(rs.getDate("fecha_comentario"));
+			}
 		}
 		catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -926,7 +929,8 @@ public class GestorBD {
 	/**
 	 * Metodo que devuelve un autor
 	 * @param id Id del autor en BD
-	 * @return	El autor
+	 * @return	El autor, si no existe
+	 * null
 	 */
 	public Autor getAutorBeansById(int id) {
 		packBeans.Autor autor = null;
@@ -950,6 +954,7 @@ public class GestorBD {
 				autor.setPais(rs.getString("pais"));
 				autor.setAbout(rs.getString("about"));
 				autor.setEmail(rs.getString("email"));
+				autor.setActive(rs.getInt("active"));
 
 			}
 			rs.close();
@@ -1062,10 +1067,11 @@ public class GestorBD {
 	 * Método que comprueba la contraseña dada
 	 * e identificar si el usuario es el 
 	 * administrador
+	 * @param adminName Nombre del admin en BD
 	 * @param password	La contraseña con SHA-512
 	 * @return True si es el administrador
 	 */
-	public boolean checkAdmin(String password) {
+	public boolean checkAdmin(String adminName, String password) {
 		boolean admin = false;
 
 		try {
@@ -1074,7 +1080,9 @@ public class GestorBD {
 					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT *"
-					+ " FROM tfg.admin where id = 1;");
+					+ " FROM tfg.admin where name = ?;");
+			
+			st.setString(1, adminName);
 
 			ResultSet rs = st.executeQuery();
 
@@ -1150,11 +1158,13 @@ public class GestorBD {
 
 	/**
 	 * Metodo que modifica la contraseña de administrador
+	 * @param name Nombre del admin en BD
 	 * @param old	Contraseña antigua (con SHA512 aplicado)
 	 * @param newC	Contraseña nueva (con SHA512 aplicado)
+	 * @param string 
 	 * @return True si se ha cambiado correctamente
 	 */
-	public boolean changePasswordAdmin(String old, String newC) {
+	public boolean changePasswordAdmin(String name,String old, String newC) {
 		// TODO Auto-generated method stub
 		boolean result = false;
 		try{
@@ -1163,22 +1173,23 @@ public class GestorBD {
 					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT *"
-					+ " FROM tfg.autor where id = ?;");
-			st.setInt(1, 1);
+					+ " FROM tfg.admin where name = ?;");
+			
+			st.setString(1, name);
 
 			ResultSet rs = st.executeQuery();
 
 			if (rs.next())
 			{
-				String sal = rs.getString("sal");
+				String sal = rs.getString("salt");
 				String contra = rs.getString("password");
 				String passw = toSha512(toSha512(old) + sal);
 				int id = rs.getInt("id");
 				if (contra.equals(passw)){
-					st = (PreparedStatement) conexion.prepareStatement("UPDATE `tfg`.`autor` "
-							+ "SET `password`=? WHERE `id`=?;");
+					st = (PreparedStatement) conexion.prepareStatement("UPDATE `tfg`.`admin` "
+							+ "SET `password`=? where name = ?;");
 					st.setString(1, toSha512(toSha512(newC) + sal));
-					st.setInt(2, id);
+					st.setString(2, name);
 					st.execute();
 					result = true;
 				}
@@ -1222,7 +1233,7 @@ public class GestorBD {
 		return result;
 
 	}
-
+	
 	/**
 	 * Método que dice si un autor esta
 	 * suscrito a una obra
@@ -1280,7 +1291,7 @@ public class GestorBD {
 
 			st.execute();
 
-				result = true;
+			result = true;
 
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -1314,7 +1325,7 @@ public class GestorBD {
 
 			st.execute();
 
-				result = true;
+			result = true;
 
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -1342,7 +1353,7 @@ public class GestorBD {
 					+ "where seguimiento.idUsuario = autor.id and seguimiento.idObra = ?;");
 
 			st.setInt(1, id);
-			
+
 			ResultSet rs = st.executeQuery();
 			while (rs.next())	   
 			{
@@ -1387,7 +1398,7 @@ public class GestorBD {
 
 			st.execute();
 
-				result = true;
+			result = true;
 
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -1418,7 +1429,7 @@ public class GestorBD {
 
 			st.execute();
 
-				result = true;
+			result = true;
 
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -1438,9 +1449,9 @@ public class GestorBD {
 					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 
 			PreparedStatement st;
-		
-					st = (PreparedStatement) conexion.prepareStatement("select * from obra order by fecha_mod asc");
-				
+
+			st = (PreparedStatement) conexion.prepareStatement("select * from obra order by fecha_mod asc");
+
 
 			ResultSet rs = st.executeQuery();
 			while (rs.next())	   
@@ -1522,9 +1533,9 @@ public class GestorBD {
 					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
 
 			PreparedStatement st;
-		
-					st = (PreparedStatement) conexion.prepareStatement("select * from obra where active = 0 order by fecha_mod asc");
-				
+
+			st = (PreparedStatement) conexion.prepareStatement("select * from obra where active = 0 order by fecha_mod asc");
+
 
 			ResultSet rs = st.executeQuery();
 			while (rs.next())	   
@@ -1577,4 +1588,120 @@ public class GestorBD {
 		return result;
 	}
 
+	/**
+	 * Método que devuelve un autor
+	 * dada su dirección de email
+	 * @param mail	Dirección de email 
+	 * del usuario
+	 * @return	Si existe devuelve el 
+	 * usuario, si no devuelve null;
+	 */
+	public Autor getAutorBeansByEmail(String mail) {
+
+		packBeans.Autor autor = null;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
+
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("select autor.* from autor"
+					+ " where autor.email = ?");
+			st.setString(1, mail);
+
+			ResultSet rs = st.executeQuery();
+			if (rs.next())	   
+			{
+				autor = new Autor();
+				autor.setId(rs.getInt("id"));
+				autor.setImagen(rs.getString("imagen"));
+				autor.setNacimiento(rs.getDate("nacimiento"));
+				autor.setNombre(rs.getString("nombre"));
+				autor.setPais(rs.getString("pais"));
+				autor.setAbout(rs.getString("about"));
+				autor.setEmail(rs.getString("email"));
+				autor.setActive(rs.getInt("active"));
+
+			}
+			rs.close();
+			st.close();
+			conexion.close();
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return autor;
+	}
+
+	/**
+	 * Método que establece una nueva contraseña
+	 * @param id	Id del autor en BD
+	 * @param contrasena	La nueva contasenaña sin SHA512
+	 * @return	True si se ha cambiado correctamente
+	 */
+	public boolean recuperarContrasena(int id, String contrasena) {
+		boolean result = false;
+
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
+
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT *"
+					+ " FROM tfg.autor where id = ?;");
+			st.setInt(1, id);
+
+			ResultSet rs = st.executeQuery();
+
+			if (rs.next())
+			{
+				String sal = rs.getString("sal");
+
+				st = (PreparedStatement) conexion.prepareStatement("UPDATE `tfg`.`autor` "
+						+ "SET `password`=? WHERE `id`=?;");
+				st.setString(1, toSha512(toSha512(toSha512(contrasena)) + sal));
+				st.setInt(2, id);
+				st.execute();
+				result = true;
+			}
+
+
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
+	/**
+	 * Método que indica si el email esta siendo
+	 * utilizado por otro usuario
+	 * @param email	Email a comprobar en BD
+	 * @return	True si el nombre esta sin utilizar
+	 */
+	public boolean comprobarEmail(String email) {
+		boolean result = false;
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
+
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT count(*)"
+					+ " FROM tfg.autor where email = ?;");
+			st.setString(1, email);
+
+
+			ResultSet rs = st.executeQuery();
+
+			if (rs.next())
+				result = rs.getInt(1) == 0;
+
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return result;
+
+	}
 }

@@ -2,7 +2,10 @@ package packTestBD;
 
 import static org.junit.Assert.*;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import org.apache.commons.collections4.Get;
@@ -367,14 +370,293 @@ public class TestGestorBD {
 		assertEquals(null, GestorBD.getGestorBD().getAutorBeansById(idUs));
 	}
 
-	/*@Test
+	@Test
 	public void testChangePasswordAdmin() {
-		fail("Not yet implemented");
+		assertTrue(GestorBD.getGestorBD().checkAdmin("adminprueba", toSha512("alberto")));
+		
+		assertTrue(GestorBD.getGestorBD().changePasswordAdmin("adminprueba", toSha512("alberto"), toSha512("albertos")));
+
+		assertTrue(GestorBD.getGestorBD().checkAdmin("adminprueba", toSha512("albertos")));
+		
+		assertTrue(GestorBD.getGestorBD().changePasswordAdmin("adminprueba", toSha512("albertos"), toSha512("alberto")));
+
+		
+		assertTrue(GestorBD.getGestorBD().checkAdmin("adminprueba", toSha512("alberto")));
+
 	}
 
 	@Test
 	public void testCheckAdmin() {
-		assertTrue(GestorBD.getGestorBD().checkAdmin(password));
-	}*/
+		assertTrue(GestorBD.getGestorBD().checkAdmin("adminprueba", toSha512("alberto")));
+	}
 
+
+	@Test
+	public void testComprobarTitulo() {
+		long aux = System.currentTimeMillis();
+
+		idUs = GestorBD.getGestorBD().addUser(String.valueOf(aux), String.valueOf(aux), String.valueOf(aux), String.valueOf(aux),new Date(aux), String.valueOf(aux), String.valueOf(aux));
+
+		idObra = GestorBD.getGestorBD().insertarObra(idUs, String.valueOf(aux), String.valueOf(aux), String.valueOf(aux));
+
+		obra = GestorBD.getGestorBD().getObraBeans(idObra);
+
+		assertEquals(idUs, obra.getAutor());
+		assertEquals(String.valueOf(aux), obra.getPortada());
+		assertEquals(String.valueOf(aux), obra.getResumen());
+		assertEquals(String.valueOf(aux), obra.getTitulo());
+
+		assertFalse(GestorBD.getGestorBD().comprobarNombre(obra.getTitulo()));
+		assertTrue(GestorBD.getGestorBD().comprobarNombre(String.valueOf(System.currentTimeMillis())));
+	}
+
+	@Test
+	public void testGetObraAutorChecked() {
+		long aux = System.currentTimeMillis();
+
+		idUs = GestorBD.getGestorBD().addUser(String.valueOf(aux), String.valueOf(aux), String.valueOf(aux), String.valueOf(aux),new Date(aux), String.valueOf(aux), String.valueOf(aux));
+
+		idObra = GestorBD.getGestorBD().insertarObra(idUs, String.valueOf(aux), String.valueOf(aux), String.valueOf(aux));
+
+		obra = GestorBD.getGestorBD().getObraBeans(idObra);
+		//fail("Not yet implemented");
+		assertFalse(GestorBD.getGestorBD().getObraAutorChecked(idObra, idUs));
+		GestorBD.getGestorBD().AddSeguimiento(idUs, idObra);
+		assertTrue(GestorBD.getGestorBD().getObraAutorChecked(idObra, idUs));
+	}
+
+	@Test
+	public void testAddSeguimiento() {
+		long aux = System.currentTimeMillis();
+
+		idUs = GestorBD.getGestorBD().addUser(String.valueOf(aux), String.valueOf(aux), String.valueOf(aux), String.valueOf(aux),new Date(aux), String.valueOf(aux), String.valueOf(aux));
+
+		idObra = GestorBD.getGestorBD().insertarObra(idUs, String.valueOf(aux), String.valueOf(aux), String.valueOf(aux));
+
+		obra = GestorBD.getGestorBD().getObraBeans(idObra);
+		//fail("Not yet implemented");
+		assertFalse(GestorBD.getGestorBD().getObraAutorChecked(idObra, idUs));
+		GestorBD.getGestorBD().AddSeguimiento(idUs, idObra);
+		assertTrue(GestorBD.getGestorBD().getObraAutorChecked(idObra, idUs));
+	}
+
+	@Test
+	public void testQuitSeguimiento() {
+		long aux = System.currentTimeMillis();
+
+		idUs = GestorBD.getGestorBD().addUser(String.valueOf(aux), String.valueOf(aux), String.valueOf(aux), String.valueOf(aux),new Date(aux), String.valueOf(aux), String.valueOf(aux));
+
+		idObra = GestorBD.getGestorBD().insertarObra(idUs, String.valueOf(aux), String.valueOf(aux), String.valueOf(aux));
+
+		obra = GestorBD.getGestorBD().getObraBeans(idObra);
+		//fail("Not yet implemented");
+		assertFalse(GestorBD.getGestorBD().getObraAutorChecked(idObra, idUs));
+		GestorBD.getGestorBD().AddSeguimiento(idUs, idObra);
+		assertTrue(GestorBD.getGestorBD().getObraAutorChecked(idObra, idUs));
+		GestorBD.getGestorBD().QuitSeguimiento(idUs, idObra);
+		assertFalse(GestorBD.getGestorBD().getObraAutorChecked(idObra, idUs));
+	}
+
+	@Test
+	public void testGetSuscriptores() {
+		long aux = System.currentTimeMillis();
+
+		idUs = GestorBD.getGestorBD().addUser(String.valueOf(aux), String.valueOf(aux), String.valueOf(aux), String.valueOf(aux),new Date(aux), String.valueOf(aux), String.valueOf(aux));
+
+		idObra = GestorBD.getGestorBD().insertarObra(idUs, String.valueOf(aux), String.valueOf(aux), String.valueOf(aux));
+
+		obra = GestorBD.getGestorBD().getObraBeans(idObra);
+		assertFalse(GestorBD.getGestorBD().getObraAutorChecked(idObra, idUs));
+		GestorBD.getGestorBD().AddSeguimiento(idUs, idObra);
+		ArrayList<Autor> lista = GestorBD.getGestorBD().getSuscriptores(idObra);
+		assertTrue(lista.size() >= 1);
+		assertEquals(lista.get(0).getId(), idUs);
+	}
+
+	@Test
+	public void testModificarVisibilidadAutor() {
+		long aux = System.currentTimeMillis();
+
+		idUs = GestorBD.getGestorBD().addUser(String.valueOf(aux), String.valueOf(aux), String.valueOf(aux), String.valueOf(aux),new Date(aux), String.valueOf(aux), String.valueOf(aux));
+
+		autor = GestorBD.getGestorBD().getAutorBeansById(idUs);
+		assertEquals(1,autor.getActive());
+		GestorBD.getGestorBD().modificarVisibilidadAutor(idUs, 0);
+		autor = GestorBD.getGestorBD().getAutorBeansById(idUs);
+		assertEquals(0, autor.getActive());
+	}
+
+	@Test
+	public void testModificarVisibilidadObra() {
+		long aux = System.currentTimeMillis();
+
+		idUs = GestorBD.getGestorBD().addUser(String.valueOf(aux), String.valueOf(aux), String.valueOf(aux), String.valueOf(aux),new Date(aux), String.valueOf(aux), String.valueOf(aux));
+
+		idObra = GestorBD.getGestorBD().insertarObra(idUs, String.valueOf(aux), String.valueOf(aux), String.valueOf(aux));
+
+		obra = GestorBD.getGestorBD().getObraBeans(idObra);
+
+		assertEquals(1, obra.getActive());
+
+		GestorBD.getGestorBD().modificarVisibilidadObra(idObra, 0);
+
+		obra = GestorBD.getGestorBD().getObraBeans(idObra);
+
+		assertEquals(0, obra.getActive());
+	}
+
+	@Test
+	public void testGetObrasBeansAll() {
+		long aux = System.currentTimeMillis();
+
+		int actual = GestorBD.getGestorBD().getObrasBeansAll().size();
+
+		idUs = GestorBD.getGestorBD().addUser(String.valueOf(aux), String.valueOf(aux), String.valueOf(aux), String.valueOf(aux),new Date(aux), String.valueOf(aux), String.valueOf(aux));
+
+		idObra = GestorBD.getGestorBD().insertarObra(idUs, String.valueOf(aux), String.valueOf(aux), String.valueOf(aux));
+
+		GestorBD.getGestorBD().modificarVisibilidadObra(idObra, 0);
+
+		int deshabil = GestorBD.getGestorBD().getObrasBeansAll().size();
+
+		assertTrue(actual < deshabil);
+
+	}
+
+	@Test
+	public void testGetAutoresBeansDeshabilitados() {
+		long aux = System.currentTimeMillis();
+
+		int actual = GestorBD.getGestorBD().getAutoresBeansDeshabilitados().size();
+
+		idUs = GestorBD.getGestorBD().addUser(String.valueOf(aux), String.valueOf(aux), String.valueOf(aux), String.valueOf(aux),new Date(aux), String.valueOf(aux), String.valueOf(aux));
+
+
+		GestorBD.getGestorBD().modificarVisibilidadAutor(idUs, 0);
+
+		int deshabil = GestorBD.getGestorBD().getAutoresBeansDeshabilitados().size();
+
+		assertTrue(actual < deshabil);
+	}
+
+	@Test
+	public void testGetObrasBeansDeshabilitadas() {
+		long aux = System.currentTimeMillis();
+
+		int actual = GestorBD.getGestorBD().getAutoresBeansDeshabilitados().size();
+
+		idUs = GestorBD.getGestorBD().addUser(String.valueOf(aux), String.valueOf(aux), String.valueOf(aux), String.valueOf(aux),new Date(aux), String.valueOf(aux), String.valueOf(aux));
+
+		idObra = GestorBD.getGestorBD().insertarObra(idUs, String.valueOf(aux), String.valueOf(aux), String.valueOf(aux));
+
+
+		ArrayList<Obra> lista = GestorBD.getGestorBD().getObrasBeansDeshabilitadas();
+
+		assertEquals(actual, lista.size());
+
+		GestorBD.getGestorBD().modificarVisibilidadObra(idObra, 0);
+
+		lista = GestorBD.getGestorBD().getObrasBeansDeshabilitadas();
+
+		assertEquals(++actual, lista.size());
+
+
+
+	}
+
+	@Test
+	public void testDeleteCapitulo() {
+		long aux = System.currentTimeMillis();
+
+		idUs = GestorBD.getGestorBD().addUser(String.valueOf(aux), String.valueOf(aux), String.valueOf(aux), String.valueOf(aux),new Date(aux), String.valueOf(aux), String.valueOf(aux));
+
+		idObra = GestorBD.getGestorBD().insertarObra(idUs, String.valueOf(aux), String.valueOf(aux), String.valueOf(aux));
+
+		idCap = GestorBD.getGestorBD().insertarCapitulo(idObra, String.valueOf(aux), String.valueOf(aux), String.valueOf(aux), String.valueOf(aux));
+
+		cap =  GestorBD.getGestorBD().getCapitulosBeans(idCap);
+
+		assertNotEquals(null, cap);
+		cap = null;
+
+		assertTrue(GestorBD.getGestorBD().deleteCapitulo(idCap));
+
+		cap =  GestorBD.getGestorBD().getCapitulosBeans(idCap);
+
+		assertEquals(null, cap);
+
+
+	}
+	
+	@Test
+	public void testGetAutorBeansByEmail(){
+		long aux = System.currentTimeMillis();
+
+		idUs = GestorBD.getGestorBD().addUser(String.valueOf(aux), String.valueOf(aux), String.valueOf(aux), String.valueOf(aux),new Date(aux), String.valueOf(aux), String.valueOf(aux));
+		
+		Autor autor = null;
+		
+		assertEquals(null, autor);
+		
+		autor = GestorBD.getGestorBD().getAutorBeansByEmail(String.valueOf(aux));
+		
+		assertNotEquals(null, autor);
+
+		assertArrayEquals(String.valueOf(aux).split("\n"), autor.getAbout());
+		assertEquals(String.valueOf(aux), autor.getEmail());
+		assertEquals(String.valueOf(aux), autor.getImagen());
+		assertEquals(String.valueOf(aux), autor.getNombre());
+		assertEquals(String.valueOf(aux), autor.getPais());
+	}
+	
+	@Test
+	public void testRecuperarContrasena(){
+		long aux = System.currentTimeMillis();
+
+		idUs = GestorBD.getGestorBD().addUser(String.valueOf(aux), String.valueOf(aux), String.valueOf(aux), String.valueOf(aux),new Date(aux), String.valueOf(aux), String.valueOf(aux));
+		
+		assertEquals(idUs,GestorBD.getGestorBD().checkUser(String.valueOf(aux), String.valueOf(aux)));
+		
+		String contra = "abcd";
+		assertTrue(GestorBD.getGestorBD().recuperarContrasena(idUs, contra));
+		
+		assertEquals(0,GestorBD.getGestorBD().checkUser(String.valueOf(aux), String.valueOf(aux)));
+		assertEquals(idUs,GestorBD.getGestorBD().checkUser(String.valueOf(aux), toSha512(contra)));
+		
+	}
+	
+	private String toSha512(String contrasena){
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("SHA-512");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		String clave = contrasena;
+		md.update(clave.getBytes());
+		String output = "";
+		byte[] mb = md.digest();
+		for (int i = 0; i < mb.length; i++) {
+			byte temp = mb[i];
+			String s = Integer.toHexString(new Byte(temp));
+			while (s.length() < 2) {
+				s = "0" + s;
+			}
+			s = s.substring(s.length() - 2);
+			output += s;
+		}
+		return output;
+	}
+	
+	@Test
+	public void testComprobarEmail(){
+		long aux = System.currentTimeMillis();
+
+		assertTrue(GestorBD.getGestorBD().comprobarEmail(String.valueOf(aux)));
+				
+		idUs = GestorBD.getGestorBD().addUser(String.valueOf(aux), String.valueOf(aux), String.valueOf(aux), String.valueOf(aux),new Date(aux), String.valueOf(aux), String.valueOf(aux));
+		
+		assertFalse(GestorBD.getGestorBD().comprobarEmail(String.valueOf(aux)));
+	
+	}
 }

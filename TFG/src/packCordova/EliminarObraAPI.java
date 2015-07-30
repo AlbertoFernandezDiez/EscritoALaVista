@@ -12,18 +12,19 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 import packBD.GestorBD;
+import packBeans.Obra;
 
 /**
- * Servlet implementation class LogInApi
+ * Servlet implementation class EliminarObraAPI
  */
-@WebServlet("/api/LogInApi")
-public class LogInApi extends HttpServlet {
+@WebServlet("/api/EliminarObraAPI")
+public class EliminarObraAPI extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public LogInApi() {
+	public EliminarObraAPI() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -32,43 +33,34 @@ public class LogInApi extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		String user, passw;
+		String loggedID = "", obraID = "";
+		int idO = 0, idU = 0;
+		boolean resultado = false;
 
 		try{
-			user = request.getParameter("usuario");
-			passw = request.getParameter("contrasena");
+			loggedID = request.getParameter("loggedid");
+			obraID = request.getParameter("obra");
+		}catch(NullPointerException e){}
+
+
+		try{
+			idU = Integer.parseInt(loggedID);
+			idO = Integer.parseInt(obraID);
 		}
-		catch (NullPointerException e){
-			user = "";
-			passw = "";
-		}
-
-		int id = 0;
-
-		boolean registrado = false;
-		String loggedID = String.valueOf(System.currentTimeMillis());
-
-		JSONObject respuesta = new JSONObject();
-
-		if (!user.equals("") && !passw.equals("")){
-			id = GestorBD.getGestorBD().checkUser(user, passw);	
+		catch(NumberFormatException e){
 		}
 
-		if (id != 0)
-		{
-			registrado = true;
-		//	UsuariosLoggeados.getMyUsuariosLogeados().addUsuario(loggedID, id);
-		}
-		respuesta.put("loggedid",id);
-		respuesta.put("valido", registrado);
+		Obra obra = GestorBD.getGestorBD().getObraBeans(idO);
 
-		System.out.println("pedido");
+		if (obra != null){
+			if(obra.getAutor() == idU){
+				resultado = GestorBD.getGestorBD().deleteObra(idO);
+			}
+		}
 		response.setContentType("application/json");
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		PrintWriter pw = response.getWriter();
-		pw.write(respuesta.toString());
-
+		pw.write(new JSONObject().put("value", resultado).toString());
 	}
 
 }

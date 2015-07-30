@@ -47,7 +47,7 @@ public class MostrarAutor extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String url = request.getParameter("url"), idS = request.getParameter("id");
+		String /*url = request.getParameter("url"),*/ idS = request.getParameter("id");
 		int id = 0;
 
 		try{
@@ -76,7 +76,7 @@ public class MostrarAutor extends HttpServlet {
 				for (String aux : autor.getAbout()){
 					array.put(new JSONObject().put("text", aux));
 				}
-				json.put("url", url);
+				//json.put("url", url);
 				json.put("nombre", autor.getNombre());
 				json.put("pais", autor.getPais());
 				json.put("imagen",img );

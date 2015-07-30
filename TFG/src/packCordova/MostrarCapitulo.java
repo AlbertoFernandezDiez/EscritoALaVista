@@ -45,7 +45,7 @@ private String filePath;
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String url = request.getParameter("url"),idCS = request.getParameter("id");
+		String /*url = request.getParameter("url"),*/ idCS = request.getParameter("id");
 		int idC = 0;
 		JSONObject json = null;
 
@@ -79,7 +79,7 @@ private String filePath;
 				json.put("imagen", img);
 				json.put("titulo", cap.getNombre());
 				json.put("obra", cap.getObra());
-				json.put("url", url);
+				//json.put("url", url);
 				JSONArray array = new JSONArray();
 				
 				for(String aux : cap.getText()){

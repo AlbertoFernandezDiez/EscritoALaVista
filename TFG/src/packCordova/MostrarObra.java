@@ -46,11 +46,13 @@ public class MostrarObra extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String url = request.getParameter("url"),idOS = request.getParameter("id");
-		int idO = 0;
+		String loggedID = request.getParameter("loggedID"), idOS = request.getParameter("id");
+		int idO = 0, idU = 0;
 
 		try{
 			idO = Integer.parseInt(idOS);
+			idU = Integer.parseInt(loggedID);
+
 		}
 		catch(NumberFormatException e)
 		{
@@ -67,6 +69,8 @@ public class MostrarObra extends HttpServlet {
 			JSONObject json2,json1 = new JSONObject();
 
 			String img = "";
+			
+			boolean seguidor = GestorBD.getGestorBD().getObraAutorChecked(idO, idU);
 
 			if(obra.getPortada() != null){
 				File imgFile = new File(filePath,obra.getPortada());
@@ -74,7 +78,13 @@ public class MostrarObra extends HttpServlet {
 			}
 
 			json1 = new JSONObject();
-			json1.put("url", url);
+			if (idU == 0)
+			json1.put("notlogged", true);
+			else
+			json1.put("notlogged", false);
+			
+			json1.put("seguidor", seguidor);
+
 			json1.put("titulo", obra.getTitulo());
 			json1.put("id", obra.getId());
 			json1.put("imagen", img);
@@ -105,11 +115,13 @@ public class MostrarObra extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String url = request.getParameter("url"),idOS = request.getParameter("id");
-		int idO = 0;
+		String loggedID = request.getParameter("loggedID"), idOS = request.getParameter("id");
+		int idO = 0, idU = 0;
 
 		try{
 			idO = Integer.parseInt(idOS);
+			idU = Integer.parseInt(loggedID);
+
 		}
 		catch(NumberFormatException e)
 		{
@@ -126,6 +138,8 @@ public class MostrarObra extends HttpServlet {
 			JSONObject json2,json1 = new JSONObject();
 
 			String img = "";
+			
+			boolean seguidor = GestorBD.getGestorBD().getObraAutorChecked(idO, idU);
 
 			if(obra.getPortada() != null){
 				File imgFile = new File(filePath,obra.getPortada());
@@ -133,7 +147,13 @@ public class MostrarObra extends HttpServlet {
 			}
 
 			json1 = new JSONObject();
-			json1.put("url", url);
+			if (idU == 0)
+			json1.put("notlogged", true);
+			else
+			json1.put("notlogged", false);
+			
+			json1.put("seguidor", seguidor);
+
 			json1.put("titulo", obra.getTitulo());
 			json1.put("id", obra.getId());
 			json1.put("imagen", img);
@@ -153,14 +173,6 @@ public class MostrarObra extends HttpServlet {
 
 			json1.put("capitulos", array);
 
-			try{
-				String idLogged = request.getParameter("loggedID");
-				if (!idLogged.equals(""))
-				json1.put("loggedID", idLogged);
-			}catch(NullPointerException e){
-				e.printStackTrace();
-			}
-			
 			System.out.println("pedido");
 			response.setContentType("application/json");
 			response.setHeader("Access-Control-Allow-Origin", "*");

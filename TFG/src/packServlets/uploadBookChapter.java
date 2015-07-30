@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -148,7 +149,14 @@ public class uploadBookChapter extends HttpServlet {
 				}
 			}
 			//Mandamos un email a los usuario suscritos a la historia
-			mandarEmailSeguimiento(idOb,tituloObra);
+			
+			try {
+				mandarEmailSeguimiento(idOb,tituloObra);
+			} catch (MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
 
 
@@ -159,7 +167,7 @@ public class uploadBookChapter extends HttpServlet {
 
 	}
 
-	private void mandarEmailSeguimiento(int id, String tituloObra) {
+	private void mandarEmailSeguimiento(int id, String tituloObra) throws MessagingException {
 		// TODO Auto-generated method stub
 		ArrayList<Autor> lista = GestorBD.getGestorBD().getSuscriptores(id);
 		
@@ -183,7 +191,7 @@ public class uploadBookChapter extends HttpServlet {
 			}
 		});
 
-		try {
+		//try {
 
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("afalbertofd47@gmail.com"));
@@ -201,10 +209,10 @@ public class uploadBookChapter extends HttpServlet {
 			Transport.send(message);
 
 
-		} catch (MessagingException e) {
+		/*} catch (MessagingException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
-		}
+		}*/
 		
 	}
 	

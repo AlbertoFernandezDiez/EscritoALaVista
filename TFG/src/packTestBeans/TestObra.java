@@ -14,10 +14,10 @@ import com.sun.org.glassfish.external.statistics.TimeStatistic;
 import packBeans.Obra;
 
 public class TestObra {
-protected Obra obra;
-protected Date in;
-protected Timestamp mod;
-protected String resumen;
+	protected Obra obra;
+	protected Date in;
+	protected Timestamp mod;
+	protected String resumen;
 
 	@Before
 	public void setUp() throws Exception {
@@ -32,6 +32,7 @@ protected String resumen;
 		obra.setPortada("portada");
 		obra.setResumen(resumen);
 		obra.setTitulo("titulo");
+		obra.setActive(0);
 	}
 
 	@After
@@ -45,8 +46,8 @@ protected String resumen;
 
 	@Test
 	public void testSetId() {
-obra.setId(0);
-	assertEquals(0, obra.getId());
+		obra.setId(0);
+		assertEquals(0, obra.getId());
 	}
 
 	@Test
@@ -119,4 +120,16 @@ obra.setId(0);
 		assertEquals(mod, obra.getFecha_mod());
 	}
 
+	@Test
+	public void testGetActive(){
+		assertEquals(0, obra.getActive());
+	}
+
+	@Test
+	public void testSetActive(){
+		assertEquals(0, obra.getActive());
+obra.setActive(1);
+assertEquals(1, obra.getActive());
+	}
 }
+

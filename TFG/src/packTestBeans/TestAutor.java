@@ -26,6 +26,7 @@ public class TestAutor {
 		autor.setNacimiento(nacimiento);
 		autor.setNombre("nombre");
 		autor.setPais("pais");
+		autor.setActive(0);
 	}
 
 	@After
@@ -38,7 +39,7 @@ public class TestAutor {
 	public void testGetEmail() {
 		assertEquals("email", autor.getEmail());
 	}
-	
+
 	@Test
 	public void testSetEmail() {
 		autor.setEmail("a");
@@ -46,13 +47,13 @@ public class TestAutor {
 		assertEquals("a", autor.getEmail());
 
 	}
-	
+
 	@Test
 	public void testGetId(){
 		assertEquals(1, autor.getId());
 
 	}
-	
+
 	@Test
 	public void testSetId(){
 		autor.setId(0);
@@ -60,12 +61,12 @@ public class TestAutor {
 		assertEquals(0, autor.getId());
 
 	}
-	
+
 	@Test
 	public void testGetPais(){
 		assertEquals("pais", autor.getPais());
 	}
-	
+
 	@Test
 	public void testSetPais(){
 		autor.setPais("a");
@@ -73,12 +74,12 @@ public class TestAutor {
 		assertEquals("a", autor.getPais());
 
 	}
-	
+
 	public void testGetNombre(){
 		assertEquals("nombre", autor.getNombre());
 
 	}
-	
+
 	@Test
 	public void testSetNombre(){
 		autor.setNombre("q");
@@ -91,32 +92,32 @@ public class TestAutor {
 		assertArrayEquals(about.split("\n"), autor.getAbout());
 
 	}
-	
+
 	@Test
 	public void testSetAbout(){
 		String aux = "hola\nadios";
 		autor.setAbout(aux);
 		assertArrayEquals(aux.split("\n"), autor.getAbout());
 	}
-	
+
 	@Test
 	public void testGetImagen(){
 		assertEquals("imagen", autor.getImagen());
 
 	}
-	
+
 	@Test
 	public void testSetImagen(){
 		autor.setImagen("img");
 		assertEquals("img", autor.getImagen());
 	}
-	
+
 	@Test
 	public void testGetNacimiento(){
 		assertEquals(nacimiento, autor.getNacimiento());
 
 	}
-	
+
 	@Test
 	public void testSetNacimiento(){
 		Date aux = new Date(0);
@@ -124,5 +125,17 @@ public class TestAutor {
 		assertNotEquals(nacimiento, autor.getNacimiento());
 		assertEquals(aux, autor.getNacimiento());
 	}
-	
+
+	@Test
+	public void testGetActive(){
+		assertEquals(0, autor.getActive());
+	}
+
+	@Test
+	public void testSetActive(){
+		assertEquals(0, autor.getActive());
+		autor.setActive(1);
+		assertEquals(1, autor.getActive());
+	}
+
 }
