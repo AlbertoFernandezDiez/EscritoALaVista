@@ -659,4 +659,19 @@ public class TestGestorBD {
 		assertFalse(GestorBD.getGestorBD().comprobarEmail(String.valueOf(aux)));
 	
 	}
+	
+	@Test
+	public void testCheckAutorDeshabilitado(){
+		long aux = System.currentTimeMillis();
+
+		idUs = GestorBD.getGestorBD().addUser(String.valueOf(aux), String.valueOf(aux), String.valueOf(aux), String.valueOf(aux),new Date(aux), String.valueOf(aux), String.valueOf(aux));
+		
+		assertFalse(GestorBD.getGestorBD().checkAutorDeshabilitado(idUs));
+		
+		GestorBD.getGestorBD().modificarVisibilidadAutor(idUs, 0);
+		
+		assertTrue(GestorBD.getGestorBD().checkAutorDeshabilitado(idUs));
+		
+		
+	}
 }

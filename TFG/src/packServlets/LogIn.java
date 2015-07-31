@@ -45,19 +45,25 @@ public class LogIn extends HttpServlet {
 		//son correctos, recuperamos el indice si son
 		//correctos, sino un 0
 		int id = GestorBD.getGestorBD().checkUser(username,password);
-
+		
 		if (id != 0){
-			//Los datos son correctos, creamos 
-			//una sesion con el indice y el 
-			//nombre de usuario
-			HttpSession session = request.getSession();
-			session.setAttribute("username",username);
-			session.setAttribute("id", id);
-			session.setMaxInactiveInterval(600);
 
-			//Redireccionamos a la 
-			//pagina principal
-			response.sendRedirect("Index");
+			if(GestorBD.getGestorBD().checkAutorDeshabilitado(id)){
+				response.sendRedirect("Error/UsuarioDeshabilitado.html");
+			}
+			else{
+				//Los datos son correctos, creamos 
+				//una sesion con el indice y el 
+				//nombre de usuario
+				HttpSession session = request.getSession();
+				session.setAttribute("username",username);
+				session.setAttribute("id", id);
+			//	session.setMaxInactiveInterval(600);
+
+				//Redireccionamos a la 
+				//pagina principal
+				response.sendRedirect("Index");
+			}
 
 		}
 		else

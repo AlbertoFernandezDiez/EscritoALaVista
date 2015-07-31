@@ -141,6 +141,7 @@ public class MostrarComentarios extends HttpServlet {
 			}
 		}
 		System.out.println("pedido");
+		System.out.println(jsonf.toString());
 		response.setContentType("application/json");
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		PrintWriter pw = response.getWriter();

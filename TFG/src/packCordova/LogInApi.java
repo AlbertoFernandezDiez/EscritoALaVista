@@ -46,7 +46,7 @@ public class LogInApi extends HttpServlet {
 
 		int id = 0;
 
-		boolean registrado = false;
+		boolean registrado = false, deshabilitado = false;
 		String loggedID = String.valueOf(System.currentTimeMillis());
 
 		JSONObject respuesta = new JSONObject();
@@ -58,10 +58,14 @@ public class LogInApi extends HttpServlet {
 		if (id != 0)
 		{
 			registrado = true;
-		//	UsuariosLoggeados.getMyUsuariosLogeados().addUsuario(loggedID, id);
+			deshabilitado = GestorBD.getGestorBD().checkAutorDeshabilitado(id);
+			
 		}
 		respuesta.put("loggedid",id);
+		
+		
 		respuesta.put("valido", registrado);
+		respuesta.put("deshabilitado", deshabilitado);
 
 		System.out.println("pedido");
 		response.setContentType("application/json");

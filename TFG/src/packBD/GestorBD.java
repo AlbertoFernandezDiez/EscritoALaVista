@@ -1517,6 +1517,39 @@ public class GestorBD {
 		}
 		return lista;
 	}
+	
+	/**
+	 * Método que comprueba si un autor
+	 * esta deshabilitado
+	 * @param id	Id del autor en BD
+	 * @return ArrayList de autores
+	 */
+	public boolean checkAutorDeshabilitado(int id) {
+		boolean deshabilitado = false;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conexion = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/tfg",userBD, passBD);
+
+			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT active FROM tfg.autor where id = ?;");
+			st.setInt(1, id);
+
+			ResultSet rs = st.executeQuery();
+			if (rs.next())	   
+			{
+				int activ = rs.getInt("active");
+				deshabilitado = (activ == 0);
+				
+			}
+			rs.close();
+			st.close();
+			conexion.close();
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return deshabilitado;
+	}
 
 	/**
 	 * Metodo que devuelve una lista

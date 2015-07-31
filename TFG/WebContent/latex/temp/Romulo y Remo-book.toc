@@ -1,0 +1,3 @@
+\select@language {spanish}
+\contentsline {chapter}{\numberline {1}La leyenda}{5}{chapter.1}
+\contentsline {chapter}{\numberline {2}Sobre el autor: alberto}{11}{chapter.2}
