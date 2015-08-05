@@ -72,7 +72,7 @@ System.out.println(lista.size());
 		}
 		else
 		{
-			response.sendRedirect("/Error/noEresAdmin.html");
+			response.sendRedirect("Error/noEresAdmin.html");
 		}
 	}
 

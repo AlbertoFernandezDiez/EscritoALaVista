@@ -67,7 +67,7 @@ request.setAttribute("admin", true);
 		}
 		else
 		{
-			response.sendRedirect("/Error/noEresAdmin.html");
+			response.sendRedirect("Error/noEresAdmin.html");
 		}
 	}
 
