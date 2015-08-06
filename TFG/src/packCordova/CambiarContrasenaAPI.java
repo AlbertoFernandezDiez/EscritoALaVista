@@ -51,14 +51,14 @@ public class CambiarContrasenaAPI extends HttpServlet {
 
 		Autor autor = GestorBD.getGestorBD().getAutorBeansById(id);
 
-		if (id != 0){
+		if (id != 0 && autor.getActive() != 0){
 			if(GestorBD.getGestorBD().checkUser(autor.getNombre(), contraV)!= 0){
 				resultado = GestorBD.getGestorBD().changePassword(id, contraV, contraN);
 			}
 		}	
 		PrintWriter pw = response.getWriter();
 		response.setHeader("Access-Control-Allow-Origin", "*");
-		pw.write(String.valueOf(new JSONObject().put("value", resultado)));
+		pw.write(String.valueOf(new JSONObject().put("value", resultado).put("desh", autor.getActive() == 0)));
 
 	}
 
