@@ -1,6 +1,7 @@
 package packCordova;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
@@ -121,7 +122,9 @@ private String filePath;
 			
 			if(cap.getImagen() != null){			
 			File imgFile = new File(filePath,cap.getImagen());
+			try{
 			img = Encoder.getMyEncoder().encodeInBase64(imgFile);
+			}catch(FileNotFoundException e){}
 			}
 			
 			if (cap != null)

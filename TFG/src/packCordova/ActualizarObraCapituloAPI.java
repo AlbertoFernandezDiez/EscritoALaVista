@@ -72,6 +72,9 @@ public class ActualizarObraCapituloAPI extends HttpServlet {
 
 		boolean resultado = false;
 
+		
+		
+		
 		/*	try{
 			id = UsuariosLoggeados.getMyUsuariosLogeados().getUsuario(loggedID);
 		}catch(NullPointerException e){}*/
@@ -82,8 +85,13 @@ public class ActualizarObraCapituloAPI extends HttpServlet {
 			id= Integer.parseInt(loggedID);
 		}catch(NumberFormatException e){e.printStackTrace();}
 
+		Autor autor = null;
+		try{
+			autor = GestorBD.getGestorBD().getAutorBeansById(id);
+			}catch(NullPointerException e){}
+			
 
-		if (id != 0){
+		if (id != 0 && autor.getActive() != 0){
 			String pathImagenObra = null;
 			if (!imagenObra.equals(""))
 				pathImagenObra= Encoder.getMyEncoder().decodeInBase64(imagenObra, filePath);
@@ -143,7 +151,7 @@ public class ActualizarObraCapituloAPI extends HttpServlet {
 		}
 		PrintWriter pw = response.getWriter();
 		response.setHeader("Access-Control-Allow-Origin", "*");
-		pw.write(String.valueOf(new JSONObject().put("value", resultado)));
+		pw.write(String.valueOf(new JSONObject().put("value", resultado).put("desh", autor.getActive() == 0)));
 	}
 
 	private void mandarEmailSeguimiento(int id, String tituloObra) throws MessagingException {

@@ -1,6 +1,7 @@
 package packCordova;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -70,9 +71,11 @@ public class ListarCapitulosAPI extends HttpServlet {
 		String img = "";
 
 		if(obra.getPortada() != null){			
+			try{
 			File imgFile = new File(filePath,obra.getPortada());
 			img = Encoder.getMyEncoder().encodeInBase64(imgFile);
 			json1.put("imagen", img);
+			}catch(FileNotFoundException e){}
 		}
 		}
 		else{

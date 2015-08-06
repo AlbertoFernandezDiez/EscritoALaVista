@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 import packBD.GestorBD;
+import packBeans.Autor;
 import packBeans.Capitulo;
 import packBeans.Obra;
 
@@ -51,6 +52,12 @@ public class EliminarCapituloAPI extends HttpServlet {
 		catch(NumberFormatException e){
 		}
 
+		Autor autor = null;
+		try{
+			autor = GestorBD.getGestorBD().getAutorBeansById(idU);
+			}catch(NullPointerException e){}
+			
+		if (autor.getActive() != 0){
 		Capitulo capitulo = GestorBD.getGestorBD().getCapitulosBeans(idC);
 		if (capitulo != null){
 			Obra obra = GestorBD.getGestorBD().getObraBeans(capitulo.getObra());
@@ -60,10 +67,12 @@ public class EliminarCapituloAPI extends HttpServlet {
 				}
 			}
 		}
+		}
 		response.setContentType("application/json");
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		PrintWriter pw = response.getWriter();
-		pw.write(new JSONObject().put("value", resultado).toString());
+		pw.write(new JSONObject().put("value", resultado).put("desh", autor.getActive() == 0).toString());
+		System.out.println(new JSONObject().put("value", resultado).put("desh", autor.getActive() == 0).toString());
 	}
 
 }

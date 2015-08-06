@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 import packBD.GestorBD;
+import packBeans.Autor;
 import packBeans.Obra;
 
 /**
@@ -50,6 +51,12 @@ public class EliminarObraAPI extends HttpServlet {
 		catch(NumberFormatException e){
 		}
 
+		Autor autor = null;
+		try{
+			autor = GestorBD.getGestorBD().getAutorBeansById(idU);
+			}catch(NullPointerException e){}
+			
+		if (autor.getActive() != 0){
 		Obra obra = GestorBD.getGestorBD().getObraBeans(idO);
 
 		if (obra != null){
@@ -57,10 +64,12 @@ public class EliminarObraAPI extends HttpServlet {
 				resultado = GestorBD.getGestorBD().deleteObra(idO);
 			}
 		}
+		}
 		response.setContentType("application/json");
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		PrintWriter pw = response.getWriter();
-		pw.write(new JSONObject().put("value", resultado).toString());
+		pw.write(new JSONObject().put("value", resultado).put("desh", autor.getActive() == 0).toString());
+		System.out.println(new JSONObject().put("value", resultado).put("desh", autor.getActive() == 0).toString());
 	}
 
 }

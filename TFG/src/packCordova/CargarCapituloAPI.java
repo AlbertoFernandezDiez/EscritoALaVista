@@ -1,6 +1,7 @@
 package packCordova;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -67,10 +68,12 @@ public class CargarCapituloAPI extends HttpServlet {
 
 			String img = "";
 
-			if(capitulo.getImagen() != null){			
+			if(capitulo.getImagen() != null){		
+				try{
 				File imgFile = new File(filePath,capitulo.getImagen());
 				img = Encoder.getMyEncoder().encodeInBase64(imgFile);
 				json.put("imagen", img);
+				}catch(FileNotFoundException e){}
 			}
 
 			json.put("imagen", img);

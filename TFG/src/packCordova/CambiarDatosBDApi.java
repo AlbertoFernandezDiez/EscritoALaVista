@@ -67,7 +67,7 @@ public class CambiarDatosBDApi extends HttpServlet {
 
 		Autor autor = GestorBD.getGestorBD().getAutorBeansById(id);
 
-		if (id != 0){
+		if (id != 0 && autor.getActive() != 0){
 			String path;
 			
 			if (!imagenS.equals(""))
@@ -79,7 +79,7 @@ public class CambiarDatosBDApi extends HttpServlet {
 		}	
 		PrintWriter pw = response.getWriter();
 		response.setHeader("Access-Control-Allow-Origin", "*");
-		pw.write(String.valueOf(new JSONObject().put("value", resultado)));
+		pw.write(String.valueOf(new JSONObject().put("value", resultado).put("desh", autor.getActive() == 0)));
 	}
 
 }

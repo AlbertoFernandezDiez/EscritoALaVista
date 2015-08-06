@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 
 import packBD.GestorBD;
+import packBeans.Autor;
 
 /**
  * Servlet implementation class SeguimientoAPI
@@ -50,14 +51,22 @@ public class SeguimientoAPI extends HttpServlet {
 			idU = Integer.parseInt(idUS);
 		}catch(NumberFormatException e){}
 
+		Autor autor = null;
+		try{
+			autor = GestorBD.getGestorBD().getAutorBeansById(idU);
+			}catch(NullPointerException e){}
+			
+		if (autor.getActive() != 0){
+		
 		if (checked)
 			respuesta = GestorBD.getGestorBD().AddSeguimiento(idU,idO);
 		else
 			respuesta = GestorBD.getGestorBD().QuitSeguimiento(idU,idO);
-
+		}
 		PrintWriter pw = response.getWriter();
 		response.setHeader("Access-Control-Allow-Origin", "*");
-		pw.write(new JSONObject().put("value", respuesta).toString());
+		pw.write(new JSONObject().put("value", respuesta).put("desh", autor.getActive() == 0).toString());
+		System.out.println(new JSONObject().put("value", respuesta).put("desh", autor.getActive() == 0).toString());
 	}		
 
 }

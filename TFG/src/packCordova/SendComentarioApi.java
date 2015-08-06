@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import com.sun.org.apache.bcel.internal.generic.NEW;
 
 import packBD.GestorBD;
+import packBeans.Autor;
 
 /**
  * Servlet implementation class SendComentarioApi
@@ -52,11 +53,13 @@ public class SendComentarioApi extends HttpServlet {
 		
 		boolean resultado = false;
 		
-		/*try{
-			id = UsuariosLoggeados.getMyUsuariosLogeados().getUsuario(loggedID);
-		}catch(NullPointerException e){}*/
+		Autor autor = null;
 		
-		if (id != 0){
+		try{
+		autor = GestorBD.getGestorBD().getAutorBeansById(id);
+		}catch(NullPointerException e){}
+		
+		if (id != 0 && autor.getActive() != 0){
 			resultado = GestorBD.getGestorBD().addComment(id, idC, idO, comentario);
 		}
 		
@@ -64,7 +67,8 @@ public class SendComentarioApi extends HttpServlet {
 		response.setContentType("application/text");
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		PrintWriter pw = response.getWriter();
-		pw.write(String.valueOf(new JSONObject().put("ok",resultado)));
+		pw.write(String.valueOf(new JSONObject().put("ok",resultado).put("desh", autor.getActive() == 0)));
+		System.out.println(String.valueOf(new JSONObject().put("ok",resultado).put("desh", autor.getActive() == 0)));
 	}
 
 }

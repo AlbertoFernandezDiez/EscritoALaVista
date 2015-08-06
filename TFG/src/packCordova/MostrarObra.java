@@ -1,6 +1,7 @@
 package packCordova;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
@@ -143,7 +144,9 @@ public class MostrarObra extends HttpServlet {
 
 			if(obra.getPortada() != null){
 				File imgFile = new File(filePath,obra.getPortada());
+				try{
 				img = Encoder.getMyEncoder().encodeInBase64(imgFile);
+				}catch(FileNotFoundException e){}
 			}
 
 			json1 = new JSONObject();
