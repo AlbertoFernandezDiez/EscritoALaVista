@@ -95,6 +95,7 @@
 		$('#botonObra').on('click', function() {
 			$('#obras').toggle(500);
 		});
+			$('[data-toggle="tooltip"]').tooltip();
 	});
 </script>
 
@@ -168,7 +169,7 @@
 		</div>
 
 		<div class='jumbotron'>
-			<div id='botonAutor'>
+			<div id='botonAutor' data-toggle="tooltip" data-placement="left" title="Pulsa aquí para desplegar la lista de usuarios deshabilitados">
 				<h3>
 					Autores Deshabilitados <span class="glyphicon glyphicon-plus"></span>
 				</h3>
@@ -194,7 +195,7 @@
 
 							<td><button type="button"
 									class='btn btn-danger eliminarAutor'
-									value='<c:out value="${aut.id}"></c:out>'>Eliminar</button></td>
+									value='<c:out value="${aut.id}"></c:out>' data-toggle="tooltip" data-placement="bottom" title="Pulsa aquí para eliminar el usuario">Eliminar</button></td>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -204,7 +205,7 @@
 			</script>
 			<c:set var="autor" value="${requestScope.autoresHash}" scope="request"></c:set>
 
-			<div id='botonObra'>
+			<div id='botonObra' data-toggle="tooltip" data-placement="left" title="Pulsa aquí para desplegar la lista de obras deshabilitadas">
 				<h3>
 					Obras Deshabilitadas <span class="glyphicon glyphicon-plus"></span>
 				</h3>
@@ -230,7 +231,7 @@
 									pattern="dd/MM/yyyy" /></td>
 							<td><button type="button"
 									class='btn btn-danger eliminarObra'
-									value='<c:out value="${aut.id}"></c:out>'>Eliminar</button></td>
+									value='<c:out value="${aut.id}"></c:out>' data-toggle="tooltip" data-placement="bottom" title="Pulsa aquí para eliminar la obra">Eliminar</button></td>
 						</tr>
 					</c:forEach>
 				</tbody>

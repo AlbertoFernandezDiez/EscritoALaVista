@@ -88,6 +88,10 @@
 			}
 		});
 	}
+	
+	$(document).ready(function(){
+		$('[data-toggle="tooltip"]').tooltip();
+});
 </script>
 
 </head>
@@ -182,15 +186,15 @@
 							<td><c:choose>
 									<c:when test="${aut.active == 1}">
 										<button type="button" class='btn btn-danger deshabilitar active'
-											value='<c:out value="${aut.id}"></c:out>'>Deshabilitar</button>
+											value='<c:out value="${aut.id}"></c:out>' data-toggle="tooltip" data-placement="bottom" title="Pulsa aquí para deshabilitar la obra">Deshabilitar</button>
 											<button type="button" class='btn btn-success habilitar disabled'
-											value='<c:out value="${aut.id}"></c:out>'>Habilitar</button>
+											value='<c:out value="${aut.id}"></c:out>' data-toggle="tooltip" data-placement="bottom" title="Pulsa aquí para habilitar la obra">Habilitar</button>
 									</c:when>
 									<c:when test="${aut.active == 0}">
 									<button type="button" class='btn btn-danger deshabilitar disabled'
-											value='<c:out value="${aut.id}"></c:out>'>Deshabilitar</button>
+											value='<c:out value="${aut.id}"></c:out>' data-toggle="tooltip" data-placement="bottom" title="Pulsa aquí para deshabilitar la obra">Deshabilitar</button>
 										<button type="button" class='btn btn-success habilitar active'
-											value='<c:out value="${aut.id}"></c:out>'>Habilitar</button>
+											value='<c:out value="${aut.id}"></c:out>' data-toggle="tooltip" data-placement="bottom" title="Pulsa aquí para habilitar la obra">Habilitar</button>
 									</c:when>
 								</c:choose>
 								<!-- <button type="button" class='btn btn-default eliminar'

@@ -27,7 +27,7 @@
 
 		if (email == '')
 			return;
-		
+
 		$.ajax({
 			url : "api/ContrasenaOlvidadaAPI",
 			type : 'POST',
@@ -51,6 +51,7 @@
 
 	$().ready(function() {
 		$('#enviar').on('click', contrasenaOlvidada);
+		$('[data-toggle="tooltip"]').tooltip();
 	});
 </script>
 </head>
@@ -99,8 +100,12 @@
 		<div class="form-group">
 			<label for="email">Email :</label> <input id="email"
 				class='form-control' name="email" type="email"
-				placeholder="example@example.com" required='true'> <br>
-			<button class="btn btn-default" id='enviar' type="button">Enviar</button>
+				placeholder="example@example.com" required='true'
+				data-toggle="tooltip" data-placement="bottom"
+				title="Introduce aquí el email con el que te registraste"> <br>
+			<button class="btn btn-success center-block" id='enviar' type="button"
+				value='Enviar' data-toggle="tooltip" data-placement="bottom"
+				title="Pulsa aquí para recuperar tu contraseña">Enviar</button>
 
 		</div>
 	</div>
