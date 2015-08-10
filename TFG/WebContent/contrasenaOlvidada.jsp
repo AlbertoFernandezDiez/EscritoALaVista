@@ -98,6 +98,7 @@
 			</div>
 		</div>
 		<div class="form-group">
+		<h3>Introduce tu correo para recuperar la contraseña</h3>
 			<label for="email">Email :</label> <input id="email"
 				class='form-control' name="email" type="email"
 				placeholder="example@example.com" required='true'
