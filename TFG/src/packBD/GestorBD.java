@@ -22,7 +22,7 @@ import packBeans.Obra;
 public class GestorBD {
 	private static GestorBD myGestorBD = null;
 	private Connection conexion = null;
-	private String userBD = "root", passBD = "root";
+	private String userBD = "escritoalavista", passBD = "admin";
 
 	private GestorBD(){
 
