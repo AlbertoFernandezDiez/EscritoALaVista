@@ -3,6 +3,7 @@ package packServlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,9 +23,11 @@ public class HabilitarDeshabilitarObraAutor extends HttpServlet {
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public HabilitarDeshabilitarObraAutor() {
-		super();
-		// TODO Auto-generated constructor stub
+	private String username, password;
+
+	public void init( ){
+		username =getServletContext().getInitParameter("username"); 
+		password = getServletContext().getInitParameter("password"); 
 	}
 
 	/**
@@ -67,9 +70,27 @@ public class HabilitarDeshabilitarObraAutor extends HttpServlet {
 			{
 			case 0:
 				resultado = GestorBD.getGestorBD().modificarVisibilidadAutor(id,opcion);
+				try {
+					if (opcion == 0)
+						MailServer.getMyMailServer(username, password).mandarEmailAvisoUsuarioDesha(id);
+					else
+						MailServer.getMyMailServer(username, password).mandarEmailAvisoUsuarioHabil(id);	
+				} catch (MessagingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				break;
 			case 1:
 				resultado =	GestorBD.getGestorBD().modificarVisibilidadObra(id,opcion);
+				try {
+					if (opcion == 0)
+						MailServer.getMyMailServer(username, password).mandarEmailAvisoObraDesha(id);
+					else
+						MailServer.getMyMailServer(username, password).mandarEmailAvisoObraHabil(id);
+				} catch (MessagingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				break;
 			}
 			PrintWriter pw = response.getWriter();

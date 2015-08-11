@@ -42,34 +42,7 @@ public class EliminarObra extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-
-		boolean admin = false; 
-		try{
-			admin =	(boolean)session.getAttribute("admin");
-		}
-		catch (NullPointerException e)
-		{
-			e.printStackTrace();
-		}
-
-		if (admin)
-		{
-			ArrayList<Obra> lista = GestorBD.getGestorBD().getObrasBeansAll();
-			HashMap<Integer, String> autores = GestorBD.getGestorBD().getHasMapAutores();
-
-			request.setAttribute("obras", lista);
-			request.setAttribute("autores", autores);
-request.setAttribute("admin", true);
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/Gestion/eliminarObra.jsp");
-			rd.forward(request, response);
-		}
-		else
-		{
-			response.sendRedirect("Error/noEresAdmin.html");
-		}
-	}
+	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

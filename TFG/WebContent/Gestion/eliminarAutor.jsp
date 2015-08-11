@@ -155,7 +155,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" data-dismiss="modal" class="btn btn-primary"
-							id="delete">Desabilitar</button>
+							id="delete">Deshabilitar</button>
 						<button type="button" data-dismiss="modal" class="btn">Cancelar</button>
 					</div>
 				</div>

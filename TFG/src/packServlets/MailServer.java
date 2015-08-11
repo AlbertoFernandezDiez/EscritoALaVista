@@ -13,6 +13,7 @@ import javax.mail.internet.MimeMessage;
 
 import packBD.GestorBD;
 import packBeans.Autor;
+import packBeans.Obra;
 
 public class MailServer {
 	private static MailServer myMailServer = null;
@@ -132,16 +133,15 @@ public class MailServer {
 
 	}
 	
-	public void mandarEmailAvisoObraDesha(int id, String tituloObra) throws MessagingException {
+	public void mandarEmailAvisoObraDesha(int id) throws MessagingException {
 		// TODO Auto-generated method stub
-		Autor autor = GestorBD.getGestorBD().getAutorBeansById(id);
+		Obra obra = GestorBD.getGestorBD().getObraBeans(id);
+		Autor autor = GestorBD.getGestorBD().getAutorBeansById(obra.getAutor());
 
 		if (autor == null)
 			return;
 
-		/*	username = "afalbertofd47@gmail.com";
-		final String password = "4wApEfE8";
-		 */
+		
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
@@ -169,7 +169,58 @@ public class MailServer {
 
 			message.setSubject("Aviso, obra deshabilitada");
 			message.setText("Hola! " + autor.getNombre() + "\n" +
-					"Tu obra " + tituloObra + " ha sido deshabilitada "
+					"Tu obra " + obra.getTitulo() + " ha sido deshabilitada "
+							+ "por el administrador. Para más información "
+							+ "ponte en contacto con el administrador de "
+							+ "la web.");
+
+			Transport.send(message);
+
+
+		/*} catch (MessagingException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}*/
+
+	}
+	
+	public void mandarEmailAvisoObraHabil(int id) throws MessagingException {
+		// TODO Auto-generated method stub
+		Obra obra = GestorBD.getGestorBD().getObraBeans(id);
+		Autor autor = GestorBD.getGestorBD().getAutorBeansById(obra.getAutor());
+
+		if (autor == null)
+			return;
+
+		
+
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");
+
+		Session session = Session.getInstance(props,
+				new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		});
+
+		//try {
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress("afalbertofd47@gmail.com"));
+
+			if (autor != null)
+			{
+				message.setRecipients(Message.RecipientType.TO,
+						InternetAddress.parse(autor.getEmail()));
+			}
+
+			message.setSubject("Aviso, obra habilitada");
+			message.setText("Hola! " + autor.getNombre() + "\n" +
+					"Tu obra " + obra.getTitulo() + " ha sido habilitada "
 							+ "por el administrador. Para más información "
 							+ "ponte en contacto con el administrador de "
 							+ "la web.");
@@ -219,9 +270,9 @@ public class MailServer {
 						InternetAddress.parse(autor.getEmail()));
 			}
 
-			message.setSubject("Aviso, usuario deshabilitada");
+			message.setSubject("Aviso, usuario deshabilitado");
 			message.setText("Hola! " + autor.getNombre() + "\n" +
-					"Tu usuario ha sido deshabilitada "
+					"Tu usuario ha sido deshabilitado "
 							+ "por el administrador. Para más información "
 							+ "ponte en contacto con el administrador de "
 							+ "la web.");
@@ -233,6 +284,53 @@ public class MailServer {
 			e.printStackTrace();
 			throw new RuntimeException(e);
 		}*/
+
+	}
+	public void mandarEmailAvisoUsuarioHabil(int id) throws MessagingException {
+		// TODO Auto-generated method stub
+		Autor autor = GestorBD.getGestorBD().getAutorBeansById(id);
+
+		if (autor == null)
+			return;
+
+		/*	username = "afalbertofd47@gmail.com";
+		final String password = "4wApEfE8";
+		 */
+
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");
+
+		Session session = Session.getInstance(props,
+				new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		});
+
+		//try {
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress("afalbertofd47@gmail.com"));
+
+			if (autor != null)
+			{
+				message.setRecipients(Message.RecipientType.TO,
+						InternetAddress.parse(autor.getEmail()));
+			}
+
+			message.setSubject("Aviso, usuario habilitado");
+			message.setText("Hola! " + autor.getNombre() + "\n" +
+					"Tu usuario ha sido habilitado "
+							+ "por el administrador. Para más información "
+							+ "ponte en contacto con el administrador de "
+							+ "la web.");
+
+			Transport.send(message);
+
+
 
 	}
 }
