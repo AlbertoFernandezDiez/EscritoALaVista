@@ -57,11 +57,12 @@ public class SendComentarioApi extends HttpServlet {
 		
 		try{
 		autor = GestorBD.getGestorBD().getAutorBeansById(id);
-		}catch(NullPointerException e){}
 		
 		if (id != 0 && autor.getActive() != 0){
 			resultado = GestorBD.getGestorBD().addComment(id, idC, idO, comentario);
 		}
+		
+		}catch(NullPointerException e){}
 		
 		System.out.println("pedido");
 		response.setContentType("application/text");

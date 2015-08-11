@@ -44,6 +44,36 @@ public class EliminarUsuario extends HttpServlet {
 		filePath =getServletContext().getInitParameter("file-upload"); 
 	}
 
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		request.setCharacterEncoding("UTF-8");
+		HttpSession session = request.getSession();
+
+		boolean admin = false; 
+		try{
+			admin =	(boolean)session.getAttribute("admin");
+		}
+		catch (NullPointerException e)
+		{
+			e.printStackTrace();
+		}
+
+		if (admin)
+		{
+			ArrayList<Autor> lista = GestorBD.getGestorBD().getAutoresBeans();
+System.out.println(lista.size());
+			request.setAttribute("autores", lista);
+			request.setAttribute("admin", true);
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/Gestion/eliminarAutor.jsp");
+			rd.forward(request, response);
+		}
+		else
+		{
+			response.sendRedirect("Error/noEresAdmin.html");
+		}
+	}
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
