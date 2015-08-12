@@ -50,20 +50,21 @@ public class LogInApi extends HttpServlet {
 		String loggedID = String.valueOf(System.currentTimeMillis());
 
 		JSONObject respuesta = new JSONObject();
+		try{
+			if (!user.equals("") && !passw.equals("")){
+				id = GestorBD.getGestorBD().checkUser(user, passw);	
+			}
 
-		if (!user.equals("") && !passw.equals("")){
-			id = GestorBD.getGestorBD().checkUser(user, passw);	
-		}
+			if (id != 0)
+			{
+				registrado = true;
+				deshabilitado = GestorBD.getGestorBD().checkAutorDeshabilitado(id);
 
-		if (id != 0)
-		{
-			registrado = true;
-			deshabilitado = GestorBD.getGestorBD().checkAutorDeshabilitado(id);
-			
-		}
+			}
+		}catch(NullPointerException e){}
 		respuesta.put("loggedid",id);
-		
-		
+
+
 		respuesta.put("valido", registrado);
 		respuesta.put("deshabilitado", deshabilitado);
 

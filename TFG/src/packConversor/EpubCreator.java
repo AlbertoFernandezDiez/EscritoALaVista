@@ -296,7 +296,7 @@ public class EpubCreator extends HttpServlet {
 
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 

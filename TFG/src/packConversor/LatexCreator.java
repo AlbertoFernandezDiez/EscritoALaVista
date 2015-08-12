@@ -28,7 +28,7 @@ public class LatexCreator extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private String filePath;
 	private File folder,latexFolder;
-	private String tipo, libro;
+	private String tipo="book", libro;
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -53,10 +53,18 @@ public class LatexCreator extends HttpServlet {
 
 		String idS = request.getParameter("id");
 		int id = 0;
+		
+	
 		tipo = request.getParameter("tipo");
+	
+		if (tipo == null)
+			tipo="book";
+		
 		libro = request.getParameter("libro");
+		
 		if (libro == null)
 			libro ="";
+		
 		try{
 			id = Integer.parseInt(idS);
 		}
@@ -72,9 +80,7 @@ public class LatexCreator extends HttpServlet {
 		}
 		System.out.println(workingDirectory.getAbsolutePath());
 
-	/*	Obra obra = GestorBD.getGestorBD().getObra(id);
-		ListaCapitulos lista = GestorBD.getGestorBD().getCapitulos(id);
-		Usuario autor = GestorBD.getGestorBD().getAutor(id);*/
+	
 
 		packBeans.Obra obra = GestorBD.getGestorBD().getObraBeans(id);
 				ArrayList<packBeans.Capitulo> lista = GestorBD.getGestorBD().getCapituloBeans(id);

@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.sql.Date;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -34,18 +35,21 @@ public class TestItext {
 
 	@Test
 	public void testDoGetHttpServletRequestHttpServletResponse() throws ServletException, IOException {
-		ArrayList<Obra> lista = GestorBD.getGestorBD().getObrasBeans(10, 0, 0);
 
+		long aux = System.currentTimeMillis();
 
+		int idUs = GestorBD.getGestorBD().addUser(String.valueOf(aux), String.valueOf(aux), String.valueOf(aux), String.valueOf(aux),new Date(aux), String.valueOf(aux),null);// String.valueOf(aux));
+		
 
+		int idObra = GestorBD.getGestorBD().insertarObra(idUs, String.valueOf(aux), String.valueOf(aux), null);
+		GestorBD.getGestorBD().insertarCapitulo(idObra, String.valueOf(aux), String.valueOf(aux), String.valueOf(aux), null);
 
-		if (lista.size()!= 0)
-		{
-			URL url = new URL("http://127.0.0.1:8080/TFG/Itext?formato=Itext&id=" + lista.get(0).getId() + "&exportar=Enviar+consulta");
+	//	http://localhost:8080/TFG/Itext?formato=Itext&id=18&exportar=Exportar&tamano=small&tipo=book
+			URL url = new URL("http://127.0.0.1:8080/TFG/Itext?formato=Itext&id=" + idObra + "&exportar=Enviar+consulta&tamano=small");
 			BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream())); 
 			
 			assertEquals("%PDF-1.4", in.readLine());
-		}
+		
 	}
 
 }

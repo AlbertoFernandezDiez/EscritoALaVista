@@ -40,20 +40,17 @@ public class CambiarObraApi extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		String /*url = request.getParameter("url"),*/ loggedId = request.getParameter("loggedid");
+		String  loggedId = request.getParameter("loggedid");
 		int id = 0;
 		JSONObject json, json1 = new JSONObject();
 		JSONArray array = new JSONArray();
 
-		/*try{
-			id = UsuariosLoggeados.getMyUsuariosLogeados().getUsuario(loggedId);
-		}catch(NullPointerException e){}*/
+		
 		
 		try{
 			id = Integer.parseInt(loggedId);
 		}catch(NumberFormatException e){}
 
-		//json1.put("url", url);
 		json1.put("loggedId", id);
 
 		if(id != 0)

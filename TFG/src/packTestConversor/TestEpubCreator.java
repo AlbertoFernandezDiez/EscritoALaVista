@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.sql.Date;
 import java.util.ArrayList;
 
 import org.junit.*;
@@ -25,20 +26,25 @@ public class TestEpubCreator {
 
 	@Test
 	public void testDoGetHttpServletRequestHttpServletResponse() {
-		ArrayList<Obra> lista = GestorBD.getGestorBD().getObrasBeans(10, 0, 0);
+		long aux = System.currentTimeMillis();
 
-		if (lista.size()!= 0)
-		{
+		int idUs = GestorBD.getGestorBD().addUser(String.valueOf(aux), String.valueOf(aux), String.valueOf(aux), String.valueOf(aux),new Date(aux), String.valueOf(aux),null);// String.valueOf(aux));
+		
+
+		int idObra = GestorBD.getGestorBD().insertarObra(idUs, String.valueOf(aux), String.valueOf(aux), null);
+
+	GestorBD.getGestorBD().insertarCapitulo(idObra, String.valueOf(aux), String.valueOf(aux), String.valueOf(aux), null);
 			URL url;
 			try {
-				url = new URL("http://127.0.0.1:8080/TFG/EpubCreator?formato=Epub&id=" + lista.get(0).getId() + "&exportar=Enviar+consulta");
+				url = new URL("http://127.0.0.1:8080/TFG/EpubCreator?formato=Epub&id=" + idObra + "&exportar=Enviar+consulta");
 				BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
 				assertEquals("PK", in.readLine());
+
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
-	}
+//	}
 	}
 }

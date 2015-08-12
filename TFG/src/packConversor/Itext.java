@@ -103,13 +103,18 @@ public class Itext extends HttpServlet {
 			HttpServletRequest request, HttpServletResponse response)
 					throws ServletException, IOException {
 		String idS = request.getParameter("id");
+		
+		
 		tamano = request.getParameter("tamano");
 		
+		
+		try{
 		if (tamano.equals("big"))
 		{
 			type = 1;
 		}
-		
+		}catch(NullPointerException e){
+		}
 		
 		int id = 0;
 		try{

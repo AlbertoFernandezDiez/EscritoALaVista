@@ -38,14 +38,14 @@ public class TestGestorBD {
 		long aux = System.currentTimeMillis();
 		Calendar cal = Calendar.getInstance();
 		Date nac = new Date(cal.YEAR, cal.MONTH, cal.DAY_OF_MONTH);
-		idUs = GestorBD.getGestorBD().addUser(String.valueOf(aux), String.valueOf(aux), String.valueOf(aux), String.valueOf(aux),nac, String.valueOf(aux), String.valueOf(aux));
+		idUs = GestorBD.getGestorBD().addUser(String.valueOf(aux), String.valueOf(aux), String.valueOf(aux), String.valueOf(aux),nac, String.valueOf(aux),null);
 
 		autor = GestorBD.getGestorBD().getAutorBeansById(idUs);
 
 		assertEquals(nac, autor.getNacimiento());
 		assertArrayEquals(String.valueOf(aux).split("\n"), autor.getAbout());
 		assertEquals(String.valueOf(aux), autor.getEmail());
-		assertEquals(String.valueOf(aux), autor.getImagen());
+		assertEquals(null, autor.getImagen());
 		assertEquals(String.valueOf(aux), autor.getNombre());
 		assertEquals(String.valueOf(aux), autor.getPais());
 
@@ -58,12 +58,12 @@ public class TestGestorBD {
 
 		idUs = GestorBD.getGestorBD().addUser(String.valueOf(aux), String.valueOf(aux), String.valueOf(aux), String.valueOf(aux),new Date(aux), String.valueOf(aux), String.valueOf(aux));
 
-		idObra = GestorBD.getGestorBD().insertarObra(idUs, String.valueOf(aux), String.valueOf(aux), String.valueOf(aux));
+		idObra = GestorBD.getGestorBD().insertarObra(idUs, String.valueOf(aux), String.valueOf(aux), null); //String.valueOf(aux));
 
 		obra = GestorBD.getGestorBD().getObraBeans(idObra);
 
 		assertEquals(idUs, obra.getAutor());
-		assertEquals(String.valueOf(aux), obra.getPortada());
+		assertEquals(/*String.valueOf(aux)*/null, obra.getPortada());
 		assertEquals(String.valueOf(aux), obra.getResumen());
 		assertEquals(String.valueOf(aux), obra.getTitulo());
 	}
@@ -76,12 +76,12 @@ public class TestGestorBD {
 
 		idObra = GestorBD.getGestorBD().insertarObra(idUs, String.valueOf(aux), String.valueOf(aux), String.valueOf(aux));
 
-		idCap = GestorBD.getGestorBD().insertarCapitulo(idObra, String.valueOf(aux), String.valueOf(aux), String.valueOf(aux), String.valueOf(aux));
+		idCap = GestorBD.getGestorBD().insertarCapitulo(idObra, String.valueOf(aux), String.valueOf(aux), String.valueOf(aux),null);// String.valueOf(aux));
 
 		cap = GestorBD.getGestorBD().getCapitulosBeans(idCap);
 
 		assertEquals(String.valueOf(aux), cap.getComentarios_autor());
-		assertEquals(String.valueOf(aux) ,cap.getImagen());
+		assertEquals(/*String.valueOf(aux)*/ null ,cap.getImagen());
 		assertEquals(String.valueOf(aux), cap.getNombre());
 		assertArrayEquals(String.valueOf(aux).split("\n"), cap.getText());
 		assertEquals(idObra, cap.getObra());
@@ -111,7 +111,7 @@ public class TestGestorBD {
 
 		idCap = GestorBD.getGestorBD().insertarCapitulo(idObra, String.valueOf(aux), String.valueOf(aux), String.valueOf(aux), String.valueOf(aux));
 
-		assertNotEquals(null, GestorBD.getGestorBD().getCapituloBeans(idCap));
+		assertNotEquals(0, GestorBD.getGestorBD().getCapituloBeans(idObra).size());
 	}
 
 	@Test

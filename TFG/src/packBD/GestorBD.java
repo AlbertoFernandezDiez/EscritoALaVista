@@ -308,6 +308,7 @@ public class GestorBD {
 
 	/**
 	 * Metodo que devuelve la lista de Capitulos
+	 * de una obra
 	 * @param idO Id de la obra en BD
 	 * @return ArrayList con los capitulos
 	 */
@@ -681,15 +682,14 @@ public class GestorBD {
 
 
 			st = (PreparedStatement) conexion.prepareStatement("SELECT id FROM autor where pais = ? and"
-					+ " nacimiento = ? and nombre = ? and password = ? and sal = ? and about = ? and imagen = ? and email = ?;");
+					+ " nacimiento = ? and nombre = ? and password = ? and sal = ? and about = ? and  email = ?;");
 			st.setString(1, pais);
 			st.setDate(2, nac);
 			st.setString(3, nombre);
 			st.setString(4, contra);
 			st.setString(5, sal);
 			st.setString(6, about);
-			st.setString(7, ruta);
-			st.setString(8, email);
+			st.setString(7, email);
 
 			ResultSet rs = st.executeQuery();
 
