@@ -41,14 +41,12 @@ public class MailServer {
 		if (lista.size() == 0)
 			return;
 
-		/*	username = "afalbertofd47@gmail.com";
-		final String password = "4wApEfE8";
-		 */
+	
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.host", "smtp.sendgrid.net");
 		props.put("mail.smtp.port", "587");
 
 		Session session = Session.getInstance(props,
@@ -61,7 +59,7 @@ public class MailServer {
 		//try {
 
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("afalbertofd47@gmail.com"));
+			message.setFrom(new InternetAddress("admin@escritoalavista.com"));
 
 			for (int i = 0; i < lista.size(); i++)
 			{
@@ -90,14 +88,14 @@ public class MailServer {
 		if (autor == null)
 			return;
 
-		/*	username = "afalbertofd47@gmail.com";
+		/*	username = "admin@escritoalavista.com";
 		final String password = "4wApEfE8";
 		 */
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.host", "smtp.sendgrid.net");
 		props.put("mail.smtp.port", "587");
 
 		Session session = Session.getInstance(props,
@@ -110,7 +108,7 @@ public class MailServer {
 		//try {
 
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("afalbertofd47@gmail.com"));
+			message.setFrom(new InternetAddress("admin@escritoalavista.com"));
 
 			if (autor != null)
 			{
@@ -146,7 +144,7 @@ public class MailServer {
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.host", "smtp.sendgrid.net");
 		props.put("mail.smtp.port", "587");
 
 		Session session = Session.getInstance(props,
@@ -159,7 +157,7 @@ public class MailServer {
 		//try {
 
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("afalbertofd47@gmail.com"));
+			message.setFrom(new InternetAddress("admin@escritoalavista.com"));
 
 			if (autor != null)
 			{
@@ -197,7 +195,7 @@ public class MailServer {
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.host", "smtp.sendgrid.net");
 		props.put("mail.smtp.port", "587");
 
 		Session session = Session.getInstance(props,
@@ -210,7 +208,7 @@ public class MailServer {
 		//try {
 
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("afalbertofd47@gmail.com"));
+			message.setFrom(new InternetAddress("admin@escritoalavista.com"));
 
 			if (autor != null)
 			{
@@ -242,14 +240,14 @@ public class MailServer {
 		if (autor == null)
 			return;
 
-		/*	username = "afalbertofd47@gmail.com";
+		/*	username = "admin@escritoalavista.com";
 		final String password = "4wApEfE8";
 		 */
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.host", "smtp.sendgrid.net");
 		props.put("mail.smtp.port", "587");
 
 		Session session = Session.getInstance(props,
@@ -262,7 +260,7 @@ public class MailServer {
 		//try {
 
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("afalbertofd47@gmail.com"));
+			message.setFrom(new InternetAddress("admin@escritoalavista.com"));
 
 			if (autor != null)
 			{
@@ -293,14 +291,14 @@ public class MailServer {
 		if (autor == null)
 			return;
 
-		/*	username = "afalbertofd47@gmail.com";
+		/*	username = "admin@escritoalavista.com";
 		final String password = "4wApEfE8";
 		 */
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.host", "smtp.sendgrid.net");
 		props.put("mail.smtp.port", "587");
 
 		Session session = Session.getInstance(props,
@@ -313,7 +311,7 @@ public class MailServer {
 		//try {
 
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("afalbertofd47@gmail.com"));
+			message.setFrom(new InternetAddress("admin@escritoalavista.com"));
 
 			if (autor != null)
 			{

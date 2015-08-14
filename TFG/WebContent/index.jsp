@@ -20,6 +20,7 @@
 <script src="js/Cookies.js" type="text/javascript"></script>
 <link rel="stylesheet" href="css/Cookies.css">
 
+
 <script>
 $( document).on( 'click', '.dropdown-menu li', function( event ) {
 	 
@@ -33,6 +34,9 @@ $( document).on( 'click', '.dropdown-menu li', function( event ) {
 	   return false;
 	 
 	});
+$().ready(function(){
+	$('[data-toggle="tooltip"]').tooltip();
+});
 </script>
 
 </head>
@@ -56,7 +60,8 @@ $( document).on( 'click', '.dropdown-menu li', function( event ) {
 				<div class="row custom">
 					<div class="col-sm-2"></div>
 					<div class="col-sm-4">
-						<a href="VerHistoria?op=0&hi=<c:out value="${ob.id}"></c:out>"><c:out
+						<a href="VerHistoria?op=0&hi=<c:out value="${ob.id}"></c:out>" data-toggle="tooltip" data-placement="bottom"
+				title="Pulsa aquí para leer la obra"><c:out
 								value="${ob.titulo}"></c:out></a>
 					</div>
 					<div class="col-sm-2">
@@ -67,7 +72,8 @@ $( document).on( 'click', '.dropdown-menu li', function( event ) {
 						<fmt:formatDate value="${ob.fecha_mod}" pattern="dd/MM/yyyy" />
 					</div>
 					<div class="col-sm-2">
-						<a href="VerAutor?autor=<c:out value="${ob.autor}"></c:out>"><c:out
+						<a href="VerAutor?autor=<c:out value="${ob.autor}"></c:out>" data-toggle="tooltip" data-placement="bottom"
+				title="Pulsa aquí para ver el perfil del autor"><c:out
 								value="${autor[ob.autor]}"></c:out></a>
 					</div>
 					<div class="col-sm-2">
@@ -92,12 +98,12 @@ $( document).on( 'click', '.dropdown-menu li', function( event ) {
 				<c:choose>
 					<c:when test="${loop.index eq requestScope.pos}">
 						<li class="active"><a
-							href='Index?pos=<c:out value="${loop.index}"></c:out>&show=1'><c:out
+							href='Index?pos=<c:out value="${loop.index}"></c:out>&show=<c:out value="${requestScope.show}"></c:out>'><c:out
 									value="${loop.index}"></c:out></a></li>
 					</c:when>
 					<c:otherwise>
 						<li><a
-							href='Index?pos=<c:out value="${loop.index}"></c:out>&show=1'><c:out
+							href='Index?pos=<c:out value="${loop.index}"></c:out>&show=<c:out value="${requestScope.show}"></c:out>'><c:out
 									value="${loop.index}"></c:out></a></li>
 					</c:otherwise>
 				</c:choose>
@@ -111,9 +117,9 @@ $( document).on( 'click', '.dropdown-menu li', function( event ) {
 			</button>
 			<ul class="dropdown-menu" role="menu">
 			
-				<li><a href="http://localhost:8080/TFG/Index?pos=0&show=1">1</a></li>
-				<li><a href="http://localhost:8080/TFG/Index?pos=0&show=3">3</a></li>
 				<li><a href="http://localhost:8080/TFG/Index?pos=0&show=5">5</a></li>
+				<li><a href="http://localhost:8080/TFG/Index?pos=0&show=10">10</a></li>
+				<li><a href="http://localhost:8080/TFG/Index?pos=0&show=15">15</a></li>
 			</ul>
 		</div>
 	</div>

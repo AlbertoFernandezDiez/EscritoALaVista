@@ -435,8 +435,9 @@ public class GestorBD {
 			if (rs.next())	   
 			{
 				max = rs.getInt(1);
-				if (max != 0)
+				if (max > 1)
 					max--;
+				
 			}
 			rs.close();
 			st.close();

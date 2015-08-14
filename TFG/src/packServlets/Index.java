@@ -73,7 +73,7 @@ public class Index extends HttpServlet {
 		request.setAttribute("userName",user);
 		}
 		
-		ArrayList<Obra> lista = GestorBD.getGestorBD().getObrasBeans(show, pos,0);
+		ArrayList<Obra> lista = GestorBD.getGestorBD().getObrasBeans(show, show*pos,0);
 		HashMap<Integer, String> autores = GestorBD.getGestorBD().getHasMapAutores();
 		int max = GestorBD.getGestorBD().getMaxObrasN(show);
 		request.setAttribute("obras", lista);
