@@ -151,7 +151,8 @@ public class uploadBookChapter extends HttpServlet {
 			//Mandamos un email a los usuario suscritos a la historia
 			
 			try {
-				mandarEmailSeguimiento(idOb,tituloObra);
+				MailServer.getMyMailServer(username, password).mandarEmailSeguimiento(idOb, tituloObra);
+//				mandarEmailSeguimiento(idOb,tituloObra);
 			} catch (MessagingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
