@@ -22,6 +22,8 @@
 
 <script>
 	$(document).ready(function() {
+		$('[data-toggle="tooltip"]').tooltip();
+
 		$("#exportar").hide();
 		$("#setTipo").hide();
 		$("#formtitle").click(function() {
@@ -92,21 +94,7 @@
 			type : 'POST',
 			data : {
 				obra : obra,
-				checked : checked,
-			},
-			success : function(result) {
-
-				if (result == 'false') {
-					$("#ok").hide(200);
-					$("#bad").show(200);
-				} else {
-					$("#ok").show(200);
-					$("#bad").hide(200);
-				}
-			},
-			error : function(request, error) {
-				$("#ok").hide(200);
-				$("#bad").show(200);
+				checked : checked
 			}
 		});
 	}
@@ -129,10 +117,13 @@
 			value='<c:out value="${requestScope.id}"></c:out>' /> <input
 			id='capitulo' type="hidden"
 			value='<c:out value="${requestScope.chapter}"></c:out>' />
-		<button type="button" class="btn btn-default" id='formtitle'
-			value='Exportar'>Exportar</button>
+		<button type="button" class="btn btn-danger" id='formtitle'
+			value='Exportar' data-toggle="tooltip" data-placement="bottom"
+			title="Pulsa aquí para abrir el menu de exportación">Exportar</button>
 
-		<div class="checkbox pull-right">
+		<div class="checkbox pull-right" data-toggle="tooltip"
+			data-placement="bottom"
+			title="Haz check si deseas recibir notificaciones de esta obra en tu email ">
 			<label> <input type="checkbox" id='seguir' value="Seguir"
 				<c:if test="${empty requestScope.userId}">disabled</c:if>
 				<c:if test="${requestScope.checked}">checked</c:if> /> Seguir
@@ -145,14 +136,22 @@
 			role="form" action='Itext'>
 			<div class="form-group">
 				<label class="radio-inline"><input type="radio"
-					name="formato" value="Itext" checked="checked">Itext</label> <label
-					class="radio-inline"><input type="radio" name="formato"
-					value="EpubCreator">Epub</label> <label class="radio-inline"><input
-					type="radio" name="formato" value="LatexCreator">Latex</label> <label
+					name="formato" value="Itext" checked="checked"
+					data-toggle="tooltip" data-placement="bottom"
+					title="Este formato es adecuado para lectores Kindle">Itext</label>
+				<label class="radio-inline"><input type="radio"
+					name="formato" value="EpubCreator" data-toggle="tooltip"
+					data-placement="bottom"
+					title="Este formato es adecuado para E-books en general">Epub</label>
+				<label class="radio-inline"><input type="radio"
+					name="formato" value="LatexCreator" data-toggle="tooltip"
+					data-placement="bottom"
+					title="Este formato es adecuado para impresión">Latex</label> <label
 					class="radio-inline"><input type="hidden" name="id"
 					value="<c:out value="${requestScope.id}" ></c:out>"></label> <input
-					type='submit' class="btn btn-default" name='exportar'
-					value='Exportar'>
+					type='submit' class="btn btn-success" name='exportar'
+					value='Exportar' data-toggle="tooltip" data-placement="bottom"
+					title="Pulsa aquí para obtener tu obra exportada">
 			</div>
 			<div class="form-group" id='setTamano'>
 				<h4>Selecciona el tamaño</h4>
@@ -165,10 +164,17 @@
 			<div class="form-group" id='setTipo'>
 				<h4>Selecciona el formato</h4>
 				<label class="radio-inline"><input type="radio" name="tipo"
-					value="book" checked="checked">Libro</label> <label
-					class="radio-inline"><input type="radio" name="tipo"
-					value="report">Informe</label>
-						<label> <input type="checkbox" name='libro' id='libro' value="true"/>Formato libro</label>
+					value="book" checked="checked" data-toggle="tooltip"
+					data-placement="bottom"
+					title="En este formato los capítulos comienzan siempre en las hojas pares">Libro</label>
+				<label class="radio-inline"><input type="radio" name="tipo"
+					value="report" data-toggle="tooltip" data-placement="bottom"
+					title="En este formato los capítulos no comienzan siempre en las hojas pares">Informe</label>
+				<label> <input type="checkbox" name='libro' id='libro'
+					value="true" data-toggle="tooltip" data-placement="bottom"
+					title="Este modo permite hacer tu propio libro facilmente, solo tienes que graparlo" />Formato
+					libro
+				</label>
 			</div>
 		</form>
 
@@ -178,7 +184,7 @@
 				if ($(this).val() == "EpubCreator") {
 					$('#setTamano').hide(500);
 					$('#setTipo').hide(500);
-				} 
+				}
 				if ($(this).val() == "LatexCreator") {
 					$('#setTamano').hide(500);
 					$('#setTipo').show(500);
@@ -225,17 +231,17 @@
 							<c:out value="${chap.nombre}"></c:out>
 						</h1>
 					</div>
-					<div class="panel-body">
+					<div class="panel-body" style='text-align: justify;'>
+						<c:if test="${chap.imagen ne null}">
+							<img alt="imagen capítulo"
+								class="img-rounded perfilImg pull-left"
+								src="<c:out value="${chap.imagen}"></c:out>">
+						</c:if>
 						<c:forEach items="${chap.text}" var="par">
 							<p>
 								<c:out value="${par}"></c:out>
 							</p>
 						</c:forEach>
-
-						<c:if test="${chap.imagen ne null}">
-							<img alt="imagen capítulo" class="img-rounded perfilImg"
-								src="<c:out value="${chap.imagen}"></c:out>">
-						</c:if>
 					</div>
 					<div class="panel-footer">
 						<c:out value="${chap.comentarios_autor }"></c:out>
@@ -253,10 +259,14 @@
 										<div class="form-group">
 											<textarea id="comentario" name="comentario" rows="4"
 												cols='100' required='true' class='form-control'
-												placeholder="Escribe aquí tu comentario" spellcheck="true"></textarea>
+												placeholder="Escribe aquí tu comentario" spellcheck="true"
+												data-toggle="tooltip" data-placement="bottom"
+												title="Escribe aquí tu comentario"></textarea>
 										</div>
 										<button type="button" onclick='sendComment()'
-											class="btn btn-default">Comentar</button>
+											class="btn btn-default" data-toggle="tooltip"
+											data-placement="bottom"
+											title="Pulsa aquí para enviar tu comentario">Comentar</button>
 
 									</form>
 									<div id='ok' class="alert alert-success" role="alert">
@@ -279,7 +289,10 @@
 									<div class="row">
 										<div class="col-sm-4">
 
-											<a href="VerAutor?autor=<c:out value="${com.autor}"></c:out>"><c:out
+											<a
+												href="VerAutor?autor=<c:out value="${com.autor}" ></c:out>"
+												data-toggle="tooltip" data-placement="bottom"
+												title="Pulsa aquí para ver el perfil del autor del comentario"><c:out
 													value="${autor[com.autor]}"></c:out></a>
 										</div>
 										<div class="col-sm-8">

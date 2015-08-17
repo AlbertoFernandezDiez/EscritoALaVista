@@ -21,6 +21,11 @@
 <!-- MENSAJE COOKIES -->
 <script src="js/Cookies.js" type="text/javascript"></script>
 <link rel="stylesheet" href="css/Cookies.css">
+<script>
+$().ready(function(){
+	$('[data-toggle="tooltip"]').tooltip();
+});
+</script>
 </head>
 <body>
 
@@ -42,6 +47,9 @@
 				</h1>
 			</div>
 			<div class="panel-body">
+			<c:if test="${not empty autor.imagen}">
+				<img class="img-rounded perfilImg pull-left" alt="Foto de perfil"
+					src="<c:out value="${autor.imagen}"></c:out>"></c:if>
 				<h2>
 					Pais:
 					<c:out value="${autor.pais}"></c:out>
@@ -50,9 +58,6 @@
 					Nacimiento:
 					<c:out value="${autor.nacimiento}"></c:out>
 				</h2>
-				<c:if test="${not empty autor.imagen}">
-				<img class="img-rounded perfilImg" alt="Foto de perfil"
-					src="<c:out value="${autor.imagen}"></c:out>"></c:if>
 				<p class="text-justify">
 				<c:forEach items="${autor.about}" var="par">
 					<p><c:out value="${par}"></c:out></p>
@@ -71,7 +76,7 @@
 					<div class="row custom">
 						<div class="col-sm-2"></div>
 						<div class="col-sm-4">
-							<a href="VerHistoria?op=0&hi=<c:out value="${ob.id}"></c:out>"><c:out
+							<a id='obra' href="VerHistoria?op=0&hi=<c:out value="${ob.id}"></c:out>" data-toggle="tooltip" data-placement="bottom" title="Pulsa aquí para leer la obra"><c:out
 									value="${ob.titulo}"></c:out></a>
 						</div>
 						<div class="col-sm-2">
@@ -81,7 +86,7 @@
 							<fmt:formatDate value="${ob.fecha_mod}" pattern="dd/MM/yyyy" />
 						</div>
 						<div class="col-sm-2">
-							<a href="VerAutor?autor=<c:out value="${ob.autor}"></c:out>"><c:out
+							<a id='autor' href="VerAutor?autor=<c:out value="${ob.autor}"></c:out>" data-toggle="tooltip" data-placement="bottom" title="Pulsa aquí ver el perfil del autor"><c:out
 									value="${autor.nombre}"></c:out></a>
 						</div>
 						<div class="col-sm-2">

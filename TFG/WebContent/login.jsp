@@ -20,6 +20,11 @@
 <link rel="stylesheet" href="css/Cookies.css">
 
 <title>LogIn</title>
+<script>
+$().ready(function(){
+	$('[data-toggle="tooltip"]').tooltip(); 
+})
+</script>
 </head>
 <body>
 	<jsp:include page="menu.jsp" />
@@ -33,15 +38,18 @@
 		enctype="multipart/form-data" role='form'>
 
 		<label for="usuario">Nombre de usuario :</label> <input id="usuario"
-			name="usuario" class='form-control' type="text" placeholder="usuariodeprueba"
-			required='true'> <label for="contrasena">Contraseña:</label>
+			name="usuario" class='form-control' type="text" placeholder="Nombre de usuario"
+			required='true' data-toggle="tooltip" data-placement="bottom" title="Escribe aquí tu nombre de usuario"> <label for="contrasena">Contraseña:</label>
 		<input id="contrasena" class='form-control' name="contrasena" type="password"
-			placeholder="Introduce una contraseña" required='true'> 
+			placeholder="Introduce una contraseña" required='true' data-toggle="tooltip" data-placement="bottom" title="Introduce aquí tu contraseña"> 
 			<input id="contra" class='form-control' name="contrasena" type="hidden">
 			<br>
 			<input
-			type="submit" class='btn btn-default' name="submit" id="submit">
+			type="submit" class='btn btn-success center-block' value='Log In' name="submit" id="submit" data-toggle="tooltip" data-placement="bottom" title="Pulsa aquí para identificarte">
 	</form>
+	<br>
+	 <center><a class="btn btn-info" href='contrasenaOlvidada.jsp'
+					role="button" data-toggle="tooltip" data-placement="bottom" title="Pulsa aquí para conseguir una nueva contraseñá">He olvidado la contraseña</a></center>
 </div>
 </div>
 	<script>

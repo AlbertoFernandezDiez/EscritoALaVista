@@ -22,7 +22,12 @@
 <script src="js/Cookies.js" type="text/javascript"></script>
 <link rel="stylesheet" href="css/Cookies.css">
 
-<title>LogIn</title>
+<title>LogIn Administrador</title>
+<script>
+$().ready(function(){
+	$('[data-toggle="tooltip"]').tooltip();
+});
+</script>
 </head>
 <body>
 	<jsp:include page="menu.jsp" />
@@ -37,10 +42,12 @@
 				<h2>Inicio de sesión de administrador</h2>
 				<label for="contrasena">Contraseña:</label> <input id="contrasena"
 					class='form-control' name="contrasena" type="password"
-					placeholder="Introduce una contraseña" required='true'> <input
+					placeholder="Introduce una contraseña" required='true' data-toggle="tooltip" data-placement="bottom"
+				title="Introduce aquí la contraseña de administración"> <input
 					id="contra" class='form-control' name="contrasena" type="hidden">
-				<br> <input type="submit" class='btn btn-default' name="submit"
-					id="submit">
+				<br> <input type="submit" class='btn btn-success center-block' name="submit"
+					id="submit" data-toggle="tooltip" data-placement="bottom"
+				title="Pulsa aquí para acceder a la pantalla de administración">
 			</form>
 		</div>
 	</div>

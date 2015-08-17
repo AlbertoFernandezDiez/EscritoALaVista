@@ -29,12 +29,22 @@
 <script>
 	var correcto = true;
 	$(document).ready(function() {
+		$('[data-toggle="tooltip"]').tooltip(); 
+
 		$("#usado").hide();
+		$("#usadoEmail").hide();
 		$("#errorContr").hide();
 		$('#usuario').on('blur', checkUserName);
 		$('#usuario').on('focus', function() {
 			$('#comprobacionUsuario').removeClass("has-success");
 			$('#comprobacionUsuario').removeClass("has-error");
+
+		});
+		
+		$('#email').on('blur', checkEmail);
+		$('#email').on('focus', function() {
+			$('#comprobacionEmail').removeClass("has-success");
+			$('#comprobacionEmail').removeClass("has-error");
 		});
 	});
 </script>
@@ -54,34 +64,45 @@
 				<div id='comprobacionUsuario' class='form-group'>
 					<label for="usuario">Nombre de usuario :</label> <input
 						id="usuario" name="usuario" class='form-control' type="text"
-						placeholder="usuariodeprueba" required='true' autofocus /> <br>
+						placeholder="Nombre de usuario" required='true' autofocus data-toggle="tooltip" data-placement="bottom"
+				title="Escribe el nombre que quieres usar como usuario" /> <br>
 					<span id='usado' class="alert alert-danger" role="alert">Este
 						nombre de usuario ya esta registrado</span>
 				</div>
 
-				<br> <label for="email">Email :</label> <input id="email"
-					name="email" type="email" class='form-control'
-					placeholder="ejemplo@ejemplo.com" required='true'><br>
+				<div id='comprobacionEmail' class='form-group'>
+					<br> <label for="email">Email :</label> <input id="email"
+						name="email" type="email" class='form-control'
+						placeholder="ejemplo@ejemplo.com" required='true' data-toggle="tooltip" data-placement="bottom"
+				title="Escribe tu email"><br>
+					<span id='usadoEmail' class="alert alert-danger" role="alert">Este
+						email ya esta siendo utilizado</span>
+				</div>
 				<label for="contrasena1">Contraseña :</label> <input
 					id="contrasena1" class='form-control'
 					pattern="[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{6,}"
-					title="Six or more characters" name="contrasena1" type="password"
-					placeholder="Introduce una contraseña" required='true'><br>
+					 name="contrasena1" type="password"
+					placeholder="Introduce una contraseña" required='true' data-toggle="tooltip" data-placement="bottom"
+				title="La contraaseña debe tener más de 6 carácteres, puede incluir a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-"><br>
 				<input id="contra" class='form-control' name="contrasena1"
 					type="hidden"> <label for="contrasena2">Contraseña
 					:</label> <input id="contrasena2" class='form-control' name="contrasena2"
 					type="password" placeholder="Repite la contraseña"
 					pattern="[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{6,}"
-					title="Six or more characters" class='form-control' required='true'><br>
+					 class='form-control' required='true' data-toggle="tooltip" data-placement="bottom"
+				title="La contraseña debe tener más de 6 carácteres, puede incluir a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-"><br>
 				<label for="pais">Pais :</label> <input id="pais" name="pais"
-					type="text" placeholder="ej:Francia" required='true'><br>
+					type="text" placeholder="ej:Francia" required='true' data-toggle="tooltip" data-placement="bottom"
+				title="Escribe el nombre del pais donde vives"><br>
 				<label for="nacimiento">Fecha de nacimiento :</label> <input
 					id="nacimiento" class='form-control' name="nacimiento" type="date"
 					pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])"
-					placeholder='yyyy-mm-dd' required='true'><br> <label
+					placeholder='yyyy-mm-dd' required='true' data-toggle="tooltip" data-placement="bottom"
+				title="Escribe tu fecha de nacimiento en el formato indicado"><br> <label
 					for="about">Habla sobre ti :</label><br>
 				<textarea id="about" name="about" rows="4" cols="50" required='true'
-					class='form-control' spellcheck="true"></textarea>
+					class='form-control' spellcheck="true" data-toggle="tooltip" data-placement="bottom"
+				title="Cuenta algo sobre ti"></textarea>
 				<br>
 				<!-- <input id='file' name='file' type='file' accept='image/*'><br>-->
 				<div>
@@ -96,13 +117,15 @@
 						gestorArchivos('fileselect');
 					</script>
 				</div>
-				<input id='submit' name='submit' type='submit'>
+				<input id='submit' name='submit' class='btn btn-success center-block' type='submit'>
 				<script>
 					presubmit();
 				</script>
-			</form><br>
+			</form>
+			<br>
 			<div>
-			<span id='errorContr' class="alert alert-danger" role="alert">Las contraseñas no coinciden</span>
+				<span id='errorContr' class="alert alert-danger " role="alert">Las
+					contraseñas no coinciden</span>
 			</div>
 
 		</div>

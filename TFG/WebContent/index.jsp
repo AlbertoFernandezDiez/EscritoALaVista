@@ -7,7 +7,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <meta charset="UTF-8">
-<title>Proyecto</title>
+<title>Inicio</title>
 <link rel="stylesheet" href="css/style.css" />
 <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
 <!-- Imports para BootStrap -->
@@ -60,7 +60,7 @@ $().ready(function(){
 				<div class="row custom">
 					<div class="col-sm-2"></div>
 					<div class="col-sm-4">
-						<a href="VerHistoria?op=0&hi=<c:out value="${ob.id}"></c:out>" data-toggle="tooltip" data-placement="bottom"
+						<a id='obra' href="VerHistoria?op=0&hi=<c:out value="${ob.id}"></c:out>" data-toggle="tooltip" data-placement="bottom"
 				title="Pulsa aquí para leer la obra"><c:out
 								value="${ob.titulo}"></c:out></a>
 					</div>
@@ -72,7 +72,7 @@ $().ready(function(){
 						<fmt:formatDate value="${ob.fecha_mod}" pattern="dd/MM/yyyy" />
 					</div>
 					<div class="col-sm-2">
-						<a href="VerAutor?autor=<c:out value="${ob.autor}"></c:out>" data-toggle="tooltip" data-placement="bottom"
+						<a id='autor' href="VerAutor?autor=<c:out value="${ob.autor}"></c:out>" data-toggle="tooltip" data-placement="bottom"
 				title="Pulsa aquí para ver el perfil del autor"><c:out
 								value="${autor[ob.autor]}"></c:out></a>
 					</div>
