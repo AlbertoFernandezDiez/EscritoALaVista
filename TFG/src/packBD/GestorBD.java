@@ -437,7 +437,7 @@ public class GestorBD {
 				max = rs.getInt(1);
 				if (max > 1)
 					max--;
-				
+
 			}
 			rs.close();
 			st.close();
@@ -738,7 +738,8 @@ public class GestorBD {
 				if (contra.equals(passw))
 					id = rs.getInt("id");
 			}
-
+			st.close();
+			conexion.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -774,7 +775,8 @@ public class GestorBD {
 
 			st.execute();
 			result = true;
-
+			st.close();
+			conexion.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -817,7 +819,8 @@ public class GestorBD {
 
 				lista.add(comentario);
 			}
-
+			st.close();
+			conexion.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -848,6 +851,8 @@ public class GestorBD {
 			if (rs.next())
 				result = rs.getInt(1) == 0;
 
+			st.close();
+			conexion.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -885,6 +890,8 @@ public class GestorBD {
 				obra.setActive(rs.getInt("active"));
 			}
 
+			st.close();
+			conexion.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -919,6 +926,8 @@ public class GestorBD {
 				cap.setImagen(rs.getString("imagen"));
 				cap.setFecha_comentario(rs.getDate("fecha_comentario"));
 			}
+			st.close();
+			conexion.close();
 		}
 		catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -1055,6 +1064,8 @@ public class GestorBD {
 					result = true;
 				}
 			}
+			st.close();
+			conexion.close();
 
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -1082,7 +1093,7 @@ public class GestorBD {
 
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT *"
 					+ " FROM tfg.admin where name = ?;");
-			
+
 			st.setString(1, adminName);
 
 			ResultSet rs = st.executeQuery();
@@ -1094,7 +1105,8 @@ public class GestorBD {
 
 				if (contra.equals(passw))
 					admin = true;		}
-
+			st.close();
+			conexion.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1122,7 +1134,8 @@ public class GestorBD {
 
 			st.execute();
 			result = true;
-
+			st.close();
+			conexion.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1149,7 +1162,8 @@ public class GestorBD {
 
 			st.execute();
 			result = true;
-
+			st.close();
+			conexion.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1175,7 +1189,7 @@ public class GestorBD {
 
 			PreparedStatement st = (PreparedStatement) conexion.prepareStatement("SELECT *"
 					+ " FROM tfg.admin where name = ?;");
-			
+
 			st.setString(1, name);
 
 			ResultSet rs = st.executeQuery();
@@ -1195,7 +1209,8 @@ public class GestorBD {
 					result = true;
 				}
 			}
-
+			st.close();
+			conexion.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1226,6 +1241,8 @@ public class GestorBD {
 			if (rs.next())
 				result = rs.getInt(1) == 0;
 
+			st.close();
+			conexion.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1234,7 +1251,7 @@ public class GestorBD {
 		return result;
 
 	}
-	
+
 	/**
 	 * Método que dice si un autor esta
 	 * suscrito a una obra
@@ -1260,6 +1277,8 @@ public class GestorBD {
 			if (rs.next())
 				result = true;
 
+			st.close();
+			conexion.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1294,6 +1313,8 @@ public class GestorBD {
 
 			result = true;
 
+			st.close();
+			conexion.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1328,6 +1349,8 @@ public class GestorBD {
 
 			result = true;
 
+			st.close();
+			conexion.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1401,6 +1424,8 @@ public class GestorBD {
 
 			result = true;
 
+			st.close();
+			conexion.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1432,6 +1457,8 @@ public class GestorBD {
 
 			result = true;
 
+			st.close();
+			conexion.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1518,7 +1545,7 @@ public class GestorBD {
 		}
 		return lista;
 	}
-	
+
 	/**
 	 * Método que comprueba si un autor
 	 * esta deshabilitado
@@ -1540,7 +1567,7 @@ public class GestorBD {
 			{
 				int activ = rs.getInt("active");
 				deshabilitado = (activ == 0);
-				
+
 			}
 			rs.close();
 			st.close();
@@ -1615,6 +1642,8 @@ public class GestorBD {
 			st.execute();
 			result = true;
 
+			st.close();
+			conexion.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1697,7 +1726,8 @@ public class GestorBD {
 				st.execute();
 				result = true;
 			}
-
+			st.close();
+			conexion.close();
 
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -1730,6 +1760,8 @@ public class GestorBD {
 			if (rs.next())
 				result = rs.getInt(1) == 0;
 
+			st.close();
+			conexion.close();
 		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

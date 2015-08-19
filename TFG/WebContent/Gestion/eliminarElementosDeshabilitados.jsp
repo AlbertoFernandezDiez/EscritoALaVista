@@ -77,10 +77,10 @@
 	function clickEliminarObra() {
 		var id = $(this).val();
 
-		$('#confirm').modal({
+		$('#confirmObra').modal({
 			backdrop : 'static',
 			keyboard : false
-		}).one('click', '#delete', function(e) {
+		}).one('click', '#deleteObra', function(e) {
 			eliminarObra(id);
 		});
 
@@ -142,7 +142,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" data-dismiss="modal" class="btn btn-primary"
-							id="delete">Habilitar</button>
+							id="deleteObra">Eliminar</button>
 						<button type="button" data-dismiss="modal" class="btn">Cancelar</button>
 					</div>
 				</div>

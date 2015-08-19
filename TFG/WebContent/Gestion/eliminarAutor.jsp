@@ -31,7 +31,7 @@
 		$('#confirmHabilitar').modal({
 			backdrop : 'static',
 			keyboard : false
-		}).one('click', '#delete', function(e) {
+		}).one('click', '#habilitar', function(e) {
 			habilitarAutor(id);
 		});
 
@@ -63,7 +63,7 @@
 		$('#confirmDeshabilitar').modal({
 			backdrop : 'static',
 			keyboard : false
-		}).one('click', '#delete', function(e) {
+		}).one('click', '#deshabilitar', function(e) {
 			deshabilitarAutor(id);
 
 		});
@@ -105,7 +105,7 @@
 
 		<jsp:include page="title.jsp" />
 
-		<div class="modal fade" id="confirm" role="dialog">
+	<!-- 	<div class="modal fade" id="confirm" role="dialog">
 			<div class="modal-dialog modal-sm">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -122,7 +122,7 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</div>-->
 
 		<div class="modal fade" id="confirmHabilitar" role="dialog">
 			<div class="modal-dialog modal-sm">
@@ -136,7 +136,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" data-dismiss="modal" class="btn btn-primary"
-							id="delete">Habilitar</button>
+							id="habilitar">Habilitar</button>
 						<button type="button" data-dismiss="modal" class="btn">Cancelar</button>
 					</div>
 				</div>
@@ -155,7 +155,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" data-dismiss="modal" class="btn btn-primary"
-							id="delete">Deshabilitar</button>
+							id="deshabilitar">Deshabilitar</button>
 						<button type="button" data-dismiss="modal" class="btn">Cancelar</button>
 					</div>
 				</div>

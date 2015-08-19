@@ -64,7 +64,7 @@
 					for ( var json in jSonArray) {
 
 						$('#comentarios').append(
-								'<div class="row"><div class="col-sm-4"><a href="VerAutor?autor='
+								'<div class="row"><div class="col-sm-4"><a id="autor" href="VerAutor?autor='
 										+ jSonArray[json].autor + '">'
 										+ jSonArray[json].nombre
 										+ '</a></div><div class="col-sm-8">'
@@ -149,7 +149,7 @@
 					title="Este formato es adecuado para impresión">Latex</label> <label
 					class="radio-inline"><input type="hidden" name="id"
 					value="<c:out value="${requestScope.id}" ></c:out>"></label> <input
-					type='submit' class="btn btn-success" name='exportar'
+					type='submit' id='botonExportar' class="btn btn-success" name='exportar'
 					value='Exportar' data-toggle="tooltip" data-placement="bottom"
 					title="Pulsa aquí para obtener tu obra exportada">
 			</div>
@@ -263,7 +263,7 @@
 												data-toggle="tooltip" data-placement="bottom"
 												title="Escribe aquí tu comentario"></textarea>
 										</div>
-										<button type="button" onclick='sendComment()'
+										<button type="button" id='botonEnviarComentario' onclick='sendComment()'
 											class="btn btn-default" data-toggle="tooltip"
 											data-placement="bottom"
 											title="Pulsa aquí para enviar tu comentario">Comentar</button>
@@ -289,7 +289,7 @@
 									<div class="row">
 										<div class="col-sm-4">
 
-											<a
+											<a id = 'autor'
 												href="VerAutor?autor=<c:out value="${com.autor}" ></c:out>"
 												data-toggle="tooltip" data-placement="bottom"
 												title="Pulsa aquí para ver el perfil del autor del comentario"><c:out

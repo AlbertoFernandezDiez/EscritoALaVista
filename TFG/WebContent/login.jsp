@@ -48,7 +48,7 @@ $().ready(function(){
 			type="submit" class='btn btn-success center-block' value='Log In' name="submit" id="submit" data-toggle="tooltip" data-placement="bottom" title="Pulsa aquí para identificarte">
 	</form>
 	<br>
-	 <center><a class="btn btn-info" href='contrasenaOlvidada.jsp'
+	 <center><a id='contrasenaOlvidada' class="btn btn-info" href='contrasenaOlvidada.jsp'
 					role="button" data-toggle="tooltip" data-placement="bottom" title="Pulsa aquí para conseguir una nueva contraseñá">He olvidado la contraseña</a></center>
 </div>
 </div>
