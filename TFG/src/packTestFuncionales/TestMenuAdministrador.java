@@ -11,6 +11,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import packBD.GestorBD;
+
 public class TestMenuAdministrador {
 
 	private static WebDriver driver;
@@ -30,6 +32,11 @@ public class TestMenuAdministrador {
 	@After
 	public void tearDown() throws Exception {
 		driver.get("http://localhost:8080/TFG/LogOutAdmin");
+	}
+	
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+		driver.close();
 	}
 
 	@Test

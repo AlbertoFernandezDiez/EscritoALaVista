@@ -63,6 +63,37 @@ function checkUserName(){
 	}
 }
 
+function checkEmail(){
+	var email = $('#email').val();
+	console.log(email);
+	if (email != '')
+	{
+		$.ajax({
+			url : "api/ComprobarEmailAPI",
+			type : 'POST',
+			dataType: "json",
+			data : {
+				email : email
+			},
+			success : function(result) {
+				if (result.value == true) {
+					$('#comprobacionEmail').addClass("has-success"); 
+					$('#usadoEmail').hide();
+					correcto = true;
+				} else {
+					$('#usadoEmail').show();
+					$('#comprobacionEmail').addClass("has-error");  
+					correcto = false;
+				}
+			},
+			error : function(request, error) {
+				$("#bad").show(200);
+			}
+		}
+		);
+	}
+}
+
 function checkTitulo(){
 	var nombre = $.trim($('#titOb').val());
 	var selObra =$.trim($('#selectObra option:selected').text());
@@ -107,7 +138,8 @@ function cambiarContrasena() {
 	var v = $('#contraV').val();
 	//Validamos los campos del formulario
 					$('#fail').hide();
-
+					$('#ok').hide();
+					$('#bad').hide();
 	if ($('#cambioContra')[0].checkValidity()) {
 		
 		var sn = toSHA512(n);
@@ -160,21 +192,29 @@ function cambiarContrasenaAdmin() {
 			},
 			success : function(result) {
 				if (result == 'true') {
-					$('#ok').show();
+					/*$('#ok').show();
 					$('#bad').hide();
 					$('#contraN').val('');
-					$('#contraV').val('');
+					$('#contraV').val('');*/
+					$('#ok').modal('show');
+					$('#bad').modal('hide');
+					$('#contraN').val('');
+					$('#contraV').val('')
 				} else {
-					$('#bad').show();
-					$('#ok').hide();
+					/*$('#bad').show();
+					$('#ok').hide();*/
+					$('#bad').modal('show');
+					$('#ok').modal('hide');
 				}
 			},
 			error : function(request, error) {
-				$("#bad").show(200);
+				//$("#bad").show(200);
+				$("#bad").modal('show');
 			}
 		});
 	} else {
-		$('#fail').show();
+		//$('#fail').show();
+		$('#fail').modal('show');
 	}
 }
 

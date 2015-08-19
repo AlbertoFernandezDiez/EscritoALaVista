@@ -64,6 +64,7 @@ public class TestMenuIdentificado {
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 		GestorBD.getGestorBD().deleteAutor(idU);
+		driver.close();
 	}
 
 	@Before

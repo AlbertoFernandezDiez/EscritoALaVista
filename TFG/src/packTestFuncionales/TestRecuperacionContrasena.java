@@ -62,6 +62,7 @@ public class TestRecuperacionContrasena {
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 		GestorBD.getGestorBD().deleteAutor(idU);
+		driver.close();
 	}
 
 	@Before

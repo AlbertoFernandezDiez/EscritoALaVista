@@ -42,6 +42,7 @@ public class TestGestionarUsuarios {
 	public static void tearDownAfterClass() throws Exception {
 		GestorBD.getGestorBD().deleteAutor(idU);
 		driver.get("http://localhost:8080/TFG/LogOutAdmin");
+		driver.close();
 	}
 
 	@Before

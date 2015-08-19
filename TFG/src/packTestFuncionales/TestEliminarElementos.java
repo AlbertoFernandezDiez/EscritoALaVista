@@ -35,6 +35,8 @@ public class TestEliminarElementos {
 	public static void tearDownAfterClass() throws Exception {
 		GestorBD.getGestorBD().deleteAutor(idU);
 		driver.get("http://localhost:8080/TFG/LogOutAdmin");
+		driver.close();
+
 	}
 
 
@@ -131,7 +133,7 @@ public class TestEliminarElementos {
 		}catch(NoSuchElementException e){assertTrue(true);}
 
 	}
-	
+
 	@Test
 	public void testEliminarUsuario(){
 
@@ -140,7 +142,7 @@ public class TestEliminarElementos {
 		idU = GestorBD.getGestorBD().addUser(String.valueOf(aux), String.valueOf(aux), String.valueOf(aux), String.valueOf(aux),new Date(aux), String.valueOf(aux),null);// String.valueOf(aux));
 
 		GestorBD.getGestorBD().modificarVisibilidadAutor(idU, 0);
-		
+
 		long time = System.currentTimeMillis() + 2000;
 		while(System.currentTimeMillis() < time){}
 

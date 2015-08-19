@@ -2,6 +2,7 @@ package packTestFuncionales;
 
 import static org.junit.Assert.*;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -9,6 +10,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+
+import packBD.GestorBD;
 
 public class TestMenuNoIdentifcado {
 
@@ -23,7 +26,11 @@ public class TestMenuNoIdentifcado {
 		driver.get("http://localhost:8080/TFG");
 	}
 
-
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+		driver.close();
+	}
+	
 	@Test
 	public void testInicio() {
 		String tituloLink, tituloPagina;

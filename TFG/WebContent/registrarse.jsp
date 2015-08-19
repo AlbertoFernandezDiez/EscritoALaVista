@@ -63,7 +63,7 @@
 				enctype="multipart/form-data" role='form'>
 				<div id='comprobacionUsuario' class='form-group'>
 					<label for="usuario">Nombre de usuario :</label> <input
-						id="usuario" name="usuario" class='form-control' type="text"
+						id="usuario" maxlength="20" name="usuario" class='form-control' type="text"
 						placeholder="Nombre de usuario" required='true' autofocus data-toggle="tooltip" data-placement="bottom"
 				title="Escribe el nombre que quieres usar como usuario" /> <br>
 					<span id='usado' class="alert alert-danger" role="alert">Este
@@ -72,7 +72,7 @@
 
 				<div id='comprobacionEmail' class='form-group'>
 					<br> <label for="email">Email :</label> <input id="email"
-						name="email" type="email" class='form-control'
+						name="email" type="email" maxlength="45" class='form-control'
 						placeholder="ejemplo@ejemplo.com" required='true' data-toggle="tooltip" data-placement="bottom"
 				title="Escribe tu email"><br>
 					<span id='usadoEmail' class="alert alert-danger" role="alert">Este
@@ -92,7 +92,7 @@
 					 class='form-control' required='true' data-toggle="tooltip" data-placement="bottom"
 				title="La contraseña debe tener más de 6 carácteres, puede incluir a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-"><br>
 				<label for="pais">Pais :</label> <input id="pais" name="pais"
-					type="text" placeholder="ej:Francia" required='true' data-toggle="tooltip" data-placement="bottom"
+					type="text" maxlength="20" class='form-control' placeholder="ej:Francia" required='true' data-toggle="tooltip" data-placement="bottom"
 				title="Escribe el nombre del pais donde vives"><br>
 				<label for="nacimiento">Fecha de nacimiento :</label> <input
 					id="nacimiento" class='form-control' name="nacimiento" type="date"

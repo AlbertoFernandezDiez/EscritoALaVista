@@ -38,6 +38,11 @@ public class TestIdentificarseAdministrador {
 driver.get("http://localhost:8080/TFG/LogOutAdmin");
 	}
 
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+		driver.close();
+	}
+	
 	@Test
 	public void testIdentificacionCorrecta() {
 		driver.findElement(By.id("contrasena")).sendKeys("alberto");

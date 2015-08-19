@@ -26,6 +26,7 @@ public class TestPantallaInicioAdministrador {
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 		driver.get("http://localhost:8080/TFG/LogOutAdmin");
+		driver.close();
 	}
 
 	@Before
