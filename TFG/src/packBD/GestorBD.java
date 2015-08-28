@@ -367,22 +367,22 @@ public class GestorBD {
 			if (limit != 0)
 			{
 				if (id == 0){
-					st = (PreparedStatement) conexion.prepareStatement("select * from obra where active = 1 order by fecha_mod asc limit ? offset ?");
+					st = (PreparedStatement) conexion.prepareStatement("select * from obra where active = 1 order by fecha_mod desc limit ? offset ?");
 					st.setInt(1, limit);
 					st.setInt(2, offset);
 				}
 				else{
-					st = (PreparedStatement) conexion.prepareStatement("select * from obra where active = 1 and autor = ? order by fecha_mod asc limit ? offset ?");
+					st = (PreparedStatement) conexion.prepareStatement("select * from obra where active = 1 and autor = ? order by fecha_mod desc limit ? offset ?");
 					st.setInt(1, id);
 					st.setInt(2, limit);
 					st.setInt(3, offset);}
 			}
 			else{
 				if (id == 0){
-					st = (PreparedStatement) conexion.prepareStatement("select * from obra where active = 1 order by fecha_mod asc");
+					st = (PreparedStatement) conexion.prepareStatement("select * from obra where active = 1 order by fecha_mod desc");
 				}
 				else{
-					st = (PreparedStatement) conexion.prepareStatement("select * from obra where autor = ? order by fecha_mod asc");
+					st = (PreparedStatement) conexion.prepareStatement("select * from obra where autor = ? order by fecha_mod desc");
 					st.setInt(1, id);
 				}
 

@@ -91,7 +91,7 @@
 					pattern="[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{6,}"
 					 class='form-control' required='true' data-toggle="tooltip" data-placement="bottom"
 				title="La contraseña debe tener más de 6 carácteres, puede incluir a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-"><br>
-				<label for="pais">Pais :</label> <input id="pais" name="pais"
+				<label for="pais">País :</label> <input id="pais" name="pais"
 					type="text" maxlength="20" class='form-control' placeholder="ej:Francia" required='true' data-toggle="tooltip" data-placement="bottom"
 				title="Escribe el nombre del pais donde vives"><br>
 				<label for="nacimiento">Fecha de nacimiento :</label> <input

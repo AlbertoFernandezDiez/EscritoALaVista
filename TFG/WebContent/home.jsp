@@ -138,7 +138,7 @@
 				<label class="radio-inline"><input type="radio"
 					name="formato" value="Itext" checked="checked"
 					data-toggle="tooltip" data-placement="bottom"
-					title="Este formato es adecuado para lectores Kindle">Itext</label>
+					title="Este formato es adecuado para lectores Kindle">PDF (Kindle)</label>
 				<label class="radio-inline"><input type="radio"
 					name="formato" value="EpubCreator" data-toggle="tooltip"
 					data-placement="bottom"
@@ -146,7 +146,7 @@
 				<label class="radio-inline"><input type="radio"
 					name="formato" value="LatexCreator" data-toggle="tooltip"
 					data-placement="bottom"
-					title="Este formato es adecuado para impresión">Latex</label> <label
+					title="Este formato es adecuado para impresión">PDF (Impresión)</label> <label
 					class="radio-inline"><input type="hidden" name="id"
 					value="<c:out value="${requestScope.id}" ></c:out>"></label> <input
 					type='submit' id='botonExportar' class="btn btn-success" name='exportar'
@@ -258,7 +258,7 @@
 									<form id='formcomentarios' class="form-inline" role="form">
 										<div class="form-group">
 											<textarea id="comentario" name="comentario" rows="4"
-												cols='100' required='true' class='form-control'
+												cols='80' required='true' class='form-control'
 												placeholder="Escribe aquí tu comentario" spellcheck="true"
 												data-toggle="tooltip" data-placement="bottom"
 												title="Escribe aquí tu comentario"></textarea>

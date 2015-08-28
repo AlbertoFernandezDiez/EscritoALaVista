@@ -68,7 +68,7 @@ public class TestGestionarObras {
 
 		driver.findElement(By.id("deshabilitar")).click();
 
-		time = System.currentTimeMillis() + 2000;
+		time = System.currentTimeMillis() + 6000;
 
 		while (System.currentTimeMillis() < time){}
 
