@@ -191,15 +191,14 @@ public class Itext extends HttpServlet {
 
 			canvas = writer.getDirectContent();
 			/**
-			 * Aquí generamos la portada
+			 * Aquí introducimos metadatos
 			 */
-			//obra = GestorBD.getGestorBD().getObra(3);
 			document.addTitle(obra.getTitulo());
 
 
 
 
-			/*
+			/**
 			 * En esta sección se comienza a 
 			 * insertar los capítulos con
 			 * sus correspondientes maracadores
@@ -292,13 +291,9 @@ public class Itext extends HttpServlet {
 			ColumnText ct= new ColumnText(w.getDirectContent());
 			if (image != null && image.exists()){
 				img = Image.getInstance(image.getAbsolutePath());
-				//img.scaleToFit(pageSize[type]);
-				//	img.scaleToFit(pageSize[type].getWidth(), pageSize[type].getHeight());
-				//img.scaleAbsolute(pageSize[type]);
-				//	img.scaleAbsolute(writer.getBoxSize("art"));
+			
 				img.scaleAbsolute(titlepage[type]);
 				img.setAbsolutePosition((pageSize[type].getWidth() - titlepage[type].getWidth())/2, (pageSize[type].getHeight() - titlepage[type].getHeight())/2);
-				//	img.setAbsolutePosition(document.getPageSize().getRight()/2, document.getPageSize().getTop()/2);
 				canvas.addImage(img);
 			}
 			ct.showTextAligned(canvas, Element.ALIGN_CENTER, new Phrase(secTitle), document.getPageSize().getRight()/2, document.getPageSize().getTop()/2, 0);
@@ -313,7 +308,6 @@ public class Itext extends HttpServlet {
 				left.setBorder(Rectangle.NO_BORDER);
 
 				Chunk pageno = new Chunk(index.getValue()+"");
-				//	pageno.setLocalGoto(index.getKey());
 				PdfPCell right = new PdfPCell(new Phrase(pageno));
 				right.setHorizontalAlignment(Element.ALIGN_RIGHT);
 				right.setBorder(Rectangle.NO_BORDER);
@@ -321,7 +315,6 @@ public class Itext extends HttpServlet {
 				tables.addCell(left);
 				tables.addCell(right);
 			}
-			//indexChapter.add(table);
 			d.add(indexChapter);
 			d.add(Chunk.NEWLINE);
 			d.add(tables);
@@ -336,6 +329,9 @@ public class Itext extends HttpServlet {
 			throw new IOException(de.getMessage());
 		}
 		try {
+			/**
+			 * Unimos los dos ficheros
+			 */
 			File file = joinPDF(file1,file2,obra,autor,response);
 			PrintWriter pw = response.getWriter();
 			response.setCharacterEncoding("UTF-8");  
