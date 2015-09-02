@@ -8,7 +8,7 @@
           <h4 class="modal-title">Fichero no válido</h4>
         </div>
         <div class="modal-body">
-          <p>Tipo de fichero no aceptado, debe ser un archivo de imagen</p>
+          <p>Tipo de fichero no aceptado, debe ser un archivo de imagen JPG o PNG</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
