@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>TFG</display-name>
+  <welcome-file-list>
+    <welcome-file>Index</welcome-file>
+  </welcome-file-list>
+  <context-param>
+    <description>Location to store uploaded file</description>
+    <param-name>file-upload</param-name>
+    <param-value>
+       E:\workspace\TFG\TFG\WebContent\
+     </param-value>
+  </context-param>
+  <context-param>
+    <description>Username for the mail</description>
+    <param-name>username</param-name>
+    <param-value>
+     alberto1993
+     </param-value>
+  </context-param>
+  <context-param>
+    <description>Password for the mail</description>
+    <param-name>password</param-name>
+    <param-value>
+       4wApEfE8
+     </param-value>
+  </context-param>
+  <context-param>
+    <description>Server url</description>
+    <param-name>server-url</param-name>
+    <param-value>
+       http://localhost:8080/TFG/
+     </param-value>
+  </context-param>
+  <servlet>
+    <servlet-name>UploadBook</servlet-name>
+    <servlet-class>packServlets.UploadBook</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UploadBook</servlet-name>
+    <url-pattern>/UB</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>UploadComment</servlet-name>
+    <servlet-class>packServlets.UploadComment</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UploadComment</servlet-name>
+    <url-pattern>/UC</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>CambiarContrasena</servlet-name>
+    <servlet-class>packServlets.CambiarContrasena</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CambiarContrasena</servlet-name>
+    <url-pattern>/CC</url-pattern>
+  </servlet-mapping>
+
+</web-app>
