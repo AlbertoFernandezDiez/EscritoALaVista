@@ -1,0 +1,31 @@
+<div class="topcoat-navigation-bar__item left quarter">
+<a class="topcoat-icon-button--quiet back-button" href="#">
+<span class="topcoat-icon topcoat-icon--home"></span>
+</a>
+</div>
+<div class="topcoat-navigation-bar__item center half">
+            <h1 class="topcoat-navigation-bar__title">Listado Obras</h1>
+        </div>
+     
+<!--<div class="main-content>-->
+
+<div class="topcoat-list">
+ <h3 class="topcoat-list__header">Obras</h3>
+    <ul class="topcoat-list__container list scroller" id="lstObras">
+	 {{#each lista}}
+    <li class="topcoat-list__item">
+      <a href="#obra/{{id}}">
+		   <table class='tituloautor'>
+			<tr>
+				<td>{{titulo}}</td>			
+				<td>{{autor}}</td>
+			</tr>
+		   </table>
+            <p>{{resumen}}</p>
+        </a>
+      </li>
+    {{/each}}
+	
+  </ul>
+</div>
+<!--</div>-->

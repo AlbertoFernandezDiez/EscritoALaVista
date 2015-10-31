@@ -1,0 +1,52 @@
+<div class="topcoat-navigation-bar__item left quarter">
+            <a class="topcoat-icon-button--quiet back-button" href="#">
+                <span class="topcoat-icon topcoat-icon--home"></span>
+            </a>
+    </div>
+        <div class="topcoat-navigation-bar__item center half">
+            <h1 class="topcoat-navigation-bar__title">Crear Obra/Capítulo</h1>
+        </div>
+   
+    <div class='detalles scroller'>
+	<p><strong>Obra:</strong></p>
+       <select id = 'selectorObra' size = '1' class='full'>
+		<option value = '0'>Nueva Obra</option>
+		{{#each lista}}
+			<option value = '{{id}}'>{{nombre}}</option>
+		{{/each}}
+		</select>
+		<br><br>
+		<input type="button" id ='borrarObra' value="Eliminar Obra" class="topcoat-button--cta full" disabled/>
+
+		<p><strong>Capitulo:</strong></p>
+		<select id = 'selectorCapitulo' size = '1' class='full'>
+		<option value = '0'>Nuevo Capitulo</option>
+		</select>
+		<br><br>
+	<input type="button" id ='borrarCapitulo'  value="Eliminar Capítulo" class="topcoat-button--cta full" disabled/>
+
+		<h1>Obra</h1>
+		<center><img src="" id = 'portadaObra' class="imagen-portada" style='display:none'></center>
+			<p><strong><Titulo Obra:</strong></p>
+<input type="text" id = 'tituloObra' maxlength='50' class="topcoat-text-input full" placeholder="Titulo Obra" value="">
+<p><strong>Resumen:</strong></p>
+<textarea id='resumenObra' maxlength='512' class="topcoat-textarea full" placeholder="Resumen Obra" cols="6" rows="16"></textarea>
+<h1>Capitulo</h1>
+ <center><img src="" id = 'portadaCapi' class="imagen-portada" style='display:none'></center>
+			<p><strong>Titulo Capitulo:</strong></p>
+<input type="text" id = 'tituloCapitulo' maxlength='50' class="topcoat-text-input full" placeholder="Titulo Capitulo" value="">
+			<p><strong>Contenido Capitulo:</strong></p>
+<textarea id='textoCapitulo' class="topcoat-textarea full" placeholder="Texto del capítulo" cols="6" rows="16"></textarea>
+	<p><strong>Comentarios Autor:</strong></p>
+<textarea id='comentarioAutor' class="topcoat-textarea full" placeholder="Comentario del autor" cols="6" rows="6"></textarea>
+<br><br>
+<button id ='fotoObra' class="topcoat-button--cta full"><span class="topcoat-icon topcoat-icon--camara"></span> Foto Obra</button><br><br>
+<button id='fotoObraAlbum' class="topcoat-button--cta full"><span class="topcoat-icon topcoat-icon--image"></span> Album Obra</button><br><br>
+
+<button id ='fotoCapitulo' class="topcoat-button--cta full"><span class="topcoat-icon topcoat-icon--camara"></span> Foto Capítulo</button><br><br>
+<button id='fotocapituloAlbum' class="topcoat-button--cta full"><span class="topcoat-icon topcoat-icon--image"></span> Album Capitulo</button><br><br>
+
+<input type="button" id ='enviarCambios' value="Enviar Cambios" class="topcoat-button--cta full"/>
+
+
+    </div>

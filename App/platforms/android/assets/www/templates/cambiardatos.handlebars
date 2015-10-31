@@ -1,0 +1,24 @@
+<div class="topcoat-navigation-bar__item left quarter">
+            <a class="topcoat-icon-button--quiet back-button" href="#">
+                <span class="topcoat-icon topcoat-icon--home"></span>
+            </a>
+    </div>
+        <div class="topcoat-navigation-bar__item center half">
+            <h1 class="topcoat-navigation-bar__title">Modificar Datos Autor</h1>
+        </div>
+   
+    <div class='detalles scroller'>
+	{{#if imagen}}
+	<center><img id='imagen' src="{{imagen}}" class="imagen-portada"></center>
+	{{else}}
+	<center><img id='imagen' src="" class="imagen-portada" style='display:none;'></center>
+	{{/if}}
+		<p><strong>Email:</strong></p><input id='email' maxlength='45' type="text" class="topcoat-text-input full" placeholder="Email" value="{{email}}">	
+        <p><strong>Pais:</strong></p><input id='pais' maxlength='20'  type="text" class="topcoat-text-input full" placeholder="Pais" value="{{pais}}">	
+		<p><strong>Sobre el autor:</strong></p><textarea id='about' class="topcoat-textarea full" placeholder="Sobre mi" cols="5" rows="6">{{#each about}}{{texto}}{{/each}}</textarea>
+	<br><br>
+	<button id='SacarFotoCamara' class="topcoat-button--cta full"><span class="topcoat-icon topcoat-icon--camara"></span> Sacar Foto</button><br><br>
+	<button id='SacarFotoAlbum' class="topcoat-button--cta full"><span class="topcoat-icon topcoat-icon--image"></span> Elegir Foto</button><br><br>
+	<a href='#cambiarContrasena'><button class="topcoat-button--cta full">Cambiar Contraseña</button></a><br><br>
+	<button id='EnviarCambioDatos' class="topcoat-button--cta full">Enviar</button>
+    </div>
