@@ -1,0 +1,26 @@
+<div class="topcoat-navigation-bar__item left quarter">
+            <a class="topcoat-icon-button--quiet back-button" href="#">
+                <span class="topcoat-icon topcoat-icon--home"></span>
+            </a>
+    </div>
+        <div class="topcoat-navigation-bar__item center half">
+            <h1 class="topcoat-navigation-bar__title">Registrarse</h1>
+        </div>
+   
+    <div class='detalles scroller'>
+	<center><img src="" id='preview' style='display:none;' class="imagen-portada"></center>
+		<p><strong>Nombre:</strong></p><input id='nombre' maxlength='20' type="text" class="topcoat-text-input full" placeholder="Nombre" required = 'true'>	
+		<p><strong>Contraseña:</strong></p><input id='contrasena' type="password" class="topcoat-text-input full" placeholder="Contraseña" required = 'true' pattern="[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]{6,}">	
+		<p><strong>Email:</strong></p><input id='email' maxlength='45' type="email" class="topcoat-text-input full" placeholder="Email" required = 'true'>	
+		<p><strong>Fecha nacimiento:</strong></p><input id='nacimiento' type="date" required = 'true' class="topcoat-text-input full" placeholder="yyyy-mm-dd" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])">	
+        <p><strong>Pais:</strong></p><input id='pais' maxlength='20' type="text" class="topcoat-text-input full" placeholder="Pais" required = 'true'>	
+		<p><strong>Sobre el autor:</strong></p><textarea id='about' class="topcoat-textarea full" placeholder="Sobre mi" cols="5" rows="6" required = 'true'></textarea>
+	<br>
+	<br>
+	<button id='SacarFotoCamara' class="topcoat-button--cta full"><span class="topcoat-icon topcoat-icon--camara"></span> Sacar Foto</button>
+	<br><br>
+		<button id='SacarFotoAlbum' class="topcoat-button--cta full"><span class="topcoat-icon topcoat-icon--image"></span> Elegir Foto</button>
+<br>
+	<br>
+	<button id='EnviarRegistro' class="topcoat-button--cta full">Enviar</button>
+    </div>

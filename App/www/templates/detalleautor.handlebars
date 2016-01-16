@@ -1,0 +1,44 @@
+<div class="topcoat-navigation-bar__item left quarter">
+            <a class="topcoat-icon-button--quiet back-button" href="#">
+                <span class="topcoat-icon topcoat-icon--home"></span>
+            </a>
+    </div>
+        <div class="topcoat-navigation-bar__item center half">
+            <h1 class="topcoat-navigation-bar__title">Autor</h1>
+        </div>
+   
+    <div class='detalles scroller'>
+        {{#if imagen}}
+		<center><img src="{{imagen}}" class="imagen-portada"></center>
+		{{/if}}
+        <p><strong>Nombre:</strong> {{nombre}} </p>
+		<p><strong>Naciminento:</strong> {{nacimiento}}</p>
+        <p><strong>Pais:</strong> {{pais}}</p>
+		<p><strong>Sobre el autor:</strong></p>
+           {{#each about}}
+				            <p>{{text}}</p>
+				{{/each}}
+				<div class="topcoat-list clearfix">
+ <h3 class="topcoat-list__header">Obras</h3>
+        <ul class="topcoat-list__container ">
+             {{#each obras}}
+    <li class="topcoat-list__item">
+      <a href="#obra/{{id}}">
+           <!-- <img src="assets/img/{{imagen}}">-->
+		   <table class='tituloautor'>
+			<tr>
+				<td>{{titulo}}</td>
+				<!--<td>{{fechain}}</td>-->
+				<!--<td>Modificado: {{fechamod}}</td>-->
+				<td>{{autor}}</td>
+			</tr>
+		   </table>
+        <!--    <p>{{titulo}} {{autor}}</p>-->
+            <p>{{resumen}}</p>
+          <!--  <span class="chevron"></span>-->
+        </a>
+      </li>
+    {{/each}}
+            </ul>
+        </div>
+    </div>

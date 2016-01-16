@@ -1,0 +1,56 @@
+\documentclass[11pt,a4paper]{book}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage[spanish, activeacute]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb,amsfonts,textcomp}
+\usepackage{color}
+\usepackage{array}
+\usepackage{hhline}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\hypersetup{ colorlinks=true, linkcolor=black, citecolor=black, filecolor=black, urlcolor=blue, pdftitle=$title, pdfauthor=$author, pdfsubject=, pdfkeywords=}
+% Outline numbering
+
+% Page layout (geometry)
+
+% Footnote rule
+\setlength{\skip\footins}{0.119cm}
+\renewcommand\footnoterule{\vspace*{-0.018cm}\setlength\leftskip{0pt}\setlength\rightskip{0pt plus 1fil}\noindent\textcolor{black}{\rule{0.25\columnwidth}{0.018cm}}\vspace*{0.101cm}}
+% Pages styles
+
+
+\title{\Huge{\textbf{$title}}
+\begin{figure}[hbtp]
+		\centering
+		\includegraphics[scale = 0.25 ]{$portada}
+	\end{figure}}
+\author{$author}
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+#foreach( $chapter in $book )
+
+	#foreach($par in $chapter)
+	#if($velocityCount == 1)
+	\chapter{$par}
+	#else
+	#if($velocityCount == 2)
+	#if ($par != 0)
+	\begin{figure}[hbtp]
+		\centering
+		\includegraphics[scale = 0.25 ]{$par}
+	\end{figure}
+	#end
+	#else
+		$par
+	\bigskip
+	#end
+	#end
+	#end
+#end 
+
+\end{document} 

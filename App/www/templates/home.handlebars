@@ -1,0 +1,29 @@
+ <div class="topcoat-navigation-bar">
+           
+            <div class="topcoat-navigation-bar__item center full">
+                <h1 class="topcoat-navigation-bar__title">Escrito a la Vista</h1>
+	</div>
+</div>
+<div class="topcoat-list">
+  <h3 class="topcoat-list__header">Acciones</h3>
+  <ul class="topcoat-list__container center">
+  <li class="topcoat-list__item">
+  <a href='#login/'><button class="topcoat-button--cta full" {{#if logged}}disabled{{/if}} ><span class="topcoat-icon topcoat-icon--login" ></span> LogIn</button></a>
+  </li>
+  <li class="topcoat-list__item">
+  <a href='#listadoAPI/'><button class="topcoat-button--cta full"><span class="topcoat-icon topcoat-icon--listar"></span> Listar Obras</button></a>
+  </li>
+	<li class="topcoat-list__item">
+     <a href='#cambiarObraApi/'><button class="topcoat-button--cta full" {{#if logout}}disabled{{/if}} ><span class="topcoat-icon topcoat-icon--obra"></span> Modificar Obra</button></a>
+    </li>
+    <li class="topcoat-list__item">
+      <a href='#cambiarDatos/'><button class="topcoat-button--cta full" {{#if logout}}disabled{{/if}} ><span class="topcoat-icon topcoat-icon--datos"></span> Cambiar Datos</button></a>
+    </li>
+    <li class="topcoat-list__item">
+      <a href='#registrarseAPI/'><button class="topcoat-button--cta full" {{#if logged}}disabled{{/if}} ><span class="topcoat-icon topcoat-icon--registrarse"></span> Registrarse</button></a>
+    </li>
+	<li class="topcoat-list__item">
+    <button id='buttonlogout' class="topcoat-button--cta full" {{#if logout}}disabled{{/if}}><span class="topcoat-icon topcoat-icon--logout"></span> LogOut</button>
+    </li>
+  </ul>
+</div>
